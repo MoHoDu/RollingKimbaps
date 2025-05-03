@@ -21,7 +21,7 @@ MonoBehaviour:
   groupId: cheese_kimbap
   grade: 1
   price: 0
-  satisfy: 5
+  satisfy: 10
   requiredIngredients:
   - cheese
   - rice
