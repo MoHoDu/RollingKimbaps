@@ -1,0 +1,431 @@
+fileFormatVersion: 2
+guid: f197d5823130740639250a9ee60b12e4
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 7734344279829359198
+    second: Rolling_Kimbaps_UI_02_0
+  - first:
+      213: 6388266679628203889
+    second: Rolling_Kimbaps_UI_02_1
+  - first:
+      213: -100838271290277102
+    second: Rolling_Kimbaps_UI_02_2
+  - first:
+      213: 5447672526694994656
+    second: Rolling_Kimbaps_UI_02_3
+  - first:
+      213: 2168371775646713538
+    second: Rolling_Kimbaps_UI_02_4
+  - first:
+      213: -835420372870071095
+    second: Rolling_Kimbaps_UI_02_5
+  - first:
+      213: -8741650997253222120
+    second: Rolling_Kimbaps_UI_02_6
+  - first:
+      213: -8422155237658195099
+    second: Rolling_Kimbaps_UI_02_7
+  - first:
+      213: 1950967216517009128
+    second: Rolling_Kimbaps_UI_02_8
+  - first:
+      213: -4440791681424942519
+    second: Rolling_Kimbaps_UI_02_9
+  - first:
+      213: 9200910609006847903
+    second: Rolling_Kimbaps_UI_02_10
+  - first:
+      213: -9114031256884593672
+    second: Rolling_Kimbaps_UI_02_11
+  - first:
+      213: -1117484432698583485
+    second: Rolling_Kimbaps_UI_02_12
+  - first:
+      213: 3431442851743241707
+    second: Rolling_Kimbaps_UI_02_13
+  - first:
+      213: -4028346440504510208
+    second: Rolling_Kimbaps_UI_02_14
+  - first:
+      213: 3456145558537472153
+    second: Rolling_Kimbaps_UI_02_15
+  - first:
+      213: -9200625776641431806
+    second: Rolling_Kimbaps_UI_02_16
+  - first:
+      213: 3240645339744670973
+    second: Rolling_Kimbaps_UI_02_17
+  - first:
+      213: 1781924737636078648
+    second: Rolling_Kimbaps_UI_02_18
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_0
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 1272
+        width: 548
+        height: 214
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 200, y: 70, z: 200, w: 70}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e5aadc9e429e55b60800000000000000
+      internalID: 7734344279829359198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_1
+      rect:
+        serializedVersion: 2
+        x: 95
+        y: 945
+        width: 239
+        height: 305
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17704b9d2bea7a850800000000000000
+      internalID: 6388266679628203889
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_2
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 699
+        width: 228
+        height: 234
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2138af36020c99ef0800000000000000
+      internalID: -100838271290277102
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_4
+      rect:
+        serializedVersion: 2
+        x: 353
+        y: 964
+        width: 205
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 70, y: 70, z: 70, w: 70}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2c6c76434aa971e10800000000000000
+      internalID: 2168371775646713538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_5
+      rect:
+        serializedVersion: 2
+        x: 364
+        y: 743
+        width: 358
+        height: 137
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9cc74fcd89df764f0800000000000000
+      internalID: -835420372870071095
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_6
+      rect:
+        serializedVersion: 2
+        x: 644
+        y: 1331
+        width: 338
+        height: 147
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 100, y: 50, z: 100, w: 50}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8115846bbba6fa680800000000000000
+      internalID: -8741650997253222120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_7
+      rect:
+        serializedVersion: 2
+        x: 599
+        y: 934
+        width: 341
+        height: 331
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 56b00301f6e7e1b80800000000000000
+      internalID: -8422155237658195099
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_8
+      rect:
+        serializedVersion: 2
+        x: 759
+        y: 711
+        width: 194
+        height: 197
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8eecde4c85a331b10800000000000000
+      internalID: 1950967216517009128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_16
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 116
+        width: 501
+        height: 570
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 150, y: 150, z: 150, w: 150}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2072cf76a9fc05080800000000000000
+      internalID: -9200625776641431806
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_17
+      rect:
+        serializedVersion: 2
+        x: 611
+        y: 136
+        width: 358
+        height: 334
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 100, y: 100, z: 100, w: 100}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df4918e44c519fc20800000000000000
+      internalID: 3240645339744670973
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Rolling_Kimbaps_UI_02_18
+      rect:
+        serializedVersion: 2
+        x: 628
+        y: 500
+        width: 157
+        height: 181
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 834974b9b1baab810800000000000000
+      internalID: 1781924737636078648
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 6cc2bf662259a47bba935a2ae2564ce3
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Rolling_Kimbaps_UI_02_19: 1095754939
+      Rolling_Kimbaps_UI_02_20: 1838341402
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
