@@ -20,7 +20,7 @@ MonoBehaviour:
     \uC5C6\uC774 \uBAA8\uB450 \uC88B\uC544\uD55C\uB2E4."
   groupId: kimbap
   grade: 1
-  price: 0
+  price: 1000
   satisfy: 5
   requiredIngredients:
   - carrot

@@ -20,7 +20,7 @@ MonoBehaviour:
     \uC5EC\uC131\uB4E4\uACFC \uC544\uC774\uB4E4\uC5D0\uAC8C \uC778\uAE30\uAC00 \uC88B\uB2E4."
   groupId: cheese_kimbap
   grade: 1
-  price: 0
+  price: 1200
   satisfy: 10
   requiredIngredients:
   - cheese

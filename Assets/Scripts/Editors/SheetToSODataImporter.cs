@@ -21,7 +21,7 @@ public class SheetToSODataImporter : EditorWindow
 {
     // Base URL for CSV export of a specific sheet via Google’s gviz API
     private string csvUrl = "https://docs.google.com/spreadsheets/d/1H3YBSqqe-uq7tG-rQWrHeaIxmsuK3nrIjAMwh_gAiIc/export?format=csv";
-    private string outputFolder = "Assets/DataObjects";
+    private string outputFolder = "Assets/Resources/DataObjects";
     private SheetType sheetType = SheetType.Ingredient;
     private SheetType currentSheetType = SheetType.Ingredient;
     private static readonly Dictionary<SheetType, string> sheetTypeToSheetGids = new Dictionary<SheetType, string>
