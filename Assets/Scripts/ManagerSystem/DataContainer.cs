@@ -17,6 +17,8 @@ namespace ManagerSystem
     public static class DataContainer
     {
         public static IngredientDatas IngredientDatas { get; private set; } = new();
+        public static RecipeDatas RecipeDatas { get; private set; } = new();
+        public static SkillDatas SkillDatas { get; private set; } = new();
 
         public static bool IsLoadedComplete { get; private set; } = false;
         private static readonly string METHOD_NAME = "Load";
@@ -56,6 +58,7 @@ namespace ManagerSystem
             PropertyInfo[] properties = typeof(DataContainer).GetProperties();
 
             PropertyLoadedCount = 0;
+            PropertyMaxCount = dataTypes.Count;
             onLoading?.Invoke(PropertyLoadedCount, PropertyMaxCount);
 
             foreach (PropertyInfo property in properties)
