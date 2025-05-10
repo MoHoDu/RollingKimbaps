@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using ManagerSystem;
 using UnityEngine;
+using EnumFiles;
 
 
 namespace GameDatas

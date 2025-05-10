@@ -1,5 +1,13 @@
 namespace EnumFiles
 {
+    public enum EDataType
+    {
+        SaveFile,
+        Ingredient,
+        Recipe,
+        Skill,
+    }
+
     public enum IngredientType
     {
         Vegetable,

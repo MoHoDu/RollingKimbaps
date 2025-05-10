@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using EnumFiles;
 
 [CreateAssetMenu(menuName = "Data/Recipe")]
 public class RecipeData : SOData

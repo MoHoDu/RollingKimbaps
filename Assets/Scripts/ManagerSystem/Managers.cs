@@ -1,17 +1,47 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace ManagerSystem
 {
     public static class Managers
     {
-        private static HashSet<IBaseManager> _managers = new();
+        public static ResourceManager Resource { get; private set; }
 
-        public static void Initialize()
+        private static HashSet<IBaseManager> managers = new();
+
+        public static void Initialize(ResourceManager resourceManager)
         {
-            
-            foreach (var manager in _managers)
+            Resource = resourceManager;
+            managers.Add(Resource);
+
+            Debug.Log("Initialize Managers");
+            foreach (var manager in managers)
             {
                 manager.Initialize();
+            }
+        }
+
+        public static void Start()
+        {
+            foreach (IBaseManager manager in managers)
+            {
+                manager.Start();
+            }
+        }
+
+        public static void Update()
+        {
+            foreach (IBaseManager manager in managers)
+            {
+                manager.Update();
+            }
+        }
+
+        public static void FixedUpdate()
+        {
+            foreach (IBaseManager manager in managers)
+            {
+                manager.FixedUpdate();
             }
         }
     }

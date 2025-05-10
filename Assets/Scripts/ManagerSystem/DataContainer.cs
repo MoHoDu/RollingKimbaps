@@ -4,18 +4,13 @@ using System.Reflection;
 using Cysharp.Threading.Tasks;
 using GameDatas;
 using UnityEngine;
+using EnumFiles;
 
 namespace ManagerSystem
 {
-    public enum EDataType
-    {
-        Ingredient,
-        Recipe,
-        Skill,
-    }
-
     public static class DataContainer
     {
+        public static SaveDataContainer SaveFiles { get; private set; } = new();
         public static IngredientDatas IngredientDatas { get; private set; } = new();
         public static RecipeDatas RecipeDatas { get; private set; } = new();
         public static SkillDatas SkillDatas { get; private set; } = new();

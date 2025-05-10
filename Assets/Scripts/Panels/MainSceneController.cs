@@ -2,6 +2,7 @@ using Attributes;
 using Panels.Base;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using EnumFiles;
 
 namespace Panels
 {
@@ -16,10 +17,15 @@ namespace Panels
         {
             startBtn.onClick.AddListener(TempSetGameScene);
         }
-        
+
         private void TempSetGameScene()
         {
             SceneManager.LoadScene("GameScene");
+        }
+
+        private void LoadSaveFiles(GameType gameType)
+        {
+
         }
     }
 }
