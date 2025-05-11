@@ -98,7 +98,7 @@ namespace ManagerSystem
 
             // 캔버스 메니저 하위로 옮김
             RectTransform rect = go.GetComponent<RectTransform>();
-            rect.SetParent(transform);
+            rect.SetParent(transform, false);
 
             // 캔버스에서 해당 UI의 깊이 설정
             int depth = baseDepth + (uiDict.Count * gap);

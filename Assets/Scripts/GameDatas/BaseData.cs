@@ -24,6 +24,15 @@ namespace GameDatas
                     return;
                 }
 
+                // 만약 SaveData assets을 로드했다면, 각각의 FileName에 실제 파일 이름을 넣음
+                foreach (var asset in lodedAsstets)
+                {
+                    if (asset is SaveData sd)
+                    {
+                        sd.FileName = sd.name;
+                    }
+                }
+
                 Set(lodedAsstets.ToList());
             }
             catch

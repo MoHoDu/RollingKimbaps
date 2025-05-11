@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0e99b3772d56f4d7f934cefe34e25574, type: 3}
-  m_Name: NormalDefault
+  m_Name: InfiniteDefault
   m_EditorClassIdentifier: 
   id: 1
-  displayName: normal_default
+  displayName: infinite_default
   icon: {fileID: 0}
   rarity: 0
   description: "\uCEA0\uD398\uC778 \uBAA8\uB4DC \uCC98\uC74C \uC2DC\uC791 \uC2DC
     \uB370\uC774\uD130"
-  gameType: 0
+  gameType: 1
   isDefault: 1
   saveYear: 0
   saveMonth: 0
   saveDay: 0
   saveHour: 0
   saveMinute: 0
-  inGameMonth: 1
-  inGameWeek: 1
+  inGameMonth: 0
+  inGameWeek: 0
   ingredientList:
   - {fileID: 11400000, guid: 02d21ac21700346209cadb64bdb5d264, type: 2}
   - {fileID: 11400000, guid: 7c55938a382a447f197f2ce8a01ed5e8, type: 2}

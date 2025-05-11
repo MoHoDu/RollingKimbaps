@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 
 namespace ManagerSystem
@@ -40,7 +41,7 @@ namespace ManagerSystem
         /// <param name="inAssetName">프리팹 이름</param>
         /// <param name="inParent">부모 오브젝트</param>
         /// <returns>생성된 프리팹 오브젝트</returns>
-        public GameObject Instantiate(string inAssetName, Transform inParent = null)
+        public GameObject Instantiate(string inAssetName, Transform inParent = null, bool worldPositionStays = false)
         {
             GameObject go = null;
 
@@ -51,7 +52,7 @@ namespace ManagerSystem
                 go = Instantiate(resource);
                 if (inParent)
                 {
-                    go.transform.SetParent(inParent);
+                    go.transform.SetParent(inParent, worldPositionStays);
                 }
                 go.name = inAssetName;
             }
@@ -83,6 +84,29 @@ namespace ManagerSystem
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// 실제 세이브 데이터 파일을 제거
+        /// </summary>
+        /// <param name="saveData">삭제 할 SaveData</param>
+        /// <returns>파일 유무 및 파일이 성공적으로 제거되었는지 여부</returns>
+        public bool RemoveSaveData(SaveData saveData)
+        {
+            // Load the SaveData asset
+            string path = BaseValues.SoDataBaseDirectory + "/" + BaseValues.SaveDataDirectory;
+            path = Path.Combine(path, saveData.FileName);
+            
+            SaveData asset = Resources.Load<SaveData>(path);
+            if (asset == null)
+            {
+                Debug.LogWarning($"[Resource Warn] Cannot remove SaveData, asset '{saveData.FileName}' not found.");
+                return false;
+            }
+            
+            // Unload the asset from memory
+            Resources.UnloadAsset(asset);
+            return true;
         }
 
         public void Destroy(GameObject inObj)

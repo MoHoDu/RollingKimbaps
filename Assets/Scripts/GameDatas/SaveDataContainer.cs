@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using EnumFiles;
+using ManagerSystem;
 
 
 namespace GameDatas
@@ -32,6 +33,11 @@ namespace GameDatas
             }
         }
 
+        public List<SaveData> Get(GameType gameType)
+        {
+            return Data.GetValueOrDefault(gameType, new List<SaveData>());
+        }
+
         public SaveData GetDefaultData(GameType gameType)
         {
             SaveData cloneData = new();
@@ -54,6 +60,22 @@ namespace GameDatas
                 cloneData.skillList = defaultData.skillList;
             }
             return cloneData;
+        }
+
+        public void DeleteSaveData(SaveData inData)
+        {
+            // 디폴트 데이터는 삭제 불가
+            if (inData.isDefault) return;
+            
+            GameType gameType = inData.gameType;
+            if (Data.TryGetValue(gameType, out _))
+            {
+                Data[gameType].Remove(inData);
+                if (Data[gameType].Count == 0) 
+                    Data.Remove(gameType);
+            }
+
+            Managers.Resource.RemoveSaveData(inData);
         }
     }
 }

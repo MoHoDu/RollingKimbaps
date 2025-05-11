@@ -1,8 +1,10 @@
+using System.Collections.Generic;
 using Attributes;
 using Panels.Base;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EnumFiles;
+using ManagerSystem;
 
 namespace Panels
 {
@@ -15,7 +17,8 @@ namespace Panels
 
         protected override void Initialize()
         {
-            startBtn.onClick.AddListener(TempSetGameScene);
+            startBtn.onClick.AddListener(() => LoadSaveFiles(GameType.Story));
+            infiniteBtn.onClick.AddListener(() => LoadSaveFiles(GameType.Infinite));
         }
 
         private void TempSetGameScene()
@@ -25,7 +28,18 @@ namespace Panels
 
         private void LoadSaveFiles(GameType gameType)
         {
+            List<SaveData> saveDatas = DataContainer.SaveFiles.Get(gameType);
 
+            SavePanel panel = CanvasManager.Instance.GetUI<SavePanel>();
+            if (panel != null)
+            {
+                panel.SetInfoInPanel(saveDatas);
+            }
+            else
+            {
+                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", saveDatas);
+                panel.AddEventOnDeleteData(DataContainer.SaveFiles.DeleteSaveData);
+            }
         }
     }
 }
