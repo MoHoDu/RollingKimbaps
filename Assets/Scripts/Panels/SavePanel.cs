@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Attributes;
+using JsonData;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
@@ -93,7 +94,7 @@ namespace Panels
         private void RemoveSaveSlot(SaveSlotUI slot)
         {
             slots.Remove(slot);
-            onDeleteData?.Invoke(slot.saveData);
+            onDeleteData?.Invoke(slot.SaveData);
             Managers.Resource.Destroy(slot.gameObject);
         }
     }

@@ -4,10 +4,10 @@ public static class BaseValues
     public const string SoDataBaseDirectory = "DataObjects";
 
     // UI Base Path
-    public static readonly string CanvasUIDirectory = "UI";
+    public const string CanvasUIDirectory = "UI";
 
     // Save Data Base Path
-    public static readonly string SaveDataDirectory = "SaveFile";
+    public const string SaveDataDirectory = "SaveFile";
 
     // Screen Size
     public const int SCREEN_WIDTH = 1920;

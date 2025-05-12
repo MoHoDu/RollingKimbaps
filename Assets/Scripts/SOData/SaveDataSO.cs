@@ -5,7 +5,7 @@ using EnumFiles;
 
 
 [CreateAssetMenu(menuName = "Data/SaveData")]
-public class SaveData : SOData
+public class SaveDataSO : SOData
 {
     // 파일 이름
     public string FileName = string.Empty;

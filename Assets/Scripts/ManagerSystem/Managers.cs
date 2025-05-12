@@ -6,6 +6,7 @@ namespace ManagerSystem
     public static class Managers
     {
         public static ResourceManager Resource { get; private set; }
+        public static SaveManager Save { get; private set; } = new();
 
         private static HashSet<IBaseManager> managers = new();
 
@@ -13,6 +14,7 @@ namespace ManagerSystem
         {
             Resource = resourceManager;
             managers.Add(Resource);
+            managers.Add(Save);
 
             Debug.Log("Initialize Managers");
             foreach (var manager in managers)

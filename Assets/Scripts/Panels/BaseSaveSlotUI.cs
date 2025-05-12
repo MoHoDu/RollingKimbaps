@@ -3,13 +3,14 @@ using Panels.Base;
 using TMPro;
 using UnityEngine.UI;
 using EnumFiles;
+using JsonData;
 
 namespace Panels
 {
     public class BaseSaveSlotUI : BindUI
     {
         protected Button saveButton;
-        public SaveData saveData { get; protected set; }
+        public SaveData SaveData { get; protected set; }
 
         protected override void Initialize()
         {
@@ -20,7 +21,7 @@ namespace Panels
         
         public virtual void Setup(SaveData inData)
         {
-            saveData = inData;
+            SaveData = inData;
         }
 
         protected virtual void OnButtonClick()

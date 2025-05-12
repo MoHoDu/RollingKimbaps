@@ -1,5 +1,12 @@
 namespace EnumFiles
 {
+    public enum EFileType
+    {
+        None,
+        SO,
+        Json,
+    }
+    
     public enum EDataType
     {
         SaveFile,

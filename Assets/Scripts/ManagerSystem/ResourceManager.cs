@@ -1,40 +1,11 @@
 using System.IO;
+using JsonData;
 using UnityEngine;
 
 namespace ManagerSystem
 {
-    public class ResourceManager : MonoBehaviour, IBaseManager
+    public class ResourceManager : MonoBaseManager
     {
-        public void Initialize()
-        {
-
-        }
-
-        public void Start()
-        {
-
-        }
-
-        public void Update()
-        {
-
-        }
-
-        public void FixedUpdate()
-        {
-
-        }
-
-        public void LateUpdate()
-        {
-
-        }
-
-        public void OnDestroy()
-        {
-
-        }
-
         /// <summary>
         /// 프리팹 이름을 가지고, Resources 폴더에서 프리팹을 생성
         /// </summary>
@@ -91,21 +62,8 @@ namespace ManagerSystem
         /// </summary>
         /// <param name="saveData">삭제 할 SaveData</param>
         /// <returns>파일 유무 및 파일이 성공적으로 제거되었는지 여부</returns>
-        public bool RemoveSaveData(SaveData saveData)
+        public bool RemoveSaveData(SaveData saveDataSo)
         {
-            // Load the SaveData asset
-            string path = BaseValues.SoDataBaseDirectory + "/" + BaseValues.SaveDataDirectory;
-            path = Path.Combine(path, saveData.FileName);
-            
-            SaveData asset = Resources.Load<SaveData>(path);
-            if (asset == null)
-            {
-                Debug.LogWarning($"[Resource Warn] Cannot remove SaveData, asset '{saveData.FileName}' not found.");
-                return false;
-            }
-            
-            // Unload the asset from memory
-            Resources.UnloadAsset(asset);
             return true;
         }
 

@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
+using EnumFiles;
 
 namespace GameDatas
 {
-    [DataName("Ingredient", true)]
+    [DataName("Ingredient", EFileType.SO)]
     public class IngredientDatas : BaseData<IngredientData>
     {
         public Dictionary<string, IngredientData> Data { get; private set; } = new Dictionary<string, IngredientData>();

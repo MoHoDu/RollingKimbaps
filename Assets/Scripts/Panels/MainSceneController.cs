@@ -4,6 +4,7 @@ using Panels.Base;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using EnumFiles;
+using JsonData;
 using ManagerSystem;
 
 namespace Panels

@@ -1,7 +1,10 @@
+using System;
 using Attributes;
 using TMPro;
 using UnityEngine.UI;
 using EnumFiles;
+using JsonData;
+using ManagerSystem;
 using UnityEngine.Events;
 
 namespace Panels
@@ -26,12 +29,13 @@ namespace Panels
                 deleteButton.gameObject.SetActive(false);
                 return;
             }
+
+            (int month, int week) inGameTime = Managers.Save.GetInGameWeek(inData);
+            DateTime saveTime = Managers.Save.GetSaveTime(inData);
             
-            (int, int) inGameTime = saveData.inGameDate;
-            
-            nameText.text = saveData.displayName;
-            timeText.text = saveData.saveTime.ToString("yyyy년 MM월 dd일 hh시 mm분");
-            roundText.text = $"영업 일자 : {((EMonth)inGameTime.Item1).ToString()}, {inGameTime.Item2}주차";
+            nameText.text = SaveData.displayName;
+            timeText.text = saveTime.ToString("yyyy년 MM월 dd일 hh시 mm분");
+            roundText.text = $"영업 일자 : {((EMonth)inGameTime.month).ToString()}, {inGameTime.week}주차";
         }
 
         public void SetDeleteButtonEvent(UnityAction<SaveSlotUI> onDelete)
