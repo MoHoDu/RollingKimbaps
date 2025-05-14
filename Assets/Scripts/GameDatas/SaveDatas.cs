@@ -114,7 +114,7 @@ namespace GameDatas
 
                 List<SaveData> lodedAsstets = objs.Select(s => new SaveData
                 {
-                    FileName = s.FileName,
+                    FileName = string.Empty,
                     gameType = s.gameType,
                     isDefault = s.isDefault,
                     saveYear = s.saveYear,
@@ -139,6 +139,32 @@ namespace GameDatas
             catch
             {
                 Debug.LogWarning($"Directory not found: {directoryName}");
+            }
+        }
+
+        public void TestSave()
+        {
+            SaveData testData = new SaveData
+            {
+                FileName = string.Empty,
+                gameType = GameType.Story,
+                isDefault = false,
+                saveYear = 2025,
+                saveMonth = 1,
+                saveDay = 1,
+                saveHour = 1,
+                saveMinute = 1,
+                inGameMonth = 1,
+                inGameWeek = 1
+            };
+
+            if (Data.TryGetValue(GameType.Story, out _))
+            {
+                Data[GameType.Story].Add(testData);
+            }
+            else
+            {
+                Data.Add(GameType.Story, new List<SaveData> { testData });
             }
         }
     }

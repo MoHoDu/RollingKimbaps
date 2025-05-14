@@ -50,6 +50,10 @@ namespace Panels
             {
                 AddSaveSlotUI(null);
             }
+            
+#if UNITY_ANDROID && !UNITY_EDITOR
+            DataContainer.SaveFiles.TestSave();
+#endif
         }
 
         public void AddEventOnDeleteData(UnityAction<SaveData> onDelete)

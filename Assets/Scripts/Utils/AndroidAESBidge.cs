@@ -5,7 +5,8 @@ namespace Utils
 {
     public static class AndroidAESBidge
     {
-        private const string JavaClassPath = "com.HosuStudio.keystore";
+        // private const string JavaClassPath = "com.HosuStudio.keystore";
+        private const string JavaClassPath = "com.hosustudio.aeskeyhelper.AESKeystoreHelper";
 
         public static string Encrypt(string plainText)
         {

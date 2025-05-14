@@ -1,4 +1,6 @@
 using UnityEngine;
+
+#if UNITY_EDITOR
 using UnityEditor;
 using System.Collections;
 using UnityEngine.Networking;
@@ -8,6 +10,7 @@ using System;
 using Unity.EditorCoroutines.Editor;
 using EnumFiles;
 using System.Collections.Generic;
+#endif
 
 public enum SheetType
 {
@@ -17,6 +20,7 @@ public enum SheetType
     Skill,
 }
 
+#if UNITY_EDITOR
 public class SheetToSODataImporter : EditorWindow
 {
     // Base URL for CSV export of a specific sheet via Google’s gviz API
@@ -254,4 +258,8 @@ public class SheetToSODataImporter : EditorWindow
             Debug.LogError("Failed to set values in SO: " + ex.Message);
         }
     }
+#else
+public class SheetToSODataImporter
+{
+#endif
 }
