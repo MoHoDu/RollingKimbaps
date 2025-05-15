@@ -5,6 +5,7 @@ namespace EnumFiles
         None,
         SO,
         Json,
+        PlayerPref,
     }
     
     public enum EDataType

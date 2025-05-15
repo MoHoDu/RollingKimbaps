@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using EnumFiles;
 using JsonData;
 using ManagerSystem;
+using UnityEngine;
 
 namespace Panels
 {
@@ -29,17 +30,24 @@ namespace Panels
 
         private void LoadSaveFiles(GameType gameType)
         {
-            List<SaveData> saveDatas = DataContainer.SaveFiles.Get(gameType);
+            SaveData defaultData = DataContainer.SaveFiles.GetDefaultData(gameType);
+            SaveData[] saveDatas = DataContainer.SaveFiles.Get(gameType);
 
             SavePanel panel = CanvasManager.Instance.GetUI<SavePanel>();
             if (panel != null)
             {
-                panel.SetInfoInPanel(saveDatas);
+                panel.SetInfoInPanel(gameType, defaultData, saveDatas);
             }
             else
             {
-                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", saveDatas);
-                panel.AddEventOnDeleteData(DataContainer.SaveFiles.DeleteSaveData);
+                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", gameType, defaultData, saveDatas);
+                panel.AddEventOnDeleteData((data) =>
+                {
+                    bool result = Managers.Save.RemoveData(data);
+                    string resultText = result ? "성공!!" : "실패...";
+                    Debug.Log($"세이브 데이터 제거 {resultText}");
+                });
+                panel.OnRefreshData = DataContainer.SaveFiles.Get;
             }
         }
     }

@@ -54,6 +54,8 @@ namespace GameDatas
             }
         }
 
+        public virtual void LoadPlayerPref(EDataType dataType) { }
+        
         public virtual void LoadJson(EDataType dataType) { }
         
         public virtual void Load(EDataType dataType) { }

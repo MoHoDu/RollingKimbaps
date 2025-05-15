@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using Panels.Base;
 using UnityEngine;
 using UnityEngine.UI;
@@ -66,10 +67,10 @@ namespace ManagerSystem
         /// 새로운 CanvasUI를 생성하고, 리스트에 추가
         /// </summary>
         /// <param name="uiName">UI이름</param>
-        /// <param name="info">세팅이 필요한 정보</param>
+        /// <param name="infos">세팅이 필요한 정보</param>
         /// <typeparam name="T">UI 컴포넌트</typeparam>
         /// <returns>생성된 UI</returns>
-        public T AddCanvasUI<T>(string uiName = null, object info = null) where T : CanvasUI
+        public T AddCanvasUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             // uiName이 Null이라면, 컴포넌트 타입의 이름으로 합니다.
             uiName ??= typeof(T).Name;
@@ -108,9 +109,9 @@ namespace ManagerSystem
             uiDict.Add(uiName, canvasUI);
 
             // 만약 설정해야 하는 정보가 있다면, 정보를 UI에 등록 
-            if (info != null)
+            if (infos != null)
             {
-                canvasUI.SetInfoInPanel(info);
+                canvasUI.SetInfoInPanel(infos);
             }
 
             // UI의 RectTransform 설정 
@@ -209,15 +210,16 @@ namespace ManagerSystem
         /// UI를 가져오는데 없다면, 새로 생성하여 가져옴 
         /// </summary>
         /// <param name="uiName">UI이름</param>
+        /// <param name="infos">UI에 설정할 데이터들</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetUIOrCreateUI<T>(string uiName = null, object info = null) where T : CanvasUI
+        public T GetUIOrCreateUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             T ui = GetUI<T>(uiName);
 
             if (ui is null)
             {
-                ui = AddCanvasUI<T>(uiName, info);
+                ui = AddCanvasUI<T>(uiName, infos);
             }
 
             return ui;

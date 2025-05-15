@@ -25,7 +25,7 @@ namespace Panels.Base
             OnClosedEvent = null;
         }
 
-        public virtual void SetInfoInPanel(object info) { }
+        public virtual void SetInfoInPanel(params object[] infos) { }
 
         public void SetUIDepth(int depth)
         {

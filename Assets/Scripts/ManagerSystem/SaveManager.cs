@@ -14,6 +14,37 @@ namespace ManagerSystem
         private const string SaveFileExtension = ".json";
         private const string SaveFilePrefix = "SaveData";
 
+        public void SaveData(SaveData saveData)
+        {
+            int maxCount = DataContainer.SaveFiles.MaxCount;
+            if (saveData.saveIndex < 0 || saveData.saveIndex > maxCount) return;
+            
+            // DataContainer에 저장
+            bool isSuccess = DataContainer.SaveFiles.Save(saveData, true);
+            if (isSuccess)
+                Debug.Log("Finished saving data");
+            else
+                Debug.LogWarning("Error occured while saving data");
+        }
+
+        /// <summary>
+        /// gameType에 맞는 세이브 데이터를 가져옴
+        /// </summary>
+        /// <param name="gameType">가져올 세이브 데이터의 게임 타입</param>
+        /// <param name="saveIndex">null인 경우 시작 데이터를 지칭</param>
+        /// <returns>세이브 데이터 or null</returns>
+        public SaveData LoadData(GameType gameType, int? saveIndex)
+        {
+            return DataContainer.SaveFiles.GetSaveData(gameType, saveIndex);
+        }
+
+        public bool RemoveData(SaveData saveData)
+        {
+            if (saveData is null || saveData.isDefault) return false;
+            
+            return DataContainer.SaveFiles.DeleteSaveData(saveData);
+        }
+        
         public void SaveFile(GameType gameType, SaveData saveData)
         {
             if (string.IsNullOrEmpty(saveData.FileName))

@@ -153,6 +153,7 @@ namespace ManagerSystem
             EFileType.None => METHOD_NAME,
             EFileType.SO => $"{METHOD_NAME}SO",
             EFileType.Json => $"{METHOD_NAME}Json",
+            EFileType.PlayerPref => $"{METHOD_NAME}PlayerPref",
             _ => METHOD_NAME
         };
     }

@@ -15,13 +15,12 @@ namespace Panels
 
         }
 
-        public override void SetInfoInPanel(object inData)
+        public override void SetInfoInPanel(object[] infos)
         {
-            if (inData is IngredientData ingredient)
-            {
-                ingredientData = ingredient;
-                ingredientImage.sprite = ingredient.icon;
-            }
+            if (infos is not { Length: > 0 } || infos[0] is not IngredientData ingredient) return;
+            
+            ingredientData = ingredient;
+            ingredientImage.sprite = ingredient.icon;
         }
     }
 }

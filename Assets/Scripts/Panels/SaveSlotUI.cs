@@ -16,16 +16,15 @@ namespace Panels
         [Bind("RoundText")] private TextMeshProUGUI roundText;
         [Bind("DeleteButton")] private Button deleteButton;
         
-        public override void Setup(SaveData inData)
+        public override void Setup(SaveData inData, SaveData defaultData)
         {
-            base.Setup(inData);
+            base.Setup(inData, defaultData);
             if (inData == null)
             {
                 nameText.text = "";
-                timeText.text = "세이브 데이터가 없습니다.";
+                timeText.text = "새로운 시작";
                 timeText.fontSize = 45;
                 roundText.text = "";
-                saveButton.interactable = false;
                 deleteButton.gameObject.SetActive(false);
                 return;
             }

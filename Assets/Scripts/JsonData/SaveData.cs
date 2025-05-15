@@ -9,6 +9,7 @@ namespace JsonData
     {
         // 기본 정보
         public string FileName = string.Empty;
+        public int saveIndex = 0;
         public string displayName = string.Empty;
         public GameType gameType;
         public bool isDefault = false;

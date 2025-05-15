@@ -6,6 +6,8 @@ using Unity.Notifications.Android;
 using UnityEngine.Android;
 #endif
 
+// 안드로이드 버전에 따라 너무나 상이하고, 30 이상의 버전에서는 팝업 권한도 허용해야 함
+// -> 암호화 + playerpref로 변경 
 public static class AndroidPermissionChecker
 {
     private static bool setPermissionGranted = false;
