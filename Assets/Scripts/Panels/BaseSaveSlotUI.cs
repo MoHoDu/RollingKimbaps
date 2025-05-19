@@ -7,6 +7,7 @@ using EnumFiles;
 using GameDatas;
 using JsonData;
 using ManagerSystem;
+using UnityEngine.SceneManagement;
 
 namespace Panels
 {
@@ -40,11 +41,7 @@ namespace Panels
 
         protected virtual void OnButtonClick()
         {
-            // 게임 씬으로 진입
-            
-            // SaveData를 게임 컨트롤러에 데이터 적용
-            
-            //FOR TEST ADD SAVE DATA
+            // 새로운 데이터 저장
             if (SaveData == null)
             {
                 SaveData newSave = SaveDatas.CloneData(_defaultData);
@@ -57,6 +54,16 @@ namespace Panels
 
                 onSaveButtonClicked?.Invoke(newSave);
             }
+            
+            // 게임 씬으로 진입
+            TempSetGameScene();
+
+            // SaveData를 게임 컨트롤러에 데이터 적용
+        }
+        
+        private void TempSetGameScene()
+        {
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

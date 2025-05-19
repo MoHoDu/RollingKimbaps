@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 549570014152663400}
   - component: {fileID: 7247538813026182289}
+  - component: {fileID: 1663239928435272620}
   m_Layer: 0
   m_Name: TreeObj_Back
   m_TagString: Untagged
@@ -25,13 +26,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3800480681713301749}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0.08715578, w: 0.9961947}
   m_LocalPosition: {x: -10, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.6, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 10}
 --- !u!212 &7247538813026182289
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -76,8 +77,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: a4ab7f61be515426fab450b79a7dc302, type: 3}
-  m_Color: {r: 0.3, g: 0.3, b: 0.3, a: 1}
+  m_Sprite: {fileID: 21300000, guid: fb314e2dcda334eaf824eeda20b28370, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -87,3 +88,15 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1663239928435272620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3800480681713301749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72cc99b2977c45d9a13224601d5c0b2e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

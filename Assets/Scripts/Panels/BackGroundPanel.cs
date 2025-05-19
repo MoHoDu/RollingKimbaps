@@ -7,15 +7,20 @@ namespace Panels
 {
     public class BackGroundPanel : BindUI
     {
+        // terrain
+        [Bind("Back_terrains")] Transform _terrains;
+        
+        // trees
         [Bind("FrontLine")] Transform _frontLine;
         [Bind("MiddleLine")] Transform _middleLine;
         [Bind("BackLine")] Transform _backLine;
+        [Bind("Trees_ForeLine")] Transform _foreLine;
 
         [SerializeField][Range(0, 10f)] private float _characterSpeed = 1f;
 
-        private Transform[] _lines => new[] { _frontLine, _middleLine, _backLine };
-        private readonly float _flowSpeed = 1.8f;
-        private readonly float _speedGap = 0.5f;
+        private Transform[] _lines => new[] { _backLine, _middleLine, _frontLine, _terrains, _foreLine };
+        private readonly float _flowSpeed = 3f;
+        private readonly float _speedGap = 1f;
         
         private Coroutine _flowCoroutine;
 
@@ -28,17 +33,13 @@ namespace Panels
         {
             while (true)
             {
-                float[] flowSpeed = new float[]
-                {
-                    _characterSpeed * _flowSpeed, 
-                    _characterSpeed * (_flowSpeed + _speedGap),
-                    _characterSpeed * (_flowSpeed + _speedGap * 2)
-                };
+                float flowSpeed = _characterSpeed * _flowSpeed;
 
                 for (int i = 0; i < _lines.Length; i++)
                 {
-                    Vector3 movement = Vector3.left * (flowSpeed[i] * Time.deltaTime);
-                    _lines[i].position += movement;
+                    float gap = i == 0 ? 1f : _speedGap * i;
+                    Vector3 movement = Vector3.left * (flowSpeed * gap * Time.deltaTime);
+                    _lines[i].localPosition += movement;
                 }
                 yield return null;
             }

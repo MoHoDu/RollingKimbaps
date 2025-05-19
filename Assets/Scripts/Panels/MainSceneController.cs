@@ -23,11 +23,6 @@ namespace Panels
             infiniteBtn.onClick.AddListener(() => LoadSaveFiles(GameType.Infinite));
         }
 
-        private void TempSetGameScene()
-        {
-            SceneManager.LoadScene("GameScene");
-        }
-
         private void LoadSaveFiles(GameType gameType)
         {
             SaveData defaultData = DataContainer.SaveFiles.GetDefaultData(gameType);
