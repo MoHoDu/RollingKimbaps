@@ -1,5 +1,21 @@
 namespace EnumFiles
 {
+    public enum EFileType
+    {
+        None,
+        SO,
+        Json,
+        PlayerPref,
+    }
+    
+    public enum EDataType
+    {
+        SaveFile,
+        Ingredient,
+        Recipe,
+        Skill,
+    }
+
     public enum IngredientType
     {
         Vegetable,

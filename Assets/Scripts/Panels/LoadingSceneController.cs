@@ -25,17 +25,30 @@ namespace Panels
 
         private void SetBarStatusOnLoadSO(int inLoadedCount, int inMaxCount)
         {
+            SetBarStatusOnLoad(inLoadedCount, inMaxCount, "게임에 필요한 데이터를 로드하는 중...");
+        }
+        
+        private void SetBarStatusOnLoad(int inLoadedCount, int inMaxCount, string inLoadingText)
+        {
             float percentage = (float)inLoadedCount / inMaxCount;
             float maxWidth = _rect.rect.width;
             statusBar.sizeDelta = new Vector2(maxWidth * percentage, statusBar.sizeDelta.y);
-            statusText.text = $"게임에 필요한 데이터를 로드하는 중... ({inLoadedCount}/{inMaxCount})";
+            statusText.text = $"{inLoadingText} ({inLoadedCount}/{inMaxCount})";
         }
 
         public async UniTaskVoid StartLoadData()
         {
+            // AndroidPermissionChecker.SetCallbacks(SetUIOnDeniedPermission, SetUIOnDeniedPermissionAndDoNotAskAgain);
+            
             await UniTask.Delay(1000);
-
             DataContainer.LoadDataFromSO(SetBarStatusOnLoadSO, TempSetMainScene).Forget();
+
+            // 외부 저장소 사용 X -> playerpref
+            // AndroidPermissionChecker.InitPermission(SetBarStatusOnRequestPermissions, (isAccepted) =>
+            // {
+            //     if (isAccepted)
+            //         DataContainer.LoadDataFromSO(SetBarStatusOnLoadSO, TempSetMainScene).Forget();
+            // }).Forget();
         }
 
         private void TempSetMainScene()

@@ -105,7 +105,7 @@ namespace Attributes
             }
 
             // 바인딩 완료 여부를 알리고, 캐시 데이터는 제거
-            Debug.Log($"Binding installed for {target.name}");
+            // Debug.Log($"Binding installed for {target.name}");
             cachedChildTransform.Clear();
         }
 
