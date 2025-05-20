@@ -1,29 +1,36 @@
 using System.Collections;
 using Attributes;
+using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
 
 namespace Panels
 {
-    public class InGameObjectsPanel : BindUI
+    public class InGameObjectsPanel : BindUI, IFlowPanel
     {
         [Bind("Grounds")] Transform _groundsPanelTr;
         
-        [SerializeField][Range(0, 10f)] private float _characterSpeed = 1f;
-        
         private readonly float _flowSpeed = 7f;
+        private InGameStatus _inGameStatus;
         private Coroutine _flowCoroutine;
 
         protected override void Initialize()
         {
+            // _flowCoroutine = StartCoroutine(Flow());
+        }
+
+        public Coroutine StartFlow(InGameStatus status)
+        {
+            _inGameStatus = status;
             _flowCoroutine = StartCoroutine(Flow());
+            return _flowCoroutine;
         }
 
         private IEnumerator Flow()
         {
             while (true)
             {
-                float flowSpeed = _characterSpeed * _flowSpeed;
+                float flowSpeed = _inGameStatus.Velocity * _flowSpeed;
                 Vector3 movement = Vector3.left * (flowSpeed * Time.deltaTime);
                 _groundsPanelTr.localPosition += movement;
                 

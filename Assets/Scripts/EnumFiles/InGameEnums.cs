@@ -21,4 +21,11 @@ namespace EnumFiles
         November,
         December
     }
+
+    public enum EInputType
+    {
+        JUMP = 0,
+        PAUSE = 1,
+        RESUME = 2,
+    }
 }

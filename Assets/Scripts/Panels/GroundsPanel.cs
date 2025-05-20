@@ -14,10 +14,10 @@ namespace Panels
         
         protected string _groundObjName = "Ground";
         protected int _instantiateCount = 10;
-        protected float _onDestroyedPosX = -100f;
-        
-        protected float _instantiateSpace = 14.5f;
-        protected float _instantiateSpaceGap = 5.8f;
+        protected float _onDestroyedPosX = -300f;
+
+        protected float _instantiateSpace = 5f; //14.5f;
+        protected float _instantiateSpaceGap = 5f;
         protected int _minTileCount = 5;
         protected int _maxTileCount = 30;
         

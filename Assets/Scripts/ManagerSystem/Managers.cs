@@ -7,6 +7,7 @@ namespace ManagerSystem
     {
         public static ResourceManager Resource { get; private set; }
         public static SaveManager Save { get; private set; } = new();
+        public static InGameManager InGame { get; private set; } = new();
 
         private static HashSet<IBaseManager> managers = new();
 
@@ -15,6 +16,7 @@ namespace ManagerSystem
             Resource = resourceManager;
             managers.Add(Resource);
             managers.Add(Save);
+            managers.Add(InGame);
 
             Debug.Log("Initialize Managers");
             foreach (var manager in managers)
