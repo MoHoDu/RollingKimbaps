@@ -26,10 +26,16 @@ namespace Panels
         private bool _isDead = true;
         private readonly int _maxJumped = 2;
 
+        private float normalGravity;
+        private float addedGravity;
+
         [SerializeField] private float _maxRotationSpeed = 360f; 
         [SerializeField] private float _groundCheckDistance = 0.05f;
         [SerializeField] private float _jumpForce = 20f;
-        [SerializeField] private LayerMask _groundLayer;
+        [SerializeField] private float _addedGravityForce = 1f;
+        
+        private LayerMask _groundLayer;
+        private LayerMask _obstacleLayer;
 
         public Action OnDeath;
 
@@ -40,10 +46,15 @@ namespace Panels
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _animator = GetComponent<Animator>();
             _groundLayer = LayerMask.GetMask("ground");
+            _obstacleLayer = LayerMask.GetMask("obstacle");
+            
+            normalGravity = _rigidbody2D.gravityScale;
+            addedGravity = _rigidbody2D.gravityScale + _addedGravityForce;
         }
 
         public void Setup(InGameStatus inGameStatus)
         {
+            bodyCollider.enabled = false;
             _inGameStatus = inGameStatus;
             Rebirth(false);
         }
@@ -58,6 +69,9 @@ namespace Panels
             _rigidbody2D.linearVelocity = Vector2.zero;
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
             _rigidbody2D.simulated = false;
+            
+            // 콜라이더 Off
+            bodyCollider.enabled = false;
             
             // 애니메이션 value 세팅 
             if (setRebirthValue) _animator.SetTrigger("rebirth");
@@ -112,6 +126,9 @@ namespace Panels
             // 리지드바디 정상화
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             _rigidbody2D.simulated = true;
+            
+            // 콜라이더 On
+            bodyCollider.enabled = true;
         }
 
         public void OnJump()
@@ -150,7 +167,13 @@ namespace Panels
         
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (IsGroundCollision(collision))
+            if (_inGameStatus is not { IsPlaying: true } || _inGameStatus.IsPaused) return;
+            
+            if (IsObstacleCollision(collision))
+            {
+                OnDied().Forget();
+            }
+            else if (IsGroundCollision(collision))
             {
                 foreach (var contact in collision.contacts)
                 {
@@ -189,6 +212,8 @@ namespace Panels
 
         private void OnCollisionExit2D(Collision2D collision)
         {
+            if (_inGameStatus is not { IsPlaying: true } || _inGameStatus.IsPaused) return;
+            
             if (IsGroundCollision(collision))
             {
                 SetGrounded(false);
@@ -207,6 +232,12 @@ namespace Panels
             return ((1 << collision.gameObject.layer) & _groundLayer) != 0 && 
                    collision.contacts.Any(contact => contact.otherCollider == bodyCollider);
         }
+
+        private bool IsObstacleCollision(Collision2D collision)
+        {
+            return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 && 
+                   collision.contacts.Any(contact => contact.otherCollider == bodyCollider);
+        }
         
         private void FixedUpdate()
         {
@@ -214,6 +245,19 @@ namespace Panels
             if (!_inGameStatus.IsPlaying || _inGameStatus.IsPaused) return;
             
             Rolling();
+
+            if (!_isGrounded)
+            {
+                if (_inputJumped > 0)
+                {
+                    if (_rigidbody2D.linearVelocity.y < 0f)
+                        _rigidbody2D.gravityScale = addedGravity;
+                }
+            }
+            else
+            {
+                _rigidbody2D.gravityScale = normalGravity;
+            }
         }
     }
 }

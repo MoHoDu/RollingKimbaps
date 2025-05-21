@@ -11,6 +11,8 @@ namespace ManagerSystem
 
         private static HashSet<IBaseManager> managers = new();
 
+        public static bool DoneInitialized { get; private set; } = false;
+
         public static void Initialize(ResourceManager resourceManager)
         {
             Resource = resourceManager;
@@ -23,6 +25,8 @@ namespace ManagerSystem
             {
                 manager.Initialize();
             }
+
+            DoneInitialized = true;
         }
 
         public static void Start()

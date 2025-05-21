@@ -1140,7 +1140,8 @@ MonoBehaviour:
     Life: 0
     Velocity: 0
     CollectedIngredients: []
-  _fastSpeed: 3
+  _fastSpeed: 15
+  _maxSpeed: 15
 --- !u!1 &857675580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1156,7 +1157,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &857675581
 Transform:
   m_ObjectHideFlags: 0
@@ -1243,7 +1244,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2102448352}
-  - {fileID: 1381072078}
   - {fileID: 378056420}
   - {fileID: 1128154601}
   m_Father: {fileID: 791637917}
@@ -1540,6 +1540,7 @@ GameObject:
   - component: {fileID: 1305618935}
   - component: {fileID: 1305618934}
   - component: {fileID: 1305618933}
+  - component: {fileID: 1305618936}
   m_Layer: 0
   m_Name: TEST
   m_TagString: Untagged
@@ -1586,6 +1587,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1305618936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1305618932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d70f668b0afb44b6a535b33582c599e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gamePanel: {fileID: 791637916}
 --- !u!1 &1362266024
 GameObject:
   m_ObjectHideFlags: 0
@@ -1718,7 +1732,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1381072078}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: Obstacles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1733,12 +1747,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1381072077}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.8, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.8, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 949032848}
+  m_Father: {fileID: 2102448352}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1472981351
 PrefabInstance:
@@ -2139,7 +2153,8 @@ Transform:
   m_LocalPosition: {x: 0, y: -7, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1381072078}
   m_Father: {fileID: 949032848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2102448353
@@ -2154,7 +2169,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9905ea06f1dc43e6863c03a63910bbec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  obstacleParent: {fileID: 0}
 --- !u!4 &2122435883 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2377929686605690647, guid: 28889fb70694b455c92df4f6ffaa97db, type: 3}
@@ -2339,6 +2353,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 791637917}
     m_Modifications:
+    - target: {fileID: 1241392734349312018, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
+      propertyPath: m_GravityScale
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 3823144194012855647, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2382,6 +2400,14 @@ PrefabInstance:
     - target: {fileID: 8877293528964763768, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
       propertyPath: m_Name
       value: Kimbap
+      objectReference: {fileID: 0}
+    - target: {fileID: 9127959337274368349, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
+      propertyPath: _jumpForce
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 9127959337274368349, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
+      propertyPath: _addedGravityForce
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

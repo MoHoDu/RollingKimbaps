@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 4560614621650662525}
   - component: {fileID: 7347829208048716207}
-  - component: {fileID: 2030223633228153095}
+  - component: {fileID: 5151622950188318803}
   - component: {fileID: 7615462702524175569}
-  - component: {fileID: 4182463761484272670}
-  m_Layer: 10
+  - component: {fileID: 1728570639730645822}
+  m_Layer: 8
   m_Name: rock_big
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 4971455503603060548}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.6, z: 1}
-  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6835353586435969516}
@@ -91,8 +91,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &2030223633228153095
-BoxCollider2D:
+--- !u!58 &5151622950188318803
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -125,18 +125,8 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2.7, y: 2.45}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 2.5, y: 2.3}
-  m_EdgeRadius: 0
+  m_Offset: {x: 0, y: 1.2}
+  m_Radius: 1.2
 --- !u!95 &7615462702524175569
 Animator:
   serializedVersion: 7
@@ -159,7 +149,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &4182463761484272670
+--- !u!114 &1728570639730645822
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,9 +158,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 4971455503603060548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecb8fe19611b44869ad1841353928837, type: 3}
+  m_Script: {fileID: 11500000, guid: fd82515e80ac425ab86b477c6a430579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Width: 1
+  Height: 1
 --- !u!1 &5870703338880421006
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +174,7 @@ GameObject:
   - component: {fileID: 6835353586435969516}
   - component: {fileID: 1033953822987928677}
   - component: {fileID: 2797922189807903857}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: broken_particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +190,7 @@ Transform:
   m_GameObject: {fileID: 5870703338880421006}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -298,7 +290,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -364,7 +356,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -417,7 +409,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 12
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -535,8 +527,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 0.5
+      scalar: 3
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:

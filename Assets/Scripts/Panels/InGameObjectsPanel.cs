@@ -18,7 +18,7 @@ namespace Panels
 
         protected override void Initialize()
         {
-            // _flowCoroutine = StartCoroutine(Flow());
+            _groundsPanel.StartGame();
         }
 
         public Coroutine StartFlow(InGameStatus status)

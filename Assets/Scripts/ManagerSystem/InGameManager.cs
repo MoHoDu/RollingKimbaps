@@ -34,7 +34,12 @@ namespace ManagerSystem
             IsPlaying = true;
             IsPaused = false;
 
-            Velocity = 1f;
+            InitVelocity();
+        }
+
+        public void InitVelocity()
+        {
+            Velocity = 2f;
         }
 
         public void PauseGame()

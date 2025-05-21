@@ -31,10 +31,8 @@ namespace Panels
         
         [Range(0, 1)] public float Hardness { get; set; } = 0f;
 
-        protected override void Initialize()
+        public void StartGame()
         {
-            base.Initialize();
-            
             // 처음 시작 지점의 평지 생성 
             AddGround(_startPointWidth);
 

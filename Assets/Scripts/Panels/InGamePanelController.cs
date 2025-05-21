@@ -1,13 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection;
 using Attributes;
 using Cysharp.Threading.Tasks;
-using EnumFiles;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Panels
 {
@@ -21,6 +18,7 @@ namespace Panels
         private List<Coroutine> _flowCoroutines =  new List<Coroutine>();
         [SerializeField] private InGameStatus _inGameStatus;
         [SerializeField] private float _fastSpeed = 1.2f;
+        [SerializeField] private float _maxSpeed = 20f;
 
         protected override void Initialize()
         {
@@ -41,7 +39,7 @@ namespace Panels
             await UniTask.WaitForSeconds(3);
             characterPanel?.Rebirth();
             
-            _inGameStatus.Velocity = 1;
+            _inGameStatus.InitVelocity();
             StartCoroutine(FasterFlow());
         }
 
@@ -50,8 +48,8 @@ namespace Panels
             do
             {
                 _inGameStatus.Velocity += _fastSpeed * Time.deltaTime;
-                if (_inGameStatus.Velocity > 10f)
-                    _inGameStatus.Velocity = 10f;
+                if (_inGameStatus.Velocity > _maxSpeed)
+                    _inGameStatus.Velocity = _maxSpeed;
                 yield return new WaitForSeconds(1);
             } while (_inGameStatus.Velocity > 0);
         }
@@ -72,7 +70,7 @@ namespace Panels
             characterPanel.OnDeath -= () => TestRebirth().Forget();
             characterPanel.OnDeath += () => TestRebirth().Forget();
 
-            _inGameStatus.Velocity = 1f;
+            _inGameStatus.InitVelocity();
             StartCoroutine(FasterFlow());
         }
     }

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 2119467879679701608}
   - component: {fileID: 3069673964752327034}
   - component: {fileID: 6201442059074707945}
-  - component: {fileID: 6183261499491649616}
-  m_Layer: 10
+  - component: {fileID: 6700151436442839713}
+  m_Layer: 8
   m_Name: tree_small
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -29,8 +29,8 @@ Transform:
   m_GameObject: {fileID: 7847051269397895179}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.6, z: 1}
-  m_LocalScale: {x: 2, y: 1.5, z: 1.5}
+  m_LocalPosition: {x: 0, y: 0, z: 1}
+  m_LocalScale: {x: 2.8, y: 1.2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3653686836253215370}
@@ -125,17 +125,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 1.8}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
+    pivot: {x: 0.5, y: 0}
     oldSize: {x: 1.89, y: 4.98}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 1.7, y: 4.9}
+  m_Size: {x: 1, y: 3.6}
   m_EdgeRadius: 0
 --- !u!95 &6201442059074707945
 Animator:
@@ -159,7 +159,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &6183261499491649616
+--- !u!114 &6700151436442839713
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -168,9 +168,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7847051269397895179}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ecb8fe19611b44869ad1841353928837, type: 3}
+  m_Script: {fileID: 11500000, guid: fd82515e80ac425ab86b477c6a430579, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Width: 1
+  Height: 1
 --- !u!1 &8788322968917276681
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,7 +184,7 @@ GameObject:
   - component: {fileID: 3653686836253215370}
   - component: {fileID: 139895014400940481}
   - component: {fileID: 2959961160839748556}
-  m_Layer: 10
+  m_Layer: 8
   m_Name: broken_particle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -198,7 +200,7 @@ Transform:
   m_GameObject: {fileID: 8788322968917276681}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.5, z: 0}
+  m_LocalPosition: {x: 0, y: 2, z: 0}
   m_LocalScale: {x: 0.75, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -298,7 +300,7 @@ ParticleSystem:
   emitterVelocityMode: 1
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
@@ -364,7 +366,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.8
+      scalar: 1
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -417,7 +419,7 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 15
+      scalar: 35
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -535,8 +537,8 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 2
-      minScalar: 0.5
+      scalar: 3
+      minScalar: 1
       maxCurve:
         serializedVersion: 2
         m_Curve:
