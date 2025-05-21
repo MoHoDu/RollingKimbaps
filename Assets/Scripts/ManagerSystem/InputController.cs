@@ -43,7 +43,7 @@ namespace ManagerSystem
 
         public void OnLog(InputValue context)
         {
-            Managers.InGame.DebugPraps();
+            // Managers.InGame.DebugPraps();
         }
     }
 }
