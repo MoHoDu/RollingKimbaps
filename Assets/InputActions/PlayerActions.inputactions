@@ -13,6 +13,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Log",
+                    "type": "Button",
+                    "id": "32619c27-3af7-418f-aa59-eb1dd3a63c2b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -46,6 +55,17 @@
                     "processors": "",
                     "groups": ";Mobile",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05e37b33-e083-44bb-96f7-9a183de5569e",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Log",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

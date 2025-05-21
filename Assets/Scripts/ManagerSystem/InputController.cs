@@ -40,5 +40,10 @@ namespace ManagerSystem
                 OnJumped?.Invoke();
             }
         }
+
+        public void OnLog(InputValue context)
+        {
+            Managers.InGame.DebugPraps();
+        }
     }
 }
