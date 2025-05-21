@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using Attributes;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using ManagerSystem;
 using Panels.Base;
@@ -21,8 +22,9 @@ namespace Panels
         private InGameStatus _inGameStatus;
         
         private bool _isGrounded = false;
-        private bool _inputJumped = false;
+        private int _inputJumped = 0;
         private bool _isDead = true;
+        private readonly int _maxJumped = 2;
 
         [SerializeField] private float _maxRotationSpeed = 360f; 
         [SerializeField] private float _groundCheckDistance = 0.05f;
@@ -43,30 +45,38 @@ namespace Panels
         public void Setup(InGameStatus inGameStatus)
         {
             _inGameStatus = inGameStatus;
-
-            Rebirth();
+            Rebirth(false);
         }
 
-        public void Rebirth()
+        public void Rebirth(bool setRebirthValue = true)
         {
             // 위치 초기화
             transform.localPosition = Vector3.zero;
+            transform.DOLocalMoveZ(0f, 0);
             
             // 리지드바디 비활성화 
             _rigidbody2D.linearVelocity = Vector2.zero;
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
             _rigidbody2D.simulated = false;
             
+            // 애니메이션 value 세팅 
+            if (setRebirthValue) _animator.SetTrigger("rebirth");
+            
             // 깜빡이는 애니메이션 시작
-            _animator.SetTrigger("Rebirth");
             Color baseColor = bodyRenderer.color;
             bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(-1, LoopType.Yoyo).SetId("Blink");
             
+            // 점프 입력 초기화 
+            _inputJumped = 0;
+            
             // 점프 입력 대기 
             StartCoroutine(WaitForJumpThenRecover());
+            
+            // 죽음 상태 = false
+            _isDead = false;
         }
 
-        public void OnDied()
+        public async UniTaskVoid OnDied()
         {
             // 회전값 초기화 
             body.localRotation = Quaternion.identity;
@@ -82,13 +92,16 @@ namespace Panels
             _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
             _rigidbody2D.simulated = false;
             
+            // 애니메이션이 완료될 때까지 대기
+            await UniTask.WaitWhile(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1);
+            
             // 연결되어 있는 이벤트 실행
             OnDeath?.Invoke();
         }
 
         private IEnumerator WaitForJumpThenRecover()
         {
-            yield return new WaitUntil(() => _inputJumped);
+            yield return new WaitUntil(() => _inputJumped > 0);
             
             // 깜빡이기 멈추고 알파 복구
             DOTween.Kill("Blink");
@@ -99,30 +112,27 @@ namespace Panels
             // 리지드바디 정상화
             _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
             _rigidbody2D.simulated = true;
-            
-            // 죽음 상태 = false
-            _isDead = false;
         }
 
         public void OnJump()
         {
-            if (_inputJumped) return;
-            _inputJumped = true;
-
-            if (_isGrounded)
-            {
-                // 속도를 제겋해서 점프 일관성 유지 
-                Vector2 velocity = _rigidbody2D.linearVelocity;
-                velocity.y = 0f;
-                _rigidbody2D.linearVelocity = velocity;
-                
-                // 점프력 적용 
-                _rigidbody2D.AddForce(new Vector2(0f, _jumpForce), ForceMode2D.Impulse);
-                
-                // 애니메이션 재생 
-                _isGrounded = false;
-                _animator.SetTrigger("onJump");
-            }
+            if (_isDead || _inputJumped >= _maxJumped) return;
+            _inputJumped++;
+            
+            // 애니메이션 방향이 이상해지지 않도록 로테이션 고정
+            body.localRotation = Quaternion.identity;
+            
+            // 속도를 제겋해서 점프 일관성 유지 
+            Vector2 velocity = _rigidbody2D.linearVelocity;
+            velocity.y = 0f;
+            _rigidbody2D.linearVelocity = velocity;
+            
+            // 점프력 적용 
+            _rigidbody2D.AddForce(new Vector2(0f, _jumpForce), ForceMode2D.Impulse);
+            
+            // 애니메이션 재생 
+            SetGrounded(false);
+            _animator.SetTrigger("onJump");
         }
 
         private void Rolling()
@@ -130,6 +140,7 @@ namespace Panels
             if (!_isGrounded || _isDead) return;
             
             float velocity = _inGameStatus.Velocity;
+            if (velocity == 0) return;
             
             // 회전 속도 계산
             float rotationSpeed = Mathf.Clamp(velocity * _maxRotationSpeed, 0f, _maxRotationSpeed);
@@ -147,10 +158,10 @@ namespace Panels
                     if (contact.otherCollider == bodyCollider && contact.normal.y > 0.5f)
                     {
                         // Debug.Log("🟢 바닥에 닿았어요!");
-                        _isGrounded = true;
+                        SetGrounded(true);
                 
                         // 땅에 닿으면 점프 상태 취소 
-                        if (_inputJumped) _inputJumped = false;
+                        if (_inputJumped > 0) _inputJumped = 0;
                     }
 
                     // 왼쪽 벽 판정
@@ -158,7 +169,7 @@ namespace Panels
                     {
                         // Debug.Log("🟡 왼쪽 벽에 닿았어요!");
                         // 왼쪽 벽 충돌 처리
-                        OnDied();
+                        OnDied().Forget();
                     }
 
                     // 오른쪽 벽 판정
@@ -166,28 +177,29 @@ namespace Panels
                     {
                         // Debug.Log("🔵 오른쪽 벽에 닿았어요!");
                         // 오른쪽 벽 충돌 처리
-                        OnDied();
+                        OnDied().Forget();
                     }
                 }
             }
             else
             {
-                _isGrounded = false;
+                SetGrounded(false);
             }
-            
-            // 땅에 붙어있는지 애니메이터 변수로 적용 
-            _animator.SetBool("isGround", _isGrounded);
         }
 
         private void OnCollisionExit2D(Collision2D collision)
         {
             if (IsGroundCollision(collision))
             {
-                _isGrounded = false;
-                
-                // 땅에 붙어있는지 애니메이터 변수로 적용 
-                _animator.SetBool("isGround", _isGrounded);
+                SetGrounded(false);
             }
+        }
+        
+        private void SetGrounded(bool isGrounded)
+        {
+            _isGrounded = isGrounded;
+            // 땅에 붙어있는지 애니메이터 변수로 적용 
+            _animator.SetBool("isGround", _isGrounded);
         }
 
         private bool IsGroundCollision(Collision2D collision)
