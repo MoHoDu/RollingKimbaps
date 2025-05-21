@@ -119,5 +119,10 @@ namespace Panels
             
             return tileCount;
         }
+
+        private void OnDestroy()
+        {
+            if (_coroutine != null) StopCoroutine(_coroutine);
+        }
     }
 }

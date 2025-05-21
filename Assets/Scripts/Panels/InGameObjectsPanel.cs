@@ -9,6 +9,8 @@ namespace Panels
     public class InGameObjectsPanel : BindUI, IFlowPanel
     {
         [Bind("Grounds")] Transform _groundsPanelTr;
+        [Bind("Grounds")] GroundsPanel _groundsPanel;
+        [Bind("Obstacles")] Transform _obstaclesPanelTr;
         
         private readonly float _flowSpeed = 7f;
         private InGameStatus _inGameStatus;
