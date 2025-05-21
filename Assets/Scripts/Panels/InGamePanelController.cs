@@ -17,8 +17,8 @@ namespace Panels
         private List<IFlowPanel> _flowPanels = new List<IFlowPanel>();
         private List<Coroutine> _flowCoroutines =  new List<Coroutine>();
         [SerializeField] private InGameStatus _inGameStatus;
-        [SerializeField] private float _fastSpeed = 1.2f;
-        [SerializeField] private float _maxSpeed = 20f;
+        private float _fastSpeed = 8f;
+        private float _maxSpeed = 15f;
 
         protected override void Initialize()
         {

@@ -1140,8 +1140,6 @@ MonoBehaviour:
     Life: 0
     Velocity: 0
     CollectedIngredients: []
-  _fastSpeed: 15
-  _maxSpeed: 15
 --- !u!1 &857675580
 GameObject:
   m_ObjectHideFlags: 0
@@ -2353,10 +2351,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 791637917}
     m_Modifications:
-    - target: {fileID: 1241392734349312018, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
-      propertyPath: m_GravityScale
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 3823144194012855647, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2400,14 +2394,6 @@ PrefabInstance:
     - target: {fileID: 8877293528964763768, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
       propertyPath: m_Name
       value: Kimbap
-      objectReference: {fileID: 0}
-    - target: {fileID: 9127959337274368349, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
-      propertyPath: _jumpForce
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 9127959337274368349, guid: 22592f00b3a3c4ff9b48b3da5ded3bbf, type: 3}
-      propertyPath: _addedGravityForce
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

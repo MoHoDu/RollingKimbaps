@@ -29,10 +29,10 @@ namespace Panels
         private float normalGravity;
         private float addedGravity;
 
-        [SerializeField] private float _maxRotationSpeed = 360f; 
-        [SerializeField] private float _groundCheckDistance = 0.05f;
-        [SerializeField] private float _jumpForce = 20f;
-        [SerializeField] private float _addedGravityForce = 1f;
+        private float _maxRotationSpeed = 360f; 
+        private float _groundCheckDistance = 0.05f;
+        private float _jumpForce = 25f;
+        private float _addedGravityForce = 2f;
         
         private LayerMask _groundLayer;
         private LayerMask _obstacleLayer;

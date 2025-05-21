@@ -174,7 +174,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 5
   m_Material: {fileID: 6200000, guid: f0834f7600b4046f0a2170677edacb9b, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -222,5 +222,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxRotationSpeed: 360
   _groundCheckDistance: 0.05
-  _jumpForce: 20
-  _addedGravityForce: 1
+  _jumpForce: 25
+  _addedGravityForce: 2
