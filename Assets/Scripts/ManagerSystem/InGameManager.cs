@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using EnumFiles;
 using Panels;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace ManagerSystem
 {
@@ -16,16 +17,22 @@ namespace ManagerSystem
         public int Score;
         public int Life;
         public float Velocity;
+        public float addedSpeed;
+        public float flowSpeed;
         public List<IngredientData> CollectedIngredients = new();
 
+        private readonly float _maxSpeed = 8f;
+        
         public void ClearData()
         {
             IsPlaying = false;
             IsPaused = false;
             
             Score = 0;
-            Life = 0;
+            Life = 5;
             Velocity = 0;
+            addedSpeed = 0.02f;
+            flowSpeed = 8f;
             CollectedIngredients.Clear();
         }
 
@@ -37,10 +44,23 @@ namespace ManagerSystem
             InitVelocity();
         }
 
+        public void StopVelocity()
+        {
+            Velocity = 0;
+        }
+
         public void InitVelocity()
         {
             Velocity = 2f;
         }
+
+        public void AddVelocity()
+        {
+            Velocity += addedSpeed;
+            if (Velocity > _maxSpeed) Velocity = _maxSpeed;
+        }
+        
+        public float GetFlowSpeed() => Velocity * flowSpeed;
 
         public void PauseGame()
         {

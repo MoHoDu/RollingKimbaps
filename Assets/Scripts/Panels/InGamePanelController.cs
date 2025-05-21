@@ -17,8 +17,6 @@ namespace Panels
         private List<IFlowPanel> _flowPanels = new List<IFlowPanel>();
         private List<Coroutine> _flowCoroutines =  new List<Coroutine>();
         [SerializeField] private InGameStatus _inGameStatus;
-        private float _fastSpeed = 8f;
-        private float _maxSpeed = 15f;
 
         protected override void Initialize()
         {
@@ -34,9 +32,9 @@ namespace Panels
 
         private async UniTaskVoid TestRebirth()
         {
-            _inGameStatus.Velocity = 0;
+            _inGameStatus.StopVelocity();
             
-            await UniTask.WaitForSeconds(3);
+            await UniTask.WaitForSeconds(2);
             characterPanel?.Rebirth();
             
             _inGameStatus.InitVelocity();
@@ -47,9 +45,7 @@ namespace Panels
         {
             do
             {
-                _inGameStatus.Velocity += _fastSpeed * Time.deltaTime;
-                if (_inGameStatus.Velocity > _maxSpeed)
-                    _inGameStatus.Velocity = _maxSpeed;
+                _inGameStatus.AddVelocity();
                 yield return new WaitForSeconds(1);
             } while (_inGameStatus.Velocity > 0);
         }

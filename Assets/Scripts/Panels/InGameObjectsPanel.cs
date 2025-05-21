@@ -12,7 +12,7 @@ namespace Panels
         [Bind("Grounds")] GroundsPanel _groundsPanel;
         [Bind("Obstacles")] Transform _obstaclesPanelTr;
         
-        private readonly float _flowSpeed = 7f;
+        private readonly float _flowSpeed = 0.03f;
         private InGameStatus _inGameStatus;
         private Coroutine _flowCoroutine;
 
@@ -32,9 +32,9 @@ namespace Panels
         {
             while (true)
             {
-                float flowSpeed = _inGameStatus.Velocity * _flowSpeed;
+                float flowSpeed = _inGameStatus.GetFlowSpeed();
                 Vector3 movement = Vector3.left * (flowSpeed * Time.deltaTime);
-                _groundsPanelTr.localPosition += movement;
+                _groundsPanelTr.position += movement;
                 
                 yield return null;
             }

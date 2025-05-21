@@ -18,8 +18,7 @@ namespace Panels
         [Bind("Trees_ForeLine")] Transform _foreLine;
 
         private Transform[] _lines => new[] { _backLine, _middleLine, _frontLine, _terrains, _foreLine };
-        private readonly float _flowSpeed = 3f;
-        private readonly float _speedGap = 1f;
+        private readonly float _speedGap = 0.8f;
         
         private InGameStatus _inGameStatus;
         private Coroutine _flowCoroutine;
@@ -40,7 +39,7 @@ namespace Panels
         {
             while (true)
             {
-                float flowSpeed = _inGameStatus.Velocity * _flowSpeed;
+                float flowSpeed = _inGameStatus.GetFlowSpeed() * 0.2f;
 
                 for (int i = 0; i < _lines.Length; i++)
                 {
