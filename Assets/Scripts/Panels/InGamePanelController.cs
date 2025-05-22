@@ -18,7 +18,7 @@ namespace Panels
         private List<Coroutine> _flowCoroutines =  new List<Coroutine>();
         [SerializeField] private InGameStatus _inGameStatus;
 
-        protected override void Initialize()
+        protected override async void Initialize()
         {
             base.Initialize();
             
@@ -27,7 +27,8 @@ namespace Panels
                 backGroundPanel, objectsPanel
             };
 
-            Managers.InGame.PlayGame(this).Forget();
+            await UniTask.WaitUntil(() => objectsPanel.IsBindingDone);
+            Managers.InGame.PlayGame(this, objectsPanel.groundsPanelTr).Forget();
         }
 
         private async UniTaskVoid TestRebirth()
@@ -38,16 +39,6 @@ namespace Panels
             characterPanel?.Rebirth();
             
             _inGameStatus.InitVelocity();
-            StartCoroutine(FasterFlow());
-        }
-
-        private IEnumerator FasterFlow()
-        {
-            do
-            {
-                _inGameStatus.AddVelocity();
-                yield return new WaitForSeconds(1);
-            } while (_inGameStatus.Velocity > 0);
         }
         
         public void Setup(InGameStatus status)
@@ -67,7 +58,6 @@ namespace Panels
             characterPanel.OnDeath += () => TestRebirth().Forget();
 
             _inGameStatus.InitVelocity();
-            StartCoroutine(FasterFlow());
         }
     }
 }

@@ -27,16 +27,34 @@ namespace Panels
         protected bool _playGame = true;
         protected Coroutine _coroutine;
         
-        protected GroundBuilder _groundBuilder = new GroundBuilder();
-        
         [Range(0, 1)] public float Hardness { get; set; } = 0f;
 
-        public void StartGame()
+        public void StartGame(InGameStatus inGameStatus)
         {
+            // 오더가 들어왔을 때에 세팅하는 함수 연결 
+            inGameStatus.SetFunction(TryPlacePerson);
+            
             // 처음 시작 지점의 평지 생성 
             AddGround(_startPointWidth);
 
             _coroutine = StartCoroutine(DestroyAndInstantiateGrounds());
+        }
+
+        public (bool isAvailable, Orderer orderer) TryPlacePerson(float posX)
+        {
+            (bool isAvailable, Orderer orderer) result = (false, null);
+            
+            List<GroundUI> availableGrounds = grounds.Where(g => g.StartPos <= posX && g.EndPos >= posX).ToList();
+
+            if (availableGrounds.Any())
+            {
+                result.isAvailable = true;
+                
+                GroundUI selectedGround = availableGrounds.First();
+                result.orderer = selectedGround.SetPerson(posX);
+            }
+            
+            return result;
         }
 
         protected void AddGround(int tileCount)
@@ -53,8 +71,8 @@ namespace Panels
                 newGroundPos = lastGroundEndPos + (Vector3.right * space);
             }
             
-            _groundBuilder.InitBuilder(transform);
-            GroundUI newGround = _groundBuilder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
+            Managers.InGame.GroundBuilder.InitBuilder(transform);
+            GroundUI newGround = Managers.InGame.GroundBuilder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
             newGround.name = _groundObjName;
             
             if (newGround != null) grounds.Add(newGround);

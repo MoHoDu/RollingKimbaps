@@ -50,6 +50,8 @@ namespace Panels
             
             normalGravity = _rigidbody2D.gravityScale;
             addedGravity = _rigidbody2D.gravityScale + _addedGravityForce;
+            
+            WaitForStart();
         }
 
         public void Setup(InGameStatus inGameStatus)
@@ -57,6 +59,23 @@ namespace Panels
             bodyCollider.enabled = false;
             _inGameStatus = inGameStatus;
             Rebirth(false);
+        }
+
+        private void WaitForStart()
+        {
+            if (_inGameStatus != null) return;
+            
+            // 위치 초기화
+            transform.localPosition = Vector3.zero;
+            transform.DOLocalMoveZ(0f, 0);
+            
+            // 리지드바디 비활성화 
+            _rigidbody2D.linearVelocity = Vector2.zero;
+            _rigidbody2D.bodyType = RigidbodyType2D.Kinematic;
+            _rigidbody2D.simulated = false;
+            
+            // 콜라이더 Off
+            bodyCollider.enabled = false;
         }
 
         public void Rebirth(bool setRebirthValue = true)

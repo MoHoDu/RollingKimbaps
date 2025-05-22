@@ -17,6 +17,11 @@ namespace GameDatas
 
             ingredientsToRecipe.Clear();
             ingredientsToRecipe = inList.ToDictionary(x => new HashSet<string>(x.requiredIngredients), x => x);
-        }   
+        }
+
+        public RecipeData Get(string id)
+        {
+            return Data.ContainsKey(id) ? Data[id] : null;
+        }
     }
 }
