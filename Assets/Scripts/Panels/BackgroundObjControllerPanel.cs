@@ -72,5 +72,10 @@ namespace Panels
                 yield return new WaitForSeconds(0.5f);
             }
         }
+        
+        protected void OnDestroy()
+        {
+            if (_coroutine != null) StopCoroutine(_coroutine);
+        }
     }
 }
