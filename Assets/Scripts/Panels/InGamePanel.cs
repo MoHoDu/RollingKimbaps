@@ -9,8 +9,23 @@ using UnityEngine;
 
 namespace Panels
 {
-    public class InGamePanelController : BindUI
+    public class InGamePanel : BindUI
     {
+        // Singleton
+        private static InGamePanel _instance;
+        public static InGamePanel Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    Debug.LogError("[Manager Error] InGamePanelController is null. Please check the inspector.");
+                }
+                
+                return _instance;
+            }
+        }
+        
         [Bind("BackGrounds")] public BackGroundPanel backGroundPanel;
         [Bind("Objects")] public InGameObjectsPanel objectsPanel;
         [Bind("Kimbap")] public Character characterPanel;
@@ -22,6 +37,8 @@ namespace Panels
         protected override async void Initialize()
         {
             base.Initialize();
+            
+            _instance = this;
             
             _flowPanels = new List<IFlowPanel>
             {

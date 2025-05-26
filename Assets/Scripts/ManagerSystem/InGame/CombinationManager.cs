@@ -15,5 +15,21 @@ namespace ManagerSystem.InGame
         // 수집한 레시피, 재료 목록
         public List<RecipeData> CollectedRecipes = new();
         public List<IngredientData> CollectedIngredients = new();
+        
+        // DI
+        private PrapManager _prapManager;
+
+        public override void Initialize(params object[] datas)
+        {
+            base.Initialize(datas);
+
+            foreach (var data in datas)
+            {
+                if (data is PrapManager prapManager)
+                {
+                    _prapManager = prapManager;
+                }
+            }
+        }
     }
 }

@@ -1135,11 +1135,10 @@ MonoBehaviour:
   backGroundPanel: {fileID: 0}
   objectsPanel: {fileID: 0}
   characterPanel: {fileID: 0}
-  _inGameStatus:
+  raceStatus:
     Score: 0
     Life: 0
     travelDistance: 0
-    Velocity: 0
     addedSpeed: 0
     flowSpeed: 0
     CollectedRecipes: []
@@ -1263,7 +1262,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6c4c602c8a442968afe4ab9ed7292e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  groundsPanelTr: {fileID: 0}
 --- !u!1001 &1016809405
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1920,6 +1918,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ca0aa1b7ad04191aebaf8847c8c378c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1783182763
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1783182764}
+  m_Layer: 0
+  m_Name: PrapCache
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1783182764
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783182763}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1797282251 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 549570014152663400, guid: aacb2818a6b2244949a4cd612ba963d5, type: 3}
@@ -2496,4 +2525,5 @@ SceneRoots:
   - {fileID: 335590752}
   - {fileID: 1362266027}
   - {fileID: 791637917}
+  - {fileID: 1783182764}
   - {fileID: 1305618935}

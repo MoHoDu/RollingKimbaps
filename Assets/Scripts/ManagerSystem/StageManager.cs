@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Panels.Base;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -132,6 +132,28 @@ namespace ManagerSystem
         {
             _onSceneChangedAll -= action;
             _onSceneChangedAll += action;
+        }
+        
+        /// <summary>
+        /// 이름을 가지고 게임오브젝트를 씬에서 찾거나 새로 생성
+        /// </summary>
+        /// <param name="name">오브젝트 명</param>
+        /// <returns>찾은 게임오브젝트</returns>
+        public GameObject FindObjectOrCreate(string name)
+        {
+            GameObject obj = GameObject.Find(name);
+            obj ??= new GameObject(name);
+            return obj;
+        }
+        
+        public SpawnLayer[] FindSpawnLayers()
+        {
+            return Managers.UI.GetComponentsFromPanel<SpawnLayer>();
+        }
+        
+        public FlowLayer[] FindFlowLayers()
+        {
+            return Managers.UI.GetComponentsFromPanel<FlowLayer>();
         }
     }
 }

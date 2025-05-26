@@ -66,7 +66,7 @@ namespace ManagerSystem
 
         private static void LinkedEvents()
         {
-            Stage.AddEventOnSceneChanged(UI.FindCanvasManager);
+            Stage.AddEventOnSceneChanged(UI.FindCanvasAndGamePanel);
         }
     }
 }
