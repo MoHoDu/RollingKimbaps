@@ -5,11 +5,11 @@ namespace ManagerSystem
 {
     public static class Managers
     {
-        // 씬매니저
+        public static StageManager Stage { get; private set; } = new();     // 씬매니저
         public static ResourceManager Resource { get; private set; }
-        // 오디오 매니저
-        // UI매니저
-        // 이펙트 매니저
+        public static AudioManager Audio { get; private set; } = new();
+        public static UIManager UI { get; private set; } = new();
+        public static EffectManager Effect { get; private set; } = new();
         public static SaveManager Save { get; private set; } = new();
         public static InGameManager InGame { get; private set; } = new();
 
@@ -20,9 +20,16 @@ namespace ManagerSystem
         public static void Initialize(ResourceManager resourceManager)
         {
             Resource = resourceManager;
+            managers.Add(Stage);
             managers.Add(Resource);
+            managers.Add(Audio);
+            managers.Add(UI);
+            managers.Add(Effect);
             managers.Add(Save);
             managers.Add(InGame);
+            
+            // 이벤트 연결
+            LinkedEvents();
 
             Debug.Log("Initialize Managers");
             foreach (var manager in managers)
@@ -55,6 +62,11 @@ namespace ManagerSystem
             {
                 manager.FixedUpdate();
             }
+        }
+
+        private static void LinkedEvents()
+        {
+            Stage.AddEventOnSceneChanged(UI.FindCanvasManager);
         }
     }
 }

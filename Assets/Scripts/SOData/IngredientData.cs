@@ -8,4 +8,7 @@ public class IngredientData : SOData
     public IngredientType type; // 예: Vegetables, Meats
     public int grade;
     public int satisfy;
+    
+    // In game values
+    public Vector3 position;
 }

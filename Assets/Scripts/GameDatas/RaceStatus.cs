@@ -8,22 +8,46 @@ using UnityEngine;
 namespace GameDatas
 {
     [Serializable]
-    public class InGameStatus
+    public class RaceStatus
     {
-        // 게임 정보
-        public bool IsPlaying { get; private set; } = false;
-        public bool IsPaused { get; private set; } = false;
+        public float Velocity { get; private set; }
+        public float Time { get; private set; }
+        public float TravelDistance => Velocity * Time;
         
-        // 플레이어 정보
-        public int Score;
-        public int Life;
-        public float travelDistance;
-        
-        // 속력에 대한 값들
-        public float Velocity;
-        public float addedSpeed;
-        public float flowSpeed;
+        // 계산을 위한 값들 
+        private readonly float _startVelocity = 1f; 
+        private readonly float _maxVelocity = 8f;
+        private readonly float _addedVelocity = 0.03f;
 
+        public void Initialize()
+        {
+            Velocity = 0f;
+            Time = 0f;
+        }
+        
+        public void InitVelocity()
+        {
+            Velocity = _startVelocity;
+        }
+        
+        public void AddVelocity()
+        {
+            Velocity += _addedVelocity;
+            if (Velocity >= _maxVelocity) Velocity = _maxVelocity;
+        }
+        
+        public void StopVelocity()
+        {
+            Velocity = 0f;
+        }
+        
+        
+        
+        
+        
+        
+        
+        
         // 수집한 레시피, 재료 목록
         public List<RecipeData> CollectedRecipes = new();
         public List<IngredientData> CollectedIngredients = new();
@@ -32,7 +56,7 @@ namespace GameDatas
         public List<(float distance, OrderData order)> OrderedRecipes = new();
         public List<IngredientData> PlacedIngredients = new();
         
-        // 계산을 위한 값들 
+        
         private readonly float _maxSpeed = 8f;
         private readonly float _distanceUnit = 1f;
         private readonly int _maxOrderCount = 6;
@@ -42,88 +66,6 @@ namespace GameDatas
         private Func<float, (bool isAvailable, Orderer orderer)> _availablePlacedPerson;
 
         public Action OnValueChanged;
-        
-        public void ClearData()
-        {
-            IsPlaying = false;
-            IsPaused = false;
-            
-            Score = 0;
-            Life = 5;
-            travelDistance = 0;
-            
-            Velocity = 0;
-            addedSpeed = 0.02f;
-            flowSpeed = 8f;
-            
-            //CollectedIngredients.Clear();
-
-            OnValueChanged = null;
-        }
-
-        public void SetFunction(Func<float, (bool isAvailable, Orderer orderer)> availablePlacedPerson)
-        {
-            _availablePlacedPerson = availablePlacedPerson;
-        }
-
-        public void StartGame(Transform groundTr)
-        {
-            IsPlaying = true;
-            IsPaused = false;
-            
-            _targetGround = groundTr;
-
-            InitVelocity();
-
-            _setStatusLoop = DOTween.Sequence()
-                .AppendInterval(1f)
-                .AppendCallback(() =>
-                {
-                    if (Life <= 0 || !IsPlaying)
-                    {
-                        _setStatusLoop?.Kill();
-                        return;
-                    }
-                    
-                    // 속도 가속화
-                    AddVelocity();
-                    
-                    // 이동 거리 계산 
-                    CalculateDistance();
-                    
-                    // 오더 추가 
-                    AddOrder();
-                })
-                .SetLoops(-1);
-        }
-
-        public void StopVelocity()
-        {
-            Velocity = 0;
-        }
-
-        public void InitVelocity()
-        {
-            Velocity = 2f;
-        }
-
-        public void AddVelocity()
-        {
-            if (IsPaused) return;
-            if (Velocity == 0) return;
-            
-            Velocity += addedSpeed;
-            if (Velocity > _maxSpeed) Velocity = _maxSpeed;
-        }
-
-        public void CalculateDistance()
-        {
-            if (IsPaused) return;
-
-            travelDistance = _targetGround.transform.position.x * _distanceUnit;
-        }
-        
-        public float GetFlowSpeed() => Velocity * flowSpeed;
 
         public void AddOrder()
         {
@@ -176,16 +118,6 @@ namespace GameDatas
             CollectedIngredients.Clear();
             
             OnValueChanged?.Invoke();
-        }
-        
-        public void PauseGame()
-        {
-            IsPaused = true;
-        }
-
-        public void ResumeGame()
-        {
-            IsPaused = false;
         }
     }
 }

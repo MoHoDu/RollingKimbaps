@@ -19,7 +19,7 @@ namespace Panels
         
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
-        private InGameStatus _inGameStatus;
+        private RaceStatus raceStatus;
         
         private bool _isGrounded = false;
         private int _inputJumped = 0;
@@ -54,16 +54,16 @@ namespace Panels
             WaitForStart();
         }
 
-        public void Setup(InGameStatus inGameStatus)
+        public void Setup(RaceStatus raceStatus)
         {
             bodyCollider.enabled = false;
-            _inGameStatus = inGameStatus;
+            this.raceStatus = raceStatus;
             Rebirth(false);
         }
 
         private void WaitForStart()
         {
-            if (_inGameStatus != null) return;
+            if (raceStatus != null) return;
             
             // 위치 초기화
             transform.localPosition = Vector3.zero;
@@ -175,7 +175,7 @@ namespace Panels
         {
             if (!_isGrounded || _isDead) return;
             
-            float velocity = _inGameStatus.Velocity;
+            float velocity = raceStatus.Velocity;
             if (velocity == 0) return;
             
             // 회전 속도 계산
@@ -186,7 +186,7 @@ namespace Panels
         
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (_inGameStatus is not { IsPlaying: true } || _inGameStatus.IsPaused) return;
+            if (raceStatus is not { IsPlaying: true } || raceStatus.IsPaused) return;
             
             if (IsObstacleCollision(collision))
             {
@@ -231,7 +231,7 @@ namespace Panels
 
         private void OnCollisionExit2D(Collision2D collision)
         {
-            if (_inGameStatus is not { IsPlaying: true } || _inGameStatus.IsPaused) return;
+            if (raceStatus is not { IsPlaying: true } || raceStatus.IsPaused) return;
             
             if (IsGroundCollision(collision))
             {
@@ -260,8 +260,8 @@ namespace Panels
         
         private void FixedUpdate()
         {
-            if (_inGameStatus == null) return;
-            if (!_inGameStatus.IsPlaying || _inGameStatus.IsPaused) return;
+            if (raceStatus == null) return;
+            if (!raceStatus.IsPlaying || raceStatus.IsPaused) return;
             
             Rolling();
 

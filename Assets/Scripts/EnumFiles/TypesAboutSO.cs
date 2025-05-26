@@ -14,6 +14,7 @@ namespace EnumFiles
         Ingredient,
         Recipe,
         Skill,
+        Prap
     }
 
     public enum IngredientType

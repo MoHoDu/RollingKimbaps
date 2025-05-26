@@ -20,7 +20,7 @@ namespace Panels
         private Transform[] _lines => new[] { _backLine, _middleLine, _frontLine, _terrains, _foreLine };
         private readonly float _speedGap = 0.8f;
         
-        private InGameStatus _inGameStatus;
+        private RaceStatus raceStatus;
         private Coroutine _flowCoroutine;
 
         protected override void Initialize()
@@ -28,9 +28,9 @@ namespace Panels
             // _flowCoroutine = StartCoroutine(Flow());
         }
 
-        public Coroutine StartFlow(InGameStatus status)
+        public Coroutine StartFlow(RaceStatus status)
         {
-            _inGameStatus = status;
+            raceStatus = status;
             _flowCoroutine = StartCoroutine(Flow());
             return _flowCoroutine;
         }
@@ -39,7 +39,7 @@ namespace Panels
         {
             while (true)
             {
-                float flowSpeed = _inGameStatus.GetFlowSpeed() * 0.2f;
+                float flowSpeed = raceStatus.GetFlowSpeed() * 0.2f;
 
                 for (int i = 0; i < _lines.Length; i++)
                 {

@@ -4,7 +4,12 @@ namespace ManagerSystem
 {
     public class BaseManager : IBaseManager
     {
-        public virtual void Initialize() { }
+        public virtual void Initialize(params object[] data) { }
+
+        public virtual void Initialize()
+        {
+            Initialize(null);
+        }
         
         public virtual void Start() { }
 
@@ -19,7 +24,12 @@ namespace ManagerSystem
 
     public class MonoBaseManager : MonoBehaviour, IBaseManager
     {
-        public virtual void Initialize() { }
+        public virtual void Initialize(params object[] data) { }
+
+        public virtual void Initialize()
+        {
+            Initialize(null);
+        }
         
         public virtual void Start() { }
 

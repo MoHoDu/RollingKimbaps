@@ -17,7 +17,7 @@ namespace Panels
         
         private List<IFlowPanel> _flowPanels = new List<IFlowPanel>();
         private List<Coroutine> _flowCoroutines =  new List<Coroutine>();
-        [SerializeField] private InGameStatus _inGameStatus;
+        [SerializeField] private RaceStatus raceStatus;
 
         protected override async void Initialize()
         {
@@ -34,31 +34,31 @@ namespace Panels
 
         private async UniTaskVoid TestRebirth()
         {
-            _inGameStatus.StopVelocity();
+            raceStatus.StopVelocity();
             
             await UniTask.WaitForSeconds(2);
             characterPanel?.Rebirth();
             
-            _inGameStatus.InitVelocity();
+            raceStatus.InitVelocity();
         }
         
-        public void Setup(InGameStatus status)
+        public void Setup(RaceStatus status)
         {
             // DI
-            _inGameStatus = status;
+            raceStatus = status;
             
             // Start Flow
             foreach (IFlowPanel flowPanel in _flowPanels)
             {
-                _flowCoroutines.Add(flowPanel.StartFlow(_inGameStatus));
+                _flowCoroutines.Add(flowPanel.StartFlow(raceStatus));
             }
             
             // Setup Character
-            characterPanel.Setup(_inGameStatus);
+            characterPanel.Setup(raceStatus);
             characterPanel.OnDeath -= () => TestRebirth().Forget();
             characterPanel.OnDeath += () => TestRebirth().Forget();
 
-            _inGameStatus.InitVelocity();
+            raceStatus.InitVelocity();
         }
     }
 }

@@ -13,13 +13,13 @@ namespace Panels
         public Transform groundsPanelTr => _groundsPanel != null ? _groundsPanel.transform : null;
         
         private readonly float _flowSpeed = 0.03f;
-        private InGameStatus _inGameStatus;
+        private RaceStatus raceStatus;
         private Coroutine _flowCoroutine;
         
-        public Coroutine StartFlow(InGameStatus status)
+        public Coroutine StartFlow(RaceStatus status)
         {
             _groundsPanel.StartGame(status);
-            _inGameStatus = status;
+            raceStatus = status;
             _flowCoroutine = StartCoroutine(Flow());
             return _flowCoroutine;
         }
@@ -28,7 +28,7 @@ namespace Panels
         {
             while (true)
             {
-                float flowSpeed = _inGameStatus.GetFlowSpeed();
+                float flowSpeed = raceStatus.GetFlowSpeed();
                 Vector3 movement = Vector3.left * (flowSpeed * Time.deltaTime);
                 groundsPanelTr.position += movement;
                 

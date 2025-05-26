@@ -295,6 +295,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -1697,7 +1710,70 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      terrain01_0: -1508401151134261647
+      terrain01_1: -4989842220477637846
+      terrain01_10: -4154957396001272886
+      terrain01_11: -7722803677302233031
+      terrain01_12: -8190640103466759731
+      terrain01_13: -8608971709361319881
+      terrain01_14: 5997774255316384219
+      terrain01_15: 677421308781669021
+      terrain01_16: -1544667739580962719
+      terrain01_17: -2829317524197740735
+      terrain01_18: 689760895172321264
+      terrain01_19: -9094529761608403688
+      terrain01_2: 6691972162677223296
+      terrain01_20: 3705402590369799931
+      terrain01_21: -4605607403253838510
+      terrain01_22: -7831445839053097213
+      terrain01_23: 8700630790685423686
+      terrain01_24: 576354959553749637
+      terrain01_25: 508012154193116416
+      terrain01_26: 176203326790981970
+      terrain01_27: -5022516273864559302
+      terrain01_28: 1810568533931503996
+      terrain01_29: 8522167163310211985
+      terrain01_3: -988609938048563190
+      terrain01_30: 5762508282354486602
+      terrain01_31: 1562425113612735268
+      terrain01_32: 5754293015416263671
+      terrain01_33: -7237861506985256959
+      terrain01_34: -4235900404020425187
+      terrain01_35: -2374177194021012160
+      terrain01_36: -1765843263672980168
+      terrain01_37: -3635206853314336233
+      terrain01_38: 524196447302692766
+      terrain01_39: 3351801450899278079
+      terrain01_4: 7268049620242841227
+      terrain01_40: -8792396478990466405
+      terrain01_41: 5958211841904755064
+      terrain01_42: -7711626026217272603
+      terrain01_43: -691531750568472974
+      terrain01_44: 6909172140871592915
+      terrain01_45: -8854438544351907352
+      terrain01_46: 8650378540920599180
+      terrain01_47: 440408874263012055
+      terrain01_48: 4100169590749128338
+      terrain01_49: -7224406816306354275
+      terrain01_5: -2595543380091541461
+      terrain01_50: 8265932136303111402
+      terrain01_51: -7430750010399331501
+      terrain01_52: 139461172057051326
+      terrain01_53: 9045136801149629964
+      terrain01_54: -1712695109054468183
+      terrain01_55: -3469448468487010992
+      terrain01_56: -6984982908738803894
+      terrain01_57: -6888593494993985093
+      terrain01_58: 6766881129267078643
+      terrain01_59: -2025315725842786425
+      terrain01_6: 1213142833812734826
+      terrain01_60: 7098902632367702099
+      terrain01_61: -7085552872882930978
+      terrain01_62: 1952447792794803806
+      terrain01_7: 8916406035922639040
+      terrain01_8: -3368737251887785575
+      terrain01_9: -4000370962642432315
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

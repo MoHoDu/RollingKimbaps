@@ -29,10 +29,10 @@ namespace Panels
         
         [Range(0, 1)] public float Hardness { get; set; } = 0f;
 
-        public void StartGame(InGameStatus inGameStatus)
+        public void StartGame(RaceStatus raceStatus)
         {
             // 오더가 들어왔을 때에 세팅하는 함수 연결 
-            inGameStatus.SetFunction(TryPlacePerson);
+            raceStatus.SetFunction(TryPlacePerson);
             
             // 처음 시작 지점의 평지 생성 
             AddGround(_startPointWidth);

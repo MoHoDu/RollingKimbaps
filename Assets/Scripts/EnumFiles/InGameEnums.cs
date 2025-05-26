@@ -28,4 +28,15 @@ namespace EnumFiles
         PAUSE = 1,
         RESUME = 2,
     }
+
+    public enum EPrapType
+    {
+        GROUND,
+        OBSTACLE,
+        INGREDIENT,
+        BACKGROUND,
+        FOREOBJECT,
+        MIDDLEOBJECT,
+        BACKOBJECT
+    }
 }

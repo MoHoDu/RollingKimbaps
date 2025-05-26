@@ -3,28 +3,37 @@ using Cysharp.Threading.Tasks;
 using EnumFiles;
 using GameDatas;
 using JsonData;
+using ManagerSystem.InGame;
 using Panels;
 using UnityEngine;
 using Utils;
-using GameDatas;
 
 namespace ManagerSystem
 {
     public class InGameManager : BaseManager
     {
+        // 매니저 
+        public StatusManager Status { get; private set; } = new();
+        public PrapManager Prap { get; private set; } = new();
+        
+        private EGameStatus _gameStatus => Status.GameStatus;
+        
+        
+        
+        
         public GroundBuilder GroundBuilder => _groundBuilder;
         
-        private InGameStatus _inGameStatus = new InGameStatus();
-        private InputController _inputController;
+        private RaceStatus raceStatus = new RaceStatus();
+        private InputManager inputManager;
 
         private InGamePanelController _inGamePanel; 
         private GroundBuilder _groundBuilder = new GroundBuilder();
 
-        public void SetInputController(InputController inputController)
+        public void SetInputController(InputManager inputManager)
         {
-            _inputController = inputController;
-            _inputController?.Setup(_inGameStatus);
-            _inputController?.InitSettings();
+            this.inputManager = inputManager;
+            this.inputManager?.Setup(raceStatus);
+            this.inputManager?.Initialize();
         }
 
         public void AddEventOnInput(EInputType inType, Action action)
@@ -32,16 +41,16 @@ namespace ManagerSystem
             switch (inType)
             {
                 case EInputType.JUMP:
-                    _inputController.OnJumped -= action;
-                    _inputController.OnJumped += action;
+                    inputManager.OnJumped -= action;
+                    inputManager.OnJumped += action;
                     break;
                 case EInputType.PAUSE:
-                    _inputController.OnPause -= action;
-                    _inputController.OnPause += action;
+                    inputManager.OnPause -= action;
+                    inputManager.OnPause += action;
                     break;
                 case EInputType.RESUME:
-                    _inputController.OnResume -= action;
-                    _inputController.OnResume += action;
+                    inputManager.OnResume -= action;
+                    inputManager.OnResume += action;
                     break;
                 default:
                     break;
@@ -53,19 +62,19 @@ namespace ManagerSystem
         /// </summary>
         public async UniTaskVoid PlayGame(InGamePanelController controller, Transform groundTr)
         {
-            await UniTask.WaitUntil(() => _inputController != null);
+            await UniTask.WaitUntil(() => inputManager != null);
             
             // 초기화 
-            _inGameStatus.ClearData();
-            _inputController?.InitSettings();
+            raceStatus.ClearData();
+            inputManager?.Initialize();
             
             _inGamePanel = controller;
-            _inGamePanel.Setup(_inGameStatus);
+            _inGamePanel.Setup(raceStatus);
             
             // key settings
             AddEventOnInput(EInputType.JUMP, _inGamePanel.characterPanel.OnJump);
             
-            _inGameStatus.StartGame(groundTr);
+            raceStatus.StartGame(groundTr);
         }
 
         public void SetData(SaveData saveData)
@@ -74,7 +83,18 @@ namespace ManagerSystem
             {
                 RecipeData recipe = DataContainer.RecipeDatas.Get(id);
 
-                if (recipe != null) _inGameStatus.CollectedRecipes.Add(recipe);
+                if (recipe != null) raceStatus.CollectedRecipes.Add(recipe);
+            }
+        }
+
+        public override void Update()
+        {
+            base.Update();
+            
+            // 게임 플로우
+            if (_gameStatus == EGameStatus.PLAY)
+            {
+                
             }
         }
     }

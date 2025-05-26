@@ -7,27 +7,41 @@ using UnityEngine.InputSystem;
 
 namespace ManagerSystem
 {
-    public class InputController : BindUI
+    public class InputManager : MonoBaseManager
     {
-        private InGameStatus _status;
+        private RaceStatus _status;
+        
+        private static CanvasManager instance;
+
+        public static CanvasManager Instance
+        {
+            get
+            {
+                if (instance == null)
+                {
+                    Debug.LogError("[Manager Error] InputManager is null. Please check the inspector.");
+                }
+
+                return instance;
+            }
+        }
         
         public Action OnPause;
         public Action OnResume;
         public Action OnJumped;
 
-        protected override void Initialize()
+        protected void Awake()
         {
-            base.Initialize();
-            InitSettings();
+            Initialize();
             Managers.InGame.SetInputController(this);
         }
         
-        public void Setup(InGameStatus status)
+        public void Setup(RaceStatus status)
         {
             _status = status;
         }
 
-        public void InitSettings()
+        public override void Initialize()
         {
             OnPause = null;
             OnResume = null;
