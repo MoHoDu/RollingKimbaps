@@ -1,6 +1,6 @@
 using System.Collections;
 using Attributes;
-using ManagerSystem;
+using GameDatas;
 using Panels.Base;
 using UnityEngine;
 

@@ -1,4 +1,4 @@
-using ManagerSystem;
+using GameDatas;
 using UnityEngine;
 
 namespace Panels.Base

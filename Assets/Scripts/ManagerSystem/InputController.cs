@@ -1,5 +1,6 @@
 using System;
 using Cysharp.Threading.Tasks;
+using GameDatas;
 using Panels.Base;
 using UnityEngine;
 using UnityEngine.InputSystem;

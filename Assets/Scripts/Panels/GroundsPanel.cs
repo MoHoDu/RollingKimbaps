@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameDatas;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
-using Utils;
 
 namespace Panels
 {

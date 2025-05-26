@@ -4,7 +4,7 @@ using System.Linq;
 using Attributes;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
-using ManagerSystem;
+using GameDatas;
 using Panels.Base;
 using UnityEngine;
 

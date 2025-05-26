@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Attributes;
 using Cysharp.Threading.Tasks;
+using GameDatas;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
