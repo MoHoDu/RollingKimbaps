@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using EnumFiles;
 using ManagerSystem;
 using ManagerSystem.InGame;
@@ -25,11 +26,13 @@ namespace InGame
         // 계산용 값들
         private LayerMask _groundLayer;
         private LayerMask _obstacleLayer;
+        private LayerMask _deadzoneLayer;
         private int _inputJumped = 0;
         private readonly int _maxJumped = 2;
         
         // 이벤트 
         public Action OnDeath;
+        public Action OnRevive;
 
         private void Awake()
         {
@@ -38,6 +41,7 @@ namespace InGame
             
             _groundLayer = LayerMask.GetMask("ground");
             _obstacleLayer = LayerMask.GetMask("obstacle");
+            _deadzoneLayer = LayerMask.GetMask("deadzone");
         }
 
         public override void Initialize(params object[] datas)
@@ -65,7 +69,7 @@ namespace InGame
             {
                 _inputJumped = 0;
                 character.Recover();
-                _statusManager.CharacterStatus.OnRevived();
+                _statusManager.CharacterStatus.OnPlay();
             }
             else if (_characterState == ECharacterState.NORMAL)
             {
@@ -87,13 +91,21 @@ namespace InGame
             character.OnJump();
         }
 
-        private void OnDied()
+        private async UniTaskVoid OnDied()
         {
-            // 캐릭터 애니메이션
-            character.OnDied().Forget();
+            if (_characterState is not ECharacterState.NORMAL) return;
             
             // 이벤트 실행 
             OnDeath?.Invoke();
+            
+            // 캐릭터 애니메이션
+            await character.OnDied();
+            
+            if (_statusManager.CharacterStatus.Life > 0)
+            {
+                OnRevive?.Invoke();
+                character.Rebirth();
+            }
         }
         
         private void OnCollisionEnter2D(Collision2D collision)
@@ -102,7 +114,11 @@ namespace InGame
             
             if (IsObstacleCollision(collision))
             {
-                OnDied();
+                OnDied().Forget();
+            }
+            else if (InDeadZone(collision))
+            {
+                OnDied().Forget();
             }
             else if (IsGroundCollision(collision))
             {
@@ -123,7 +139,7 @@ namespace InGame
                     {
                         // Debug.Log("🟡 왼쪽 벽에 닿았어요!");
                         // 왼쪽 벽 충돌 처리
-                        OnDied();
+                        OnDied().Forget();
                     }
 
                     // 오른쪽 벽 판정
@@ -131,7 +147,7 @@ namespace InGame
                     {
                         // Debug.Log("🔵 오른쪽 벽에 닿았어요!");
                         // 오른쪽 벽 충돌 처리
-                        OnDied();
+                        OnDied().Forget();
                     }
                 }
             }
@@ -160,6 +176,12 @@ namespace InGame
         private bool IsObstacleCollision(Collision2D collision)
         {
             return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 && 
+                   collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
+        }
+
+        private bool InDeadZone(Collision2D collision)
+        {
+            return ((1 << collision.gameObject.layer) & _deadzoneLayer) != 0 && 
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }
         

@@ -48,20 +48,20 @@ namespace ManagerSystem
 
         public void AddEvent(EInputType inputType, UnityAction action)
         {
-            UnityAction callbacks = GetCallbacks(inputType);
-            if (callbacks is not null)
+            if (OnInputCallbacks.TryGetValue(inputType, out var callbacks))
             {
-                callbacks -= action;
+                callbacks -= action; // 중복 방지
                 callbacks += action;
+                OnInputCallbacks[inputType] = callbacks;
             }
         }
         
         public void RemoveEvent(EInputType inputType, UnityAction action)
         {
-            UnityAction callbacks = GetCallbacks(inputType);
-            if (callbacks is not null)
+            if (OnInputCallbacks.TryGetValue(inputType, out var callbacks))
             {
-                callbacks -= action;
+                callbacks -= action; 
+                OnInputCallbacks[inputType] = callbacks;
             }
         }
 

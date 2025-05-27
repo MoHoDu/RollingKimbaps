@@ -88,6 +88,10 @@ namespace ManagerSystem
                 
                 // 이벤트 연결 
                 inputManager.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
+                characterHandler.OnDeath -= Status.CharacterStatus.OnDied;
+                characterHandler.OnDeath += Status.CharacterStatus.OnDied;
+                characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
+                characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
                 
                 return true;
             }
@@ -138,6 +142,11 @@ namespace ManagerSystem
         public void StopGame()
         {
             
+        }
+
+        public override void FixedUpdate()
+        {
+            characterHandler?.FixedUpdate();
         }
     }
 }

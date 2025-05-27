@@ -48,6 +48,11 @@ namespace GameDatas
             HP = 1f;
             State = ECharacterState.WAITFORREVIE;
         }
+
+        public void OnPlay()
+        {
+            State = ECharacterState.NORMAL;
+        }
         
         public void AddEventOnDeath(Action onDeath)
         {

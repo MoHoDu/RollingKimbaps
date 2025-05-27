@@ -93,7 +93,7 @@ namespace Panels
             bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(-1, LoopType.Yoyo).SetId("Blink");
         }
 
-        public async UniTaskVoid OnDied()
+        public async UniTask OnDied()
         {
             // 회전값 초기화 
             body.localRotation = Quaternion.identity;
@@ -111,6 +111,8 @@ namespace Panels
             
             // 애니메이션이 완료될 때까지 대기
             await UniTask.WaitWhile(() => _animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1);
+
+            await UniTask.WaitForSeconds(1);
         }
 
         public void Recover()
