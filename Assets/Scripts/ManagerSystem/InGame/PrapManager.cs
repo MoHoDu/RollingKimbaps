@@ -2,7 +2,6 @@
 using System.Linq;
 using EnumFiles;
 using InGame;
-using InGame.Combination;
 using Panels.Base;
 using UnityEngine;
 
@@ -36,13 +35,10 @@ namespace ManagerSystem.InGame
         {
             foreach (var data in datas)
             {
-                if (data is ResourceManager resourceManager)
+                if (data is InGameManager ingame)
                 {
-                    _resourceManager = resourceManager;
-                }
-                else if (data is StageManager stageManager)
-                {
-                    _stageManager = stageManager;
+                    _resourceManager = ingame.resourceManager;
+                    _stageManager = ingame.stageManager;
                 }
                 else if (data is SpawnLayer[] layers)
                 {

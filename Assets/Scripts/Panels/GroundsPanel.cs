@@ -5,6 +5,7 @@ using GameDatas;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
+using Utils;
 
 namespace Panels
 {
@@ -26,13 +27,15 @@ namespace Panels
 
         protected bool _playGame = true;
         protected Coroutine _coroutine;
+
+        private GroundBuilder _builder;
         
         [Range(0, 1)] public float Hardness { get; set; } = 0f;
 
         public void StartGame(RaceStatus raceStatus)
         {
             // 오더가 들어왔을 때에 세팅하는 함수 연결 
-            raceStatus.SetFunction(TryPlacePerson);
+            // raceStatus.SetFunction(TryPlacePerson);
             
             // 처음 시작 지점의 평지 생성 
             AddGround(_startPointWidth);
@@ -71,8 +74,8 @@ namespace Panels
                 newGroundPos = lastGroundEndPos + (Vector3.right * space);
             }
             
-            Managers.InGame.GroundBuilder.InitBuilder(transform);
-            GroundUI newGround = Managers.InGame.GroundBuilder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
+            _builder.InitBuilder(transform);
+            GroundUI newGround = _builder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
             newGround.name = _groundObjName;
             
             if (newGround != null) grounds.Add(newGround);

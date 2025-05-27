@@ -3,11 +3,15 @@ using UnityEngine;
 
 namespace Panels.Base
 {
-    public class FlowLayer : BindUI, IFlowPanel
+    public class FlowLayer : BindUI
     {
-        public Coroutine StartFlow(RaceStatus status)
+        [SerializeField] private float gap = 1f;
+        
+        public virtual void Flow(float tickDistance)
         {
-            return null;
+            float flowDistance = tickDistance * gap;
+            
+            transform.transform.position += Vector3.left * flowDistance * Time.deltaTime;
         }
     }
 }

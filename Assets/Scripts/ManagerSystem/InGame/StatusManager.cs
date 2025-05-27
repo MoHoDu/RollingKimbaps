@@ -1,5 +1,4 @@
-﻿using DG.Tweening;
-using GameDatas;
+﻿using GameDatas;
 
 namespace ManagerSystem.InGame
 {
@@ -19,44 +18,41 @@ namespace ManagerSystem.InGame
         public CharacterStatus CharacterStatus { get; private set; } = new CharacterStatus();
         public RaceStatus RaceStatus { get; private set; } = new RaceStatus();
         
-        // 플레이 중에 반복 실행되는 시퀀스
-        private Sequence _onPlayingSequence;
-        
-        // 계산을 위해 정해진 수치값
-        
-
         public override void Initialize()
         {
             base.Initialize();
             
             GameStatus = EGameStatus.WAIT;
+            Score = 0;
+            
+            CharacterStatus.Initialize();
+            RaceStatus.Initialize(1f);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            if (GameStatus is EGameStatus.PLAY)
+            {
+                // 시간을 더함
+                RaceStatus.AddTime();
+                // 속력을 높임
+                RaceStatus.AddVelocity();
+                // 이동 거리 계산
+                RaceStatus.AddDistance();
+            }
         }
 
         #region Set Game Status
-        public void OnStartGame()
+        public void OnStartGame(float tickTime = 1f)
         {
-            if ( GameStatus == EGameStatus.WAIT)
-                GameStatus = EGameStatus.PLAY;
-
-            if (_onPlayingSequence is not null)
+            if (GameStatus == EGameStatus.WAIT)
             {
-                _onPlayingSequence?.Kill();
+                GameStatus = EGameStatus.PLAY;
+                this.CharacterStatus.Initialize();
+                this.RaceStatus.Initialize(tickTime);
             }
-            
-            _onPlayingSequence = DOTween.Sequence()
-                .AppendInterval(1f)
-                .AppendCallback(() =>
-                {
-                    if (CharacterStatus.Life <= 0 || GameStatus == EGameStatus.RESULT)
-                    {
-                        _onPlayingSequence?.Kill();
-                        return;
-                    }
-                    
-                    // 속도 가속화
-                    RaceStatus.AddVelocity();
-                })
-                .SetLoops(-1);
         }
 
         public void OnPauseGame()

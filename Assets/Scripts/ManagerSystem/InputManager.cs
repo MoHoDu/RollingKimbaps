@@ -1,19 +1,17 @@
 using System;
-using Cysharp.Threading.Tasks;
-using GameDatas;
-using Panels.Base;
+using System.Collections.Generic;
+using EnumFiles;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace ManagerSystem
 {
     public class InputManager : MonoBaseManager
     {
-        private RaceStatus _status;
-        
-        private static CanvasManager instance;
+        private static InputManager instance;
 
-        public static CanvasManager Instance
+        public static InputManager Instance
         {
             get
             {
@@ -26,39 +24,87 @@ namespace ManagerSystem
             }
         }
         
-        public Action OnPause;
-        public Action OnResume;
-        public Action OnJumped;
+        // input 시의 이벤트 저장 
+        public Dictionary<EInputType, UnityAction> OnInputCallbacks = new();
 
+        // current input info
+        private InputValue _currentInput;
+        
         protected void Awake()
         {
+            instance = this;
+            
             Initialize();
-            Managers.InGame.SetInputController(this);
-        }
-        
-        public void Setup(RaceStatus status)
-        {
-            _status = status;
         }
 
         public override void Initialize()
         {
-            OnPause = null;
-            OnResume = null;
-            OnJumped = null;
+            OnInputCallbacks.Clear();
+            foreach (EInputType inputType in Enum.GetValues(typeof(EInputType)))
+            {
+                OnInputCallbacks.TryAdd(inputType, new UnityAction(() => OnInputDefault(inputType)));
+            }
+        }
+
+        public void AddEvent(EInputType inputType, UnityAction action)
+        {
+            UnityAction callbacks = GetCallbacks(inputType);
+            if (callbacks is not null)
+            {
+                callbacks -= action;
+                callbacks += action;
+            }
+        }
+        
+        public void RemoveEvent(EInputType inputType, UnityAction action)
+        {
+            UnityAction callbacks = GetCallbacks(inputType);
+            if (callbacks is not null)
+            {
+                callbacks -= action;
+            }
+        }
+
+        private UnityAction GetCallbacks(EInputType inputType)
+        {
+            return OnInputCallbacks?.GetValueOrDefault(inputType, null);
         }
 
         public void OnJump(InputValue context)
         {
-            if (_status != null && _status.IsPlaying && !_status.IsPaused)
-            {
-                OnJumped?.Invoke();
-            }
+            GetCallbacks(EInputType.JUMP)?.Invoke();
         }
 
+        public void OnSubmit(InputValue context)
+        {
+            GetCallbacks(EInputType.SUBMIT)?.Invoke();
+        }
+
+        public void OnPause(InputValue context)
+        {
+            GetCallbacks(EInputType.PAUSE)?.Invoke();
+        }
+
+        public void OnResume(InputValue context)
+        {
+            GetCallbacks(EInputType.RESUME)?.Invoke();
+        }
+        
         public void OnLog(InputValue context)
         {
             // Managers.InGame.DebugPraps();
+        }
+
+        private void OnInputDefault(EInputType inputType)
+        {
+            #if UNITY_EDITOR
+            Debug.Log($"[Info] Get input: {inputType.ToString()}");
+            #endif
+        }
+
+        public override void OnDestroy()
+        {
+            OnInputCallbacks.Clear();
         }
     }
 }

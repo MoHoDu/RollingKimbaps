@@ -1,4 +1,5 @@
 ﻿using System;
+using EnumFiles;
 
 namespace GameDatas
 {
@@ -7,6 +8,7 @@ namespace GameDatas
     {
         public int Life { get; private set; }  = 5;
         public float HP { get; private set; } = 1f;
+        public ECharacterState State { get; private set; } = ECharacterState.WAITFORREVIE;
         
         private Action _onDeath;
         
@@ -34,10 +36,17 @@ namespace GameDatas
         public void OnDied()
         {
             Life--;
+            State = ECharacterState.DIED;
             if (Life <= 0)
             {
                 _onDeath?.Invoke();
             }
+        }
+
+        public void OnRevived()
+        {
+            HP = 1f;
+            State = ECharacterState.WAITFORREVIE;
         }
         
         public void AddEventOnDeath(Action onDeath)

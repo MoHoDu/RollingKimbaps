@@ -1,5 +1,6 @@
 using Cysharp.Threading.Tasks;
 using ManagerSystem;
+using Panels;
 using UnityEngine;
 
 namespace Utils
@@ -7,17 +8,17 @@ namespace Utils
     [RequireComponent(typeof(GameManager))]
     public class TestGame : MonoBehaviour
     {
-        [SerializeField] private GameObject gamePanel;
-        
         private void Start()
         {
-            PlayGames().Forget();
+            DataContainer.LoadDataFromSO(null, () => PlayGames().Forget()).Forget();
         }
 
         private async UniTaskVoid PlayGames()
         {
             await UniTask.WaitUntil(() => Managers.DoneInitialized);
-            gamePanel.SetActive(true);
+            // await UniTask.WaitUntil(() => CanvasManager.Instance != null && InGamePanel.Instance != null);
+            
+            Managers.UI.FindCanvasAndGamePanel();
         }
     }
 }

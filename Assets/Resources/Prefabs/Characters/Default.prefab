@@ -136,8 +136,10 @@ GameObject:
   - component: {fileID: 1241392734349312018}
   - component: {fileID: 5741256539428511657}
   - component: {fileID: 9127959337274368349}
+  - component: {fileID: 5103013501810396535}
+  - component: {fileID: 8588199745160149965}
   m_Layer: 9
-  m_Name: Kimbap
+  m_Name: Default
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +222,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a1e3460ae0e4bc1ae7bb1557a8d14fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxRotationSpeed: 360
-  _groundCheckDistance: 0.05
-  _jumpForce: 25
-  _addedGravityForce: 2
+  IsGrounded: 0
+--- !u!114 &5103013501810396535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8877293528964763768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 102d7f68492c41f8b5ab1090bf6541d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prapData: {fileID: 0}
+--- !u!114 &8588199745160149965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8877293528964763768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9923f35f8a3342daab800b17fecbd444, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

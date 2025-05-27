@@ -65,8 +65,7 @@ namespace Panels
         
         private void TempSetGameScene(SaveData save)
         {
-            Managers.InGame.SetData(save);
-            SceneManager.LoadScene("GameScene");
+            Managers.Stage.LoadSceneAsync("GameScene", save);
         }
     }
 }

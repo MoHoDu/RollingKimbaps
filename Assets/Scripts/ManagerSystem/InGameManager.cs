@@ -1,13 +1,14 @@
-using System;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using UnityEngine;
+using DG.Tweening;
 using EnumFiles;
 using GameDatas;
-using JsonData;
+using InGame;
 using ManagerSystem.InGame;
-using Panels;
 using Panels.Base;
-using UnityEngine;
-using Utils;
+using Unity.VisualScripting;
+using Sequence = DG.Tweening.Sequence;
 
 namespace ManagerSystem
 {
@@ -19,122 +20,124 @@ namespace ManagerSystem
         public PrapManager Prap { get; private set; } = new();
         public CombinationManager Combination { get; private set; } = new();
         
+        private HashSet<IBaseManager> _managers = new();
+        
         private EGameStatus _gameStatus => Status.GameStatus;
+
+        // 캐릭터
+        private CharacterHandler characterHandler;
         
         // DI
-        private StageManager _stageManager;
-        private InputManager _inputManager;
-        private ResourceManager _resourceManager;
+        public StageManager stageManager { get; private set; }
+        public InputManager inputManager { get; private set; }
+        public ResourceManager resourceManager { get; private set; }
+        public UIManager uiManager { get; private set; }
+        
+        // 정해진 시간마다 반복적으로 실행할 로직
+        private Sequence _tickSequence;
+        private readonly float _tickTime = 1f;
 
         public override void Initialize(params object[] datas)
         {
             base.Initialize(datas);
 
-            foreach (var data in datas)
-            {
-                if (data is StageManager stageManager)
-                {
-                    _stageManager = stageManager;
-                }
-                else if (data is InputManager inputManager)
-                {
-                    _inputManager = inputManager;
-                }
-                else if (data is ResourceManager resourceManager)
-                {
-                    _resourceManager = resourceManager;
-                }
-            }
+            stageManager = Managers.Stage;
+            resourceManager = Managers.Resource;
+            uiManager = Managers.UI;
+            
+            stageManager.AddEventAfterSceneOpened("GameScene", (_) => InitManagers());
+        }
+
+        public async void InitManagers()
+        {
+            inputManager = InputManager.Instance;
             
             Status.Initialize();
 
-            FlowLayer[] flowLayers = _stageManager?.FindFlowLayers();
-            Flow.Initialize(flowLayers as object);
+            FlowLayer[] flowLayers = stageManager?.FindFlowLayers();
+            Flow.Initialize(this, flowLayers);
             
-            SpawnLayer[] spawnLayers = _stageManager?.FindSpawnLayers();
-            Prap.Initialize(_stageManager, _resourceManager, spawnLayers);
+            SpawnLayer[] spawnLayers = stageManager?.FindSpawnLayers();
+            Prap.Initialize(this, spawnLayers);
             
             Combination.Initialize(Prap);
-            
-            // 캐릭터 컨트롤러에 InputManager 주입
-        }
-        
-        
-        public GroundBuilder GroundBuilder => _groundBuilder;
-        
-        private RaceStatus raceStatus = new RaceStatus();
-        private InputManager inputManager;
 
-        private InGamePanel _inGamePanel; 
-        private GroundBuilder _groundBuilder = new GroundBuilder();
+            // 매니저 리스트에 추가
+            _managers.Add(Status);
+            _managers.Add(Flow);
+            _managers.Add(Prap);
+            _managers.Add(Combination);
 
-        public void SetInputController(InputManager inputManager)
-        {
-            this.inputManager = inputManager;
-            this.inputManager?.Setup(raceStatus);
-            this.inputManager?.Initialize();
+            await UniTask.WaitForSeconds(1);
+            OnStartGame();
         }
 
-        public void AddEventOnInput(EInputType inType, Action action)
+        private bool CreateCharacter()
         {
-            switch (inType)
+            PrapDatas? characterPraps = DataContainer.Praps.Get(EPrapType.CHARACTER);
+            if (characterPraps.HasValue)
             {
-                case EInputType.JUMP:
-                    inputManager.OnJumped -= action;
-                    inputManager.OnJumped += action;
-                    break;
-                case EInputType.PAUSE:
-                    inputManager.OnPause -= action;
-                    inputManager.OnPause += action;
-                    break;
-                case EInputType.RESUME:
-                    inputManager.OnResume -= action;
-                    inputManager.OnResume += action;
-                    break;
-                default:
-                    break;
-            }
-        }
+                PrapData characterPrap = characterPraps.Value.GetFirstOrNull();
+                if (characterPrap is null) return false;
 
-        /// <summary>
-        /// 게임씬으로 변경된 이후에 호출해주세요.
-        /// </summary>
-        public async UniTaskVoid PlayGame(InGamePanel controller, Transform groundTr)
-        {
-            await UniTask.WaitUntil(() => inputManager != null);
-            
-            // 초기화 
-            raceStatus.ClearData();
-            inputManager?.Initialize();
-            
-            _inGamePanel = controller;
-            _inGamePanel.Setup(raceStatus);
-            
-            // key settings
-            AddEventOnInput(EInputType.JUMP, _inGamePanel.characterPanel.OnJump);
-            
-            raceStatus.StartGame(groundTr);
-        }
-
-        public void SetData(SaveData saveData)
-        {
-            foreach (var id in saveData.recipeID)
-            {
-                RecipeData recipe = DataContainer.RecipeDatas.Get(id);
-
-                if (recipe != null) raceStatus.CollectedRecipes.Add(recipe);
-            }
-        }
-
-        public override void Update()
-        {
-            base.Update();
-            
-            // 게임 플로우
-            if (_gameStatus == EGameStatus.PLAY)
-            {
+                Prap _prap = Prap.CreatePrap(characterPrap, new Vector3(0, 0, 0), uiManager.InGamePanel.transform);
+                characterHandler = _prap.GetOrAddComponent<CharacterHandler>();
                 
+                // 초기화 
+                characterHandler.Initialize(this);
+                
+                // 이벤트 연결 
+                inputManager.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
+                
+                return true;
             }
+            
+            return false;
+        }
+
+        public override void OnStartGame()
+        {
+            if (_gameStatus is not EGameStatus.WAIT) return;
+            
+            // 캐릭터 생성 
+            if (characterHandler is null && !CreateCharacter())
+            {
+                return;
+            }
+
+            // 시작 함수 차례로 실행 
+            foreach (var manager in _managers)
+            {
+                if (manager is StatusManager state) 
+                    state.OnStartGame(_tickTime);
+                else 
+                    manager.OnStartGame();
+            }
+            this.characterHandler?.OnStartGame();
+            
+            // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
+            _tickSequence = DOTween.Sequence()
+                .AppendInterval(_tickTime)
+                .AppendCallback(() =>
+                {
+                    if (_gameStatus is EGameStatus.PLAY)
+                    {
+                        foreach (var manager in _managers)
+                        {
+                            manager.Tick();
+                        }
+                    }
+                    else if (_gameStatus is EGameStatus.WAIT or EGameStatus.RESULT)
+                    {
+                        _tickSequence?.Kill();
+                    }
+                })
+                .SetLoops(-1);
+        }
+
+        public void StopGame()
+        {
+            
         }
     }
 }

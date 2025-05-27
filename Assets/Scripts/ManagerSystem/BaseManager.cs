@@ -12,6 +12,9 @@ namespace ManagerSystem
         }
         
         public virtual void Start() { }
+        public virtual void Tick() { }
+
+        public virtual void OnStartGame() { }
 
         public virtual void Update() { }
 
@@ -32,6 +35,9 @@ namespace ManagerSystem
         }
         
         public virtual void Start() { }
+
+        public virtual void Tick() { }
+        public virtual void OnStartGame() { }
 
         public virtual void Update() { }
 
