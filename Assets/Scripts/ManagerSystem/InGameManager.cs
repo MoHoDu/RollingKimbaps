@@ -41,6 +41,8 @@ namespace ManagerSystem
         {
             base.Initialize(datas);
 
+            ScreenScaler.Initialize();
+
             stageManager = Managers.Stage;
             resourceManager = Managers.Resource;
             uiManager = Managers.UI;
