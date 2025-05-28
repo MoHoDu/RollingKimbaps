@@ -9,17 +9,28 @@ namespace ManagerSystem.InGame
     {
         // DI
         private RaceStatus _raceStatus;
-        
         private List<FlowLayer> _flowLayers;
+
+        private float _tickDuration = 1f;
 
         public override void Initialize(params object[] datas)
         {
             foreach (var data in datas)
             {
-                if (data is FlowLayer[] layers)
+                if (data is InGameManager inGameManager)
+                {
+                    _raceStatus = inGameManager.Status.RaceStatus;
+                    _tickDuration = _raceStatus.TickTime;
+                }
+                else if (data is FlowLayer[] layers)
                 {
                     _flowLayers = layers.ToList();
                 }
+            }
+
+            foreach (FlowLayer layer in _flowLayers)
+            {
+                layer.SetDuration(_tickDuration);
             }
         }
 

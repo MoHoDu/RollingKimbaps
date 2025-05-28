@@ -14,7 +14,7 @@ namespace GameDatas
         public float Velocity { get; private set; }
         public float Time { get; private set; }
         public float TravelDistance { get; private set;}    // 총 이동 거리 
-        public float TickDistance => Velocity * _tickTime;  // 틱(1초)동안의 이동 거리
+        public float TickDistance => Velocity * TickTime;  // 틱(1초)동안의 이동 거리
         
         // 계산을 위한 값들 
         private readonly float _startVelocity = 1f; 
@@ -22,7 +22,7 @@ namespace GameDatas
         private readonly float _addedVelocity = 0.03f;
         
         // DI
-        private float _tickTime = 1f;
+        public float TickTime { get; private set; } = 1f;
 
         public RaceStatus()
         {
@@ -34,7 +34,7 @@ namespace GameDatas
             InitVelocity();
             InitTime();
             InitDistance();
-            _tickTime = tickTime;
+            TickTime = tickTime;
         }
         
         public void InitVelocity()
@@ -60,7 +60,7 @@ namespace GameDatas
 
         public void AddTime()
         {
-            Time += _tickTime;
+            Time += TickTime;
         }
 
         public void InitDistance()

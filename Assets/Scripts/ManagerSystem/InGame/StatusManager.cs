@@ -35,12 +35,12 @@ namespace ManagerSystem.InGame
 
             if (GameStatus is EGameStatus.PLAY)
             {
+                // 이동 거리 계산
+                RaceStatus.AddDistance();
                 // 시간을 더함
                 RaceStatus.AddTime();
                 // 속력을 높임
                 RaceStatus.AddVelocity();
-                // 이동 거리 계산
-                RaceStatus.AddDistance();
             }
         }
 
