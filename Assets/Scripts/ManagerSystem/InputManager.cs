@@ -95,6 +95,11 @@ namespace ManagerSystem
             // Managers.InGame.DebugPraps();
         }
 
+        public void OnTest(InputValue context)
+        {
+            GetCallbacks(EInputType.TEST)?.Invoke();
+        }
+
         private void OnInputDefault(EInputType inputType)
         {
             #if UNITY_EDITOR

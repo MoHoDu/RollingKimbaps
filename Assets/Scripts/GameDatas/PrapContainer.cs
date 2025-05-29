@@ -2,6 +2,7 @@
 using System.Linq;
 using EnumFiles;
 using JetBrains.Annotations;
+using UnityEngine;
 
 namespace GameDatas
 {
@@ -28,6 +29,15 @@ namespace GameDatas
         {
             if (DataList is not null && DataList.Count > 0)
                 return DataList.FirstOrDefault();
+            
+            return null;
+        }
+        
+        [CanBeNull]
+        public PrapData GetRandomOrNull()
+        {
+            if (DataList is not null && DataList.Count > 0)
+                return DataList[Random.Range(0, DataList.Count)];
             
             return null;
         }

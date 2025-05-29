@@ -3,13 +3,14 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using EnumFiles;
 using GameDatas;
+using InGame;
 using Panels.Base;
 using UnityEngine;
 
 namespace Panels
 {
     [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
-    public class Character : BindUI
+    public class Character : Prap
     {
         // 컴포넌트
         [Bind("Body")] Transform body;
@@ -187,6 +188,11 @@ namespace Panels
             float rotationSpeed = Mathf.Clamp(velocity * _maxRotationSpeed, 0f, _maxRotationSpeed);
             // Z축으로 회전 적용
             body.Rotate(0f, 0f, rotationSpeed * -1f * Time.fixedDeltaTime);
+        }
+
+        protected override void FixedUpdate()
+        {
+            
         }
     }
 }

@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnumFiles;
+using GameDatas;
 using InGame;
+using InGame.PrapManagement;
+using Panels;
 using Panels.Base;
+using Panels.Spawn;
 using UnityEngine;
 
 namespace ManagerSystem.InGame
@@ -15,6 +19,7 @@ namespace ManagerSystem.InGame
         // 생성 시 부모 지정 안 했을 때에 디폴트 부모 객체 
         private Transform _defaultParent;
         private Dictionary<EPrapType, SpawnLayer> _spawnLayers = new();
+        private Dictionary<SpawnLayer, PrapSpawner> _autoSpawners = new();
         
         // 캐시로 저장되어 있는 프랍들
         private Dictionary<PrapData, Prap> _prapCache = new();
@@ -22,29 +27,39 @@ namespace ManagerSystem.InGame
         // DI
         private ResourceManager _resourceManager;
         private StageManager _stageManager;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-            
-            _defaultParent = _stageManager?.FindObjectOrCreate("PrapCache")?.transform; 
-            _defaultParent ??= new GameObject("PrapCache").transform;
-        }
+        private RaceStatus _raceStatus;
 
         public override void Initialize(params object[] datas)
         {
+            _defaultParent = _stageManager?.FindObjectOrCreate("PrapCache")?.transform; 
+            _defaultParent ??= new GameObject("PrapCache").transform;
+            
             foreach (var data in datas)
             {
                 if (data is InGameManager ingame)
                 {
                     _resourceManager = ingame.resourceManager;
                     _stageManager = ingame.stageManager;
+                    _raceStatus = ingame.Status.RaceStatus;
                 }
                 else if (data is SpawnLayer[] layers)
                 {
                     foreach (var layer in layers)
                     {
                         _spawnLayers.TryAdd(layer.PrapType, layer);
+                        if (layer.autoGenerate)
+                        {
+                            if (layer is GroundSpawnLayer groundSpawnLayer)
+                            {
+                                GroundSpawner groundSpawner = new GroundSpawner(this, groundSpawnLayer, _raceStatus);
+                                _autoSpawners.TryAdd(groundSpawnLayer, groundSpawner);
+                            }
+                            else
+                            {
+                                PrapSpawner spawner = new PrapSpawner(this, layer);
+                                _autoSpawners.TryAdd(layer, spawner);
+                            }
+                        }
                     }
                 }
             }
@@ -63,7 +78,8 @@ namespace ManagerSystem.InGame
             
             parent ??= _defaultParent;
 
-            if (!_prapCache.TryGetValue(data, out prap))
+            _prapCache.TryGetValue(data, out prap);
+            if (prap is null)
             {
                 prapObj = _resourceManager?.Instantiate(data.Path, _defaultParent);
                 if (prapObj is not null)
@@ -92,10 +108,14 @@ namespace ManagerSystem.InGame
             Vector3 parentPos = parent.transform.position;
             Vector3 prapPostion = new Vector3(position.x, position.y, parentPos.z);
             clone.transform.position = prapPostion;
+            clone.transform.SetParent(parent);
             
+            clonePrap.PrevPosition = prapPostion;
             clone.SetActive(true);
-            if (!_activePraps.TryAdd(prapPostion, clonePrap))
+            
+            if (clonePrap is not Character && !_activePraps.TryAdd(prapPostion, clonePrap))
             {
+                Debug.LogWarning($"[Warning] 프랍({clonePrap.name})의 위치({prapPostion})가 중복이 되어 제거합니다.");
                 DestroyPrap(clonePrap);
                 return null;
             }
@@ -105,35 +125,40 @@ namespace ManagerSystem.InGame
 
         public void DestroyPrap(Prap prapObj)
         {
-            if (_prapCache.TryGetValue(prapObj.prapData, out Prap prap))
+            if (prapObj is null || prapObj.prapData is null) return;
+            if (_prapCache.TryGetValue(prapObj.prapData, out Prap _))
             {
                 _resourceManager?.Destroy(prapObj.gameObject);
-                _prapCache.Remove(prapObj.prapData);
-                _activePraps.Remove(prap.transform.position);
+                _activePraps?.Remove(prapObj.transform.position);
             }
         }
 
-        public override void FixedUpdate()
+        public override void Tick()
         {
-            base.FixedUpdate();
+            // foreach (PrapSpawner spawner in _autoSpawners.Values)
+            // {
+            //     spawner.Tick(_raceStatus.TravelDistance);
+            // }
+        }
 
-            List<(Vector3, Prap)> movedPraps = _activePraps
-                .Where(pair => pair.Value.transform.hasChanged)
-                .Select(pair => (pair.Key, pair.Value))
-                .ToList();
-
-            if (movedPraps.Any())
+        public void FixedPrapPosition(Prap target, Vector3 prevPosition)
+        {
+            if (_activePraps.TryGetValue(prevPosition, out Prap prap) && prap == target)
             {
-                foreach ((Vector3 pos, Prap prap) pair in movedPraps)
+                _activePraps.Remove(prevPosition);
+                if (!_activePraps.TryAdd(target.transform.position, target))
                 {
-                    pair.prap.transform.hasChanged = false;
-                    _activePraps.Remove(pair.pos);
-                    if (_activePraps.TryAdd(pair.pos, pair.prap))
-                    {
-                        Debug.LogWarning($"[Warning] 프랍({pair.prap.name})의 위치({pair.pos})가 중복이 되어 제거합니다.");
-                        DestroyPrap(pair.prap);
-                    }
+                    Debug.LogWarning($"[Warning] 프랍({target.name})의 위치({target.transform.position})가 중복이 되어 제거합니다.");
+                    DestroyPrap(target);
                 }
+            }
+        }
+
+        public void TestSpawnLayer()
+        {
+            foreach (PrapSpawner spawner in _autoSpawners.Values)
+            {
+                spawner.Tick(_raceStatus.TravelDistance);
             }
         }
     }

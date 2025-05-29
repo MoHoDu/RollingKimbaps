@@ -28,6 +28,7 @@ namespace EnumFiles
         SUBMIT = 1, // 서빙
         PAUSE = 2,  // 멈춤
         RESUME = 3, // 재개
+        TEST,
     }
 
     public enum EPrapType
@@ -38,6 +39,7 @@ namespace EnumFiles
         INGREDIENT,
         BACKGROUND,
         FOREOBJECT,
+        FRONTOBJECT,
         MIDDLEOBJECT,
         BACKOBJECT
     }

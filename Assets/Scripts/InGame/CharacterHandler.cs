@@ -9,11 +9,10 @@ using UnityEngine;
 
 namespace InGame
 {
-    [RequireComponent(typeof(Prap), typeof(Character))]
+    [RequireComponent(typeof(Character))]
     public class CharacterHandler : MonoBaseManager
     {
         // 컴포넌트 
-        public Prap characterPrap { get; private set; }
         public Character character { get; private set; }
         
         // DI
@@ -36,7 +35,6 @@ namespace InGame
 
         private void Awake()
         {
-            characterPrap = GetComponent<Prap>();
             character = GetComponent<Character>();
             
             _groundLayer = LayerMask.GetMask("ground");

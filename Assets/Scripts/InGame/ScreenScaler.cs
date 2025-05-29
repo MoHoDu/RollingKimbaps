@@ -7,6 +7,7 @@ namespace InGame
         public const float MAX_WIDTH = 1920f;
         public const float MARGIN = 500f;
         public static float WIDTH;
+        public static float ONDESTROYED_POSX;
         public static Vector3 CAM_LEFTSIDE;
         public static Vector3 CAM_RIGHTSIDE;
         
@@ -16,6 +17,7 @@ namespace InGame
             CAM_LEFTSIDE = cam.ViewportToWorldPoint(new Vector3(0, 0.5f, 0));
             CAM_RIGHTSIDE = cam.ViewportToWorldPoint(new Vector3(1, 0.5f, 0));
             WIDTH = CAM_RIGHTSIDE.x - CAM_LEFTSIDE.x;
+            ONDESTROYED_POSX = CAM_RIGHTSIDE.x + WIDTH + MARGIN;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace GameDatas
         public float Time { get; private set; }
         public float TravelDistance { get; private set;}    // 총 이동 거리 
         public float TickDistance => Velocity * TickTime;  // 틱(1초)동안의 이동 거리
+        public float MaxVelocity => _maxVelocity;
         
         // 계산을 위한 값들 
         private readonly float _startVelocity = 1f; 
