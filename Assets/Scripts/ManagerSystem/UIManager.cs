@@ -12,8 +12,6 @@ namespace ManagerSystem
         {
             CanvasManager = CanvasManager.Instance;
             InGamePanel = InGamePanel.Instance;
-
-            Managers.InGame.InitManagers();
         }
 
         public T[] GetComponentsFromCanvas<T>() where T : MonoBehaviour

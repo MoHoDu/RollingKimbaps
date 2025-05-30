@@ -6,7 +6,7 @@ namespace Utils
 {
     public static class SortedListExtensions
     {
-        public static IEnumerable<KeyValuePair<float, TValue>> GetGreaterOrEqual<TValue>(
+        public static int GetGreaterOrEqualIndex<TValue>(
             this SortedList<float, TValue> list, float threshold)
         {
             float[] keysArray = list.Keys.ToArray();
@@ -14,10 +14,7 @@ namespace Utils
             if (index < 0)
                 index = ~index;
 
-            for (int i = index; i < list.Count; i++)
-            {
-                yield return new KeyValuePair<float, TValue>(list.Keys[i], list.Values[i]);
-            }
+            return index;
         }
     }
 }

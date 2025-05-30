@@ -31,7 +31,7 @@ namespace InGame.PrapManagement
             this.raceStatus = inRaceStatus;
         }
 
-        protected virtual Prap GetPrap(float travelDistance)
+        protected Prap GetPrap(float travelDistance)
         {
             EPrapType targetPrapType = _targetLayer.PrapType;
             PrapDatas? datas = DataContainer.Praps.Get(targetPrapType, travelDistance);

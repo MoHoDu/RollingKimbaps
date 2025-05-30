@@ -567,8 +567,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PrapType: 2
-  MinSpace: 3
-  MaxSpace: 10
+  MinSpace: 15
+  MaxSpace: 20
   autoGenerate: 1
   isDefaultLayer: 1
   _spawnedPosXs: []
@@ -994,7 +994,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1305618933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1464,8 +1464,8 @@ MonoBehaviour:
   isDefaultLayer: 1
   _spawnedPosXs: []
   _spawnedPrapObjs: []
-  minMiddleGroundCount: 5
-  maxMiddleGroundCount: 20
+  minMiddleGroundCount: 10
+  maxMiddleGroundCount: 30
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

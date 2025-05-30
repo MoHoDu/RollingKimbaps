@@ -18,6 +18,8 @@ namespace Panels.Base
         protected const float marginX = 150f;
         
         protected SortedList<float, Prap> _spawnedPraps = new SortedList<float, Prap>();
+        
+        // 테스트 시에 확인하려고 만들어둔 필드
         [SerializeField] private List<float> _spawnedPosXs = new List<float>();
         [SerializeField] private List<Prap> _spawnedPrapObjs = new List<Prap>();
 
@@ -37,6 +39,19 @@ namespace Panels.Base
         {
             // 화면 너비 및 우측 끝단의 위치
             Vector3 screenRightLocalPos = transform.InverseTransformPoint(ScreenScaler.CAM_RIGHTSIDE);
+            
+            // 이미 사라진 프랍 리스트 확인
+            List<float> haveToRemove = new List<float>();
+            foreach (float key in _spawnedPraps.Keys)
+            {
+                if (_spawnedPraps.TryGetValue(key, out var prap) && prap == null)
+                {
+                    if (!haveToRemove.Contains(key)) haveToRemove.Add(key);
+                }
+            }
+
+            // 없어진 프랍 데이터 제거 
+            foreach (float key in haveToRemove) _spawnedPraps.Remove(key);
             
             // 마지막 프랍 정보 가져옴
             (float endX, Prap prap) lastPrap = GetLastPrap();

@@ -3,6 +3,7 @@ using System.Linq;
 using EnumFiles;
 using GameDatas;
 using InGame;
+using InGame.PrapManagement.Praps;
 using Panels.Base;
 using UnityEngine;
 using Utils;
@@ -24,10 +25,24 @@ namespace Panels.Spawn
         {
             float localX = transform.InverseTransformPoint(new Vector3(startWorldX, 0, 0)).x;
             
-            var filterdList = _spawnedPraps.GetGreaterOrEqual(localX);
-            if (filterdList.Any())
+            int index = _spawnedPraps.GetGreaterOrEqualIndex(localX);
+            if (index < _spawnedPraps.Count)
             {
-                return filterdList.First().Value;
+                for (int i = index; i < _spawnedPraps.Count; i++)
+                {
+                    float key = _spawnedPraps.Keys[i];
+                    if (_spawnedPraps.TryGetValue(key, out Prap prap) && prap is not null)
+                    {
+                        if (prap is GroundPrap ground)
+                        {
+                            if (!ground.SetObstacles)
+                            {
+                                ground.SetObstacles = true;
+                                return ground;
+                            }
+                        }
+                    }
+                }
             }
 
             return null;

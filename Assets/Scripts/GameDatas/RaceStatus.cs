@@ -18,9 +18,9 @@ namespace GameDatas
         public float MaxVelocity => _maxVelocity;
         
         // 계산을 위한 값들 
-        private readonly float _startVelocity = 5f; 
+        private readonly float _startVelocity = 13f; 
         private readonly float _maxVelocity = 20f;
-        private readonly float _addedVelocity = 0.2f;
+        private readonly float _addedVelocity = 0.1f;
         
         // DI
         public float TickTime { get; private set; } = 1f;

@@ -12,6 +12,9 @@ namespace InGame.PrapManagement.Praps
         [Bind("Middle")] GameObject _middle;
         [Bind("Rightside")] GameObject _rightside;
         
+        // 장애물 배치 여부
+        public bool SetObstacles = false;
+        
         // 타일 수
         public int TileCount => MiddleGroundsCount + 2;
         

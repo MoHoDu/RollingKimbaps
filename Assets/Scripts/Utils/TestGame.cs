@@ -17,11 +17,12 @@ namespace Utils
         private async UniTaskVoid PlayGames()
         {
             await UniTask.WaitUntil(() => Managers.DoneInitialized);
-            // await UniTask.WaitUntil(() => CanvasManager.Instance != null && InGamePanel.Instance != null);
             
             Managers.UI.FindCanvasAndGamePanel();
             
-            await UniTask.WaitUntil(() => Managers.InGame?.inputManager != null);
+            await UniTask.WaitUntil(() => InputManager.Instance != null);
+            
+            Managers.InGame.InitManagers();
             Managers.InGame.inputManager.AddEvent(EInputType.TEST, OnTestLogic);
         }
 

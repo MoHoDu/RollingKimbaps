@@ -110,7 +110,7 @@ namespace ManagerSystem.InGame
         
         public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null)
         {
-            if (data is null) return null;
+            if (data == null) return null;
             
             Prap prap = null;
             GameObject prapObj = null;
@@ -122,10 +122,10 @@ namespace ManagerSystem.InGame
             parent ??= _defaultParent;
 
             _prapCache.TryGetValue(data, out prap);
-            if (prap is null)
+            if (prap == null)
             {
                 prapObj = _resourceManager?.Instantiate(data.Path, _defaultParent);
-                if (prapObj is not null)
+                if (prapObj != null)
                 {
                     if (!prapObj.TryGetComponent<Prap>(out prap))
                     {
@@ -142,7 +142,7 @@ namespace ManagerSystem.InGame
                 prapObj = prap.gameObject;
             }
             
-            if (prap is null) 
+            if (prap == null) 
                 return null;
             
             GameObject clone = GameObject.Instantiate(prapObj, parent);
@@ -157,20 +157,23 @@ namespace ManagerSystem.InGame
             clonePrap.PrevPosition = prapPostion;
             clone.SetActive(true);
             
-            if (clonePrap is not Character && !_activePraps.TryAdd(prapPostion, clonePrap))
+            if (clonePrap is not Character && prapPostion.y < 90)
             {
-                if (_activePraps.TryGetValue(prapPostion, out Prap origin))
+                if (!_activePraps.TryAdd(prapPostion, clonePrap))
                 {
-                    if (origin is null || origin == clonePrap)
+                    if (_activePraps.TryGetValue(prapPostion, out Prap origin))
                     {
-                        _activePraps[prapPostion] = clonePrap;
-                        return clonePrap;
+                        if (origin == null || origin == clonePrap)
+                        {
+                            _activePraps[prapPostion] = clonePrap;
+                            return clonePrap;
+                        }
                     }
+
+                    Debug.LogWarning($"[Warning] 프랍({clonePrap.name})의 위치({prapPostion})가 중복이 되어 제거합니다.");
+                    DestroyPrap(clonePrap);
+                    return null;
                 }
-                
-                Debug.LogWarning($"[Warning] 프랍({clonePrap.name})의 위치({prapPostion})가 중복이 되어 제거합니다.");
-                DestroyPrap(clonePrap);
-                return null;
             }
             
             return clonePrap;
@@ -178,7 +181,7 @@ namespace ManagerSystem.InGame
 
         public void DestroyPrap(Prap prapObj)
         {
-            if (prapObj is null || prapObj.prapData is null) return;
+            if (prapObj == null || prapObj.prapData == null) return;
             if (_prapCache.TryGetValue(prapObj.prapData, out Prap _))
             {
                 _resourceManager?.Destroy(prapObj.gameObject);
@@ -203,7 +206,7 @@ namespace ManagerSystem.InGame
                 {
                     if (_activePraps.TryGetValue(target.transform.position, out Prap origin))
                     {
-                        if (origin is null || origin == target)
+                        if (origin == null || origin == target)
                         {
                             _activePraps[target.transform.position] = target;
                             return;

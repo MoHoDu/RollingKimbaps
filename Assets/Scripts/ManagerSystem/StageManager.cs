@@ -51,7 +51,11 @@ namespace ManagerSystem
                 
                 // 이벤트 실행
                 _onSceneLoadingAll?.Invoke(progress);
-                _onSceneLoading[sceneName]?.Invoke(progress);
+                Action<float> inAction = null;
+                if (_onSceneLoading.TryGetValue(sceneName, out inAction))
+                {
+                    inAction?.Invoke(progress);
+                }
                 
                 // 로딩이 90% 완료된 상황
                 if (asyncLoad.progress >= .9f)
@@ -63,7 +67,10 @@ namespace ManagerSystem
                     
                     // 이벤트 실행
                     _onSceneLoadingAll?.Invoke(progress);
-                    _onSceneLoading[sceneName]?.Invoke(progress);
+                    if (_onSceneLoading.TryGetValue(sceneName, out inAction))
+                    {
+                        inAction?.Invoke(progress);
+                    }
                     
                     // 이벤트 실행 대기
                     await UniTask.WaitForSeconds(1);
@@ -71,9 +78,15 @@ namespace ManagerSystem
                     // 씬 활성화
                     asyncLoad.allowSceneActivation = true;
                     
+                    // 씬 로드 완료 대기
+                    await UniTask.WaitUntil(() => asyncLoad.isDone);
+                    
                     // 씬 전환 이후 이벤트 호출
                     _onSceneChangedAll?.Invoke();
-                    _onSceneOpened[sceneName]?.Invoke(data);
+                    if (_onSceneOpened.TryGetValue(sceneName, out var onLoaded))
+                    {
+                        onLoaded?.Invoke(data);
+                    }
                 }
             }
         }

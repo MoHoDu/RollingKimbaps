@@ -13,6 +13,54 @@ namespace Panels.Spawn
         [SerializeField] public int maxObstacleCount = 3;
         
         protected Prap _prevGroundPrap;
+        protected float _targetStartX = 0f;
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            _targetStartX = ScreenScaler.CAM_LEFTSIDE.x - MaxSpace;
+        }
+
+        public bool CanGenerateObstacleOnGround()
+        {
+            (float endX, Prap prap) lastPrap = GetLastPrap();
+            return _prevGroundPrap != null && lastPrap.endX + MaxSpace < _prevGroundPrap.GetRightPosLocalX(transform);
+        }
+        
+        public override float SetPrapAndReturnRightPosX(Prap newPrap, RaceStatus raceStatus)
+        {
+            // 새 프랍을 검사 후 추가
+            if (newPrap is null || _spawnedPraps.Values.Contains(newPrap)) return -1f;
+            
+            // 상태에서 필요한 값 추출 
+            float curVelocity = raceStatus.Velocity;
+            float maxVelocity = raceStatus.MaxVelocity;
+            
+            // 마지막 프랍 정보 가져옴
+            (float endX, Prap prap) lastPrap = GetLastPrap();
+            float groundLeftSideX = _prevGroundPrap.GetLeftPosLocalX(transform);
+            
+            // 마지막 프랍 위치에서 최소 ~ 최대 간격을 두어 위치 상정
+            // float currentSpace = 0f;
+            // if (lastPrap.endX < groundLeftSideX) currentSpace = GetCurrentSpacingOnFirstOfGround();
+            // else currentSpace = GetCurrentSpacing(curVelocity, maxVelocity);
+            float currentSpace = GetCurrentSpacing(curVelocity, maxVelocity);
+            
+            // 현재 세팅된 그라운드의 좌측 위치와 비교하여 더 우측인 x값을 사용
+            float minPosX = Mathf.Max(lastPrap.endX, groundLeftSideX);
+            
+            // 새 프랍의 Prap.OnSpawned()를 실행하여 생성 시 효과 및 세팅 작업을 함
+            newPrap.OnSpawned();
+            
+            // 상정된 위치대로 위치 이동 
+            // 새롭게 리스트에 추가 
+            PlaceNewPrap(newPrap, minPosX, currentSpace);
+            UpdateSpawnedData();
+            
+            // 세팅이 끝난 새 프랍의 우측 끝 x 월드 좌표를 전달
+            return newPrap.GetRightPosWorldX();
+        }
 
         protected override void PlaceNewPrap(Prap newPrap, float referenceRightX, float spacing)
         {
@@ -27,38 +75,20 @@ namespace Panels.Spawn
             float newRightX = newPrap.GetRightPosLocalX(transform);
             _spawnedPraps.TryAdd(newRightX, newPrap);
         }
-
-        public bool IsAvailableCreateOnGround(float prapWidth)
-        {
-            float endX = GetLastPrap().endX;
-            float posX = endX + MaxSpace + (prapWidth/2f);
-            float localX = _prevGroundPrap.transform.InverseTransformPoint(new Vector3(posX, 0f, 0f)).x;
-
-            bool isAvailable = localX >= 0f;
-            isAvailable = localX <= _prevGroundPrap.GetWidth();
-            
-            return isAvailable;
-        }
         
-        public int CalculateObstacleCount(float velocity, float maxVelocity, float obstacleWidth)
+        public int CalculateObstacleCount(float velocity, float maxVelocity)
         {
-            float targetStartX = 0f;
-            if (_prevGroundPrap is null)
+            if (_prevGroundPrap != null)
             {
-                // 화면 너비 및 좌측 끝단의 위치
-                Vector3 screenLeftLocalPos = transform.InverseTransformPoint(ScreenScaler.CAM_LEFTSIDE);
-                targetStartX = screenLeftLocalPos.x - MaxSpace;
+                _targetStartX = _prevGroundPrap.GetRightPosWorldX() + MinSpace;
             }
-            else
-            {
-                targetStartX = _prevGroundPrap.GetRightPosLocalX(transform) + MinSpace;
-            }
-                
-            _prevGroundPrap = groundSpawnLayer.GetGroundPrap(targetStartX);
-            if (_prevGroundPrap is null) return 0;
+
+            Prap nextGround = groundSpawnLayer.GetGroundPrap(_targetStartX);
+            _prevGroundPrap = nextGround ?? _prevGroundPrap;
+            if (nextGround == null) return 0;
             
             float width = _prevGroundPrap.GetWidth();
-            int availableCount = Mathf.FloorToInt(width / (obstacleWidth + MaxSpace));
+            int availableCount = Mathf.FloorToInt(width / MaxSpace);
             availableCount = Mathf.Min(maxObstacleCount, availableCount);
             
             velocity = velocity >= maxVelocity ? maxVelocity : velocity;
@@ -71,5 +101,11 @@ namespace Panels.Spawn
             
             return obstacleCount;
         }
+        
+        // protected float GetCurrentSpacingOnFirstOfGround()
+        // {
+        //     float randomSpace = Random.Range(0f, MaxSpace);
+        //     return randomSpace;
+        // }
     }
 }
