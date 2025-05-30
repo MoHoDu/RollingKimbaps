@@ -1,8 +1,11 @@
 using System.Collections.Generic;
+using System.Linq;
 using EnumFiles;
+using GameDatas;
 using InGame;
 using Panels.Base;
 using UnityEngine;
+using Utils;
 
 namespace Panels.Spawn
 {
@@ -17,10 +20,27 @@ namespace Panels.Spawn
             this.PrapType = EPrapType.GROUND;
         }
 
-        public override float SetPrapAndReturnRightPosX(Prap newPrap, float curVelocity, float maxVelocity)
+        public Prap GetGroundPrap(float startWorldX)
+        {
+            float localX = transform.InverseTransformPoint(new Vector3(startWorldX, 0, 0)).x;
+            
+            var filterdList = _spawnedPraps.GetGreaterOrEqual(localX);
+            if (filterdList.Any())
+            {
+                return filterdList.First().Value;
+            }
+
+            return null;
+        }
+        
+        public override float SetPrapAndReturnRightPosX(Prap newPrap, RaceStatus raceStatus)
         {
             // 새 프랍을 검사 후 추가
             if (newPrap is null || _spawnedPraps.Values.Contains(newPrap)) return -1f;
+            
+            // 상태에서 필요한 값 추출 
+            float curVelocity = raceStatus.Velocity;
+            float maxVelocity = raceStatus.MaxVelocity;
             
             // 마지막 프랍 정보 가져옴
             (float endX, Prap prap) lastPrap = GetLastPrap();

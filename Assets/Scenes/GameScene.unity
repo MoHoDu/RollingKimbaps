@@ -343,6 +343,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 378056420}
+  - component: {fileID: 378056421}
   m_Layer: 9
   m_Name: Ingredients
   m_TagString: Untagged
@@ -365,6 +366,25 @@ Transform:
   m_Children: []
   m_Father: {fileID: 949032848}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &378056421
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 378056419}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa7faf85f2e5461fb219df54a6245d92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrapType: 3
+  MinSpace: 1
+  MaxSpace: 5
+  autoGenerate: 1
+  isDefaultLayer: 1
+  _spawnedPosXs: []
+  _spawnedPrapObjs: []
 --- !u!1 &405749524
 GameObject:
   m_ObjectHideFlags: 0
@@ -502,6 +522,60 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &713206222
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 713206223}
+  - component: {fileID: 713206224}
+  m_Layer: 9
+  m_Name: Obstacles
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &713206223
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713206222}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -6, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 949032848}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &713206224
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 713206222}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a89f8f5f614c8c9ee4c8922f966360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PrapType: 2
+  MinSpace: 3
+  MaxSpace: 10
+  autoGenerate: 1
+  isDefaultLayer: 1
+  _spawnedPosXs: []
+  _spawnedPrapObjs: []
+  groundSpawnLayer: {fileID: 2102448354}
+  minObstacleCount: 0
+  maxObstacleCount: 3
 --- !u!1 &785862209
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,6 +881,7 @@ Transform:
   m_Children:
   - {fileID: 2102448352}
   - {fileID: 378056420}
+  - {fileID: 713206223}
   m_Father: {fileID: 791637917}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &949032849

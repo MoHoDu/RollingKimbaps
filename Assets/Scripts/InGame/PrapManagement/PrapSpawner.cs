@@ -31,10 +31,8 @@ namespace InGame.PrapManagement
             this.raceStatus = inRaceStatus;
         }
 
-        public async virtual UniTask<float> SpawnPrapsOnLayer(float travelDistance)
+        protected virtual Prap GetPrap(float travelDistance)
         {
-            if (_targetLayer == null) return _spawnBaseX;
-            
             EPrapType targetPrapType = _targetLayer.PrapType;
             PrapDatas? datas = DataContainer.Praps.Get(targetPrapType, travelDistance);
             if (datas.HasValue)
@@ -42,10 +40,21 @@ namespace InGame.PrapManagement
                 _targetPrapData = datas.Value.GetRandomOrNull();
             }
 
-            if (_targetPrapData == null) return _spawnBaseX;
+            if (_targetPrapData == null) return null;
 
             Prap newPrap = _prapManager?.CreatePrap(_targetPrapData, _startSpawnPos, _targetLayer.transform);
-            float newPrapRightX = _targetLayer.SetPrapAndReturnRightPosX(newPrap, raceStatus.Velocity, raceStatus.MaxVelocity);
+            
+            return newPrap;
+        }
+
+        protected virtual async UniTask<float> SpawnPrapsOnLayer(float travelDistance)
+        {
+            if (_targetLayer == null) return _spawnBaseX;
+            
+            Prap newPrap = GetPrap(travelDistance);
+            if (newPrap is null) return _spawnBaseX;
+            
+            float newPrapRightX = _targetLayer.SetPrapAndReturnRightPosX(newPrap, raceStatus);
 
             await UniTask.Yield();
             

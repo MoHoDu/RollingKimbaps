@@ -80,6 +80,10 @@ namespace ManagerSystem.InGame
                             {
                                 targetSpawner = new GroundSpawner(this, groundSpawnLayer, _raceStatus);
                             }
+                            else if (layer is ObstacleSpawnLayer obstacleSpawnLayer)
+                            {
+                                targetSpawner = new ObstacleSpawner(this, obstacleSpawnLayer, _raceStatus);
+                            }
                             else
                             {
                                 targetSpawner = new PrapSpawner(this, layer, _raceStatus);
@@ -94,13 +98,25 @@ namespace ManagerSystem.InGame
             base.Initialize(datas);
         }
 
+        public SpawnLayer GetDefaultLayer(EPrapType type)
+        {
+            if (_defaultLayers.TryGetValue(type, out SpawnLayer target))
+            {
+                return target;
+            }
+
+            return null;
+        }
+        
         public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null)
         {
+            if (data is null) return null;
+            
             Prap prap = null;
             GameObject prapObj = null;
-            if (parent is null && _defaultLayers.TryGetValue(data.Type, out SpawnLayer target))
+            if (parent is null)
             {
-                parent = target?.transform;
+                parent = GetDefaultLayer(data.Type)?.transform;
             }
             
             parent ??= _defaultParent;
@@ -143,6 +159,15 @@ namespace ManagerSystem.InGame
             
             if (clonePrap is not Character && !_activePraps.TryAdd(prapPostion, clonePrap))
             {
+                if (_activePraps.TryGetValue(prapPostion, out Prap origin))
+                {
+                    if (origin is null || origin == clonePrap)
+                    {
+                        _activePraps[prapPostion] = clonePrap;
+                        return clonePrap;
+                    }
+                }
+                
                 Debug.LogWarning($"[Warning] 프랍({clonePrap.name})의 위치({prapPostion})가 중복이 되어 제거합니다.");
                 DestroyPrap(clonePrap);
                 return null;
@@ -176,6 +201,15 @@ namespace ManagerSystem.InGame
                 _activePraps.Remove(prevPosition);
                 if (!_activePraps.TryAdd(target.transform.position, target))
                 {
+                    if (_activePraps.TryGetValue(target.transform.position, out Prap origin))
+                    {
+                        if (origin is null || origin == target)
+                        {
+                            _activePraps[target.transform.position] = target;
+                            return;
+                        }
+                    }
+                    
                     Debug.LogWarning($"[Warning] 프랍({target.name})의 위치({target.transform.position})가 중복이 되어 제거합니다.");
                     DestroyPrap(target);
                 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using EnumFiles;
+using GameDatas;
 using InGame;
 using UnityEngine;
 
@@ -49,10 +50,14 @@ namespace Panels.Base
             return false;
         }
         
-        public virtual float SetPrapAndReturnRightPosX(Prap newPrap, float curVelocity, float maxVelocity)
+        public virtual float SetPrapAndReturnRightPosX(Prap newPrap, RaceStatus raceStatus)
         {
             // 새 프랍을 검사 후 추가
             if (newPrap is null || _spawnedPraps.Values.Contains(newPrap)) return -1f;
+            
+            // 상태에서 필요한 값 추출 
+            float curVelocity = raceStatus.Velocity;
+            float maxVelocity = raceStatus.MaxVelocity;
             
             // 마지막 프랍 정보 가져옴
             (float endX, Prap prap) lastPrap = GetLastPrap();
@@ -72,7 +77,7 @@ namespace Panels.Base
             return newPrap.GetRightPosWorldX();
         }
 
-        protected void PlaceNewPrap(Prap newPrap, float referenceRightX, float spacing)
+        protected virtual void PlaceNewPrap(Prap newPrap, float referenceRightX, float spacing)
         {
             float newWidth = newPrap.GetWidth();
             float newPivotOffset = newPrap.GetPivotToRightEdgeOffsetLocalX();

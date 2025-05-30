@@ -10,8 +10,6 @@ namespace ManagerSystem.InGame
         public OrderSystem Order { get; private set; } = new();
         public IngredientPlacer IngredientPlacer { get; private set; } = new();
         
-        
-        
         // 수집한 레시피, 재료 목록
         public List<RecipeData> CollectedRecipes = new();
         public List<IngredientData> CollectedIngredients = new();
