@@ -12,6 +12,7 @@ namespace Panels.Base
         [SerializeField] public float MinSpace;
         [SerializeField] public float MaxSpace;
         [SerializeField] public bool autoGenerate = false;
+        [SerializeField] public bool isDefaultLayer = false;
         
         protected const float marginX = 150f;
         

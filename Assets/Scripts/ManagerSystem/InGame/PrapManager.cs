@@ -18,7 +18,11 @@ namespace ManagerSystem.InGame
         
         // 생성 시 부모 지정 안 했을 때에 디폴트 부모 객체 
         private Transform _defaultParent;
-        private Dictionary<EPrapType, SpawnLayer> _spawnLayers = new();
+        // 디폴트 스폰 레이어
+        private Dictionary<EPrapType, SpawnLayer> _defaultLayers = new();
+        // 모든 스폰 레이어
+        private Dictionary<EPrapType, HashSet<SpawnLayer>> _spawnLayers = new();
+        // 자동으로 생성할 필요가 있는 레이어와 담당 스포너
         private Dictionary<SpawnLayer, PrapSpawner> _autoSpawners = new();
         
         // 캐시로 저장되어 있는 프랍들
@@ -46,7 +50,29 @@ namespace ManagerSystem.InGame
                 {
                     foreach (var layer in layers)
                     {
-                        _spawnLayers.TryAdd(layer.PrapType, layer);
+                        if (layer.isDefaultLayer)
+                        {
+                            if (_defaultLayers.TryGetValue(layer.PrapType, out var _))
+                            {
+                                Debug.LogWarning($"[WARNING] Default layer {layer.PrapType} is already set.");
+                            }
+                            else
+                            {
+                                _defaultLayers.TryAdd(layer.PrapType, layer);
+                            }
+                        }
+                        
+                        if (_spawnLayers.TryGetValue(layer.PrapType, out var targetLayers))
+                        {
+                            targetLayers.Add(layer);
+                        }
+                        else
+                        {
+                            HashSet<SpawnLayer> newLayers = new();
+                            newLayers.Add(layer);
+                            _spawnLayers.TryAdd(layer.PrapType, newLayers);
+                        }
+                        
                         if (layer.autoGenerate)
                         {
                             PrapSpawner targetSpawner;
@@ -72,9 +98,9 @@ namespace ManagerSystem.InGame
         {
             Prap prap = null;
             GameObject prapObj = null;
-            if (parent is null && _spawnLayers.TryGetValue(data.Type, out SpawnLayer layer))
+            if (parent is null && _defaultLayers.TryGetValue(data.Type, out SpawnLayer target))
             {
-                parent = layer.transform;
+                parent = target?.transform;
             }
             
             parent ??= _defaultParent;
@@ -110,6 +136,7 @@ namespace ManagerSystem.InGame
             Vector3 prapPostion = new Vector3(position.x, position.y, parentPos.z);
             clone.transform.position = prapPostion;
             clone.transform.SetParent(parent);
+            clone.name = data.displayName;
             
             clonePrap.PrevPosition = prapPostion;
             clone.SetActive(true);

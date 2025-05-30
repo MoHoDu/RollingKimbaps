@@ -215,6 +215,7 @@ MonoBehaviour:
   MinSpace: 3
   MaxSpace: 6
   autoGenerate: 1
+  isDefaultLayer: 0
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!1 &335590748
@@ -674,6 +675,7 @@ MonoBehaviour:
   MinSpace: 0
   MaxSpace: 0
   autoGenerate: 0
+  isDefaultLayer: 1
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!1 &857675580
@@ -770,6 +772,7 @@ MonoBehaviour:
   MinSpace: 3
   MaxSpace: 8
   autoGenerate: 1
+  isDefaultLayer: 0
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!1 &949032847
@@ -1154,6 +1157,7 @@ MonoBehaviour:
   MinSpace: 5
   MaxSpace: 10
   autoGenerate: 1
+  isDefaultLayer: 1
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!114 &1520562134
@@ -1231,6 +1235,7 @@ MonoBehaviour:
   MinSpace: 3
   MaxSpace: 10
   autoGenerate: 1
+  isDefaultLayer: 0
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!1 &1696184265
@@ -1295,6 +1300,7 @@ MonoBehaviour:
   MinSpace: 0
   MaxSpace: 0
   autoGenerate: 1
+  isDefaultLayer: 0
   _spawnedPosXs: []
   _spawnedPrapObjs: []
 --- !u!1 &1830348936
@@ -1380,6 +1386,7 @@ MonoBehaviour:
   MinSpace: 5
   MaxSpace: 10
   autoGenerate: 1
+  isDefaultLayer: 1
   _spawnedPosXs: []
   _spawnedPrapObjs: []
   minMiddleGroundCount: 5
