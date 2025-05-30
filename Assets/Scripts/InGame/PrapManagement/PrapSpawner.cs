@@ -14,22 +14,26 @@ namespace InGame.PrapManagement
         
         protected SpawnLayer _targetLayer;
         protected PrapData _targetPrapData;
-        protected float _lastEndPosX = 0f;
-        protected bool _isSpawning = false;
 
         protected Vector3 _startSpawnPos = new Vector3(0, 100, 0);
+        protected RaceStatus raceStatus;
 
-        public PrapSpawner(PrapManager inManager, SpawnLayer targetLayer)
+        protected bool _isSpawning = false;
+        protected float _curSpawnX = 0f;
+        protected float _spawnBaseX;
+
+        public PrapSpawner(PrapManager inManager, SpawnLayer targetLayer, RaceStatus inRaceStatus)
         {
+            this._curSpawnX = ScreenScaler.CAM_LEFTSIDE.x - ScreenScaler.MARGIN;;
+            this._spawnBaseX = ScreenScaler.CAM_RIGHTSIDE.x + ScreenScaler.MARGIN;
             this._prapManager = inManager;
             this._targetLayer = targetLayer;
-            this._lastEndPosX = ScreenScaler.CAM_LEFTSIDE.x - ScreenScaler.MARGIN;
+            this.raceStatus = inRaceStatus;
         }
 
-        public async virtual UniTaskVoid SpawnPrapsOnLayer(float travelDistance)
+        public async virtual UniTask<float> SpawnPrapsOnLayer(float travelDistance)
         {
-            if (_targetLayer == null) return;
-            _isSpawning = true;
+            if (_targetLayer == null) return _spawnBaseX;
             
             EPrapType targetPrapType = _targetLayer.PrapType;
             PrapDatas? datas = DataContainer.Praps.Get(targetPrapType, travelDistance);
@@ -38,13 +42,25 @@ namespace InGame.PrapManagement
                 _targetPrapData = datas.Value.GetRandomOrNull();
             }
 
-            if (_targetPrapData == null) return;
+            if (_targetPrapData == null) return _spawnBaseX;
 
             Prap newPrap = _prapManager?.CreatePrap(_targetPrapData, _startSpawnPos, _targetLayer.transform);
-            _targetLayer.SetPrapAndReturnRightPosX(newPrap);
-            
-            await UniTask.Yield();
+            float newPrapRightX = _targetLayer.SetPrapAndReturnRightPosX(newPrap, raceStatus.Velocity, raceStatus.MaxVelocity);
 
+            await UniTask.Yield();
+            
+            return newPrapRightX;
+        }
+
+        protected async UniTaskVoid SpawnPrapsAsManyAsPossible(float travelDistance)
+        {
+            _isSpawning = true;
+            
+            do
+            { 
+                _curSpawnX = await SpawnPrapsOnLayer(travelDistance);
+            } while (_curSpawnX < _spawnBaseX && _targetLayer.CanSpawn());
+            
             _isSpawning = false;
         }
 
@@ -54,7 +70,7 @@ namespace InGame.PrapManagement
             if (_targetLayer.CanSpawn())
             {
                 _isSpawning = true;
-                SpawnPrapsOnLayer(travelDistance).Forget();
+                SpawnPrapsAsManyAsPossible(travelDistance).Forget();
             }
         }
     }

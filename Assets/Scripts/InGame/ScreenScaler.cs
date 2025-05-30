@@ -17,7 +17,7 @@ namespace InGame
             CAM_LEFTSIDE = cam.ViewportToWorldPoint(new Vector3(0, 0.5f, 0));
             CAM_RIGHTSIDE = cam.ViewportToWorldPoint(new Vector3(1, 0.5f, 0));
             WIDTH = CAM_RIGHTSIDE.x - CAM_LEFTSIDE.x;
-            ONDESTROYED_POSX = CAM_RIGHTSIDE.x + WIDTH + MARGIN;
+            ONDESTROYED_POSX = CAM_LEFTSIDE.x - WIDTH - MARGIN;
         }
     }
 }

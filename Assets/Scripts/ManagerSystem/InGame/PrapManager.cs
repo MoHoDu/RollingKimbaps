@@ -49,16 +49,17 @@ namespace ManagerSystem.InGame
                         _spawnLayers.TryAdd(layer.PrapType, layer);
                         if (layer.autoGenerate)
                         {
+                            PrapSpawner targetSpawner;
                             if (layer is GroundSpawnLayer groundSpawnLayer)
                             {
-                                GroundSpawner groundSpawner = new GroundSpawner(this, groundSpawnLayer, _raceStatus);
-                                _autoSpawners.TryAdd(groundSpawnLayer, groundSpawner);
+                                targetSpawner = new GroundSpawner(this, groundSpawnLayer, _raceStatus);
                             }
                             else
                             {
-                                PrapSpawner spawner = new PrapSpawner(this, layer);
-                                _autoSpawners.TryAdd(layer, spawner);
+                                targetSpawner = new PrapSpawner(this, layer, _raceStatus);
                             }
+                            
+                            _autoSpawners.TryAdd(layer, targetSpawner);
                         }
                     }
                 }
@@ -135,10 +136,10 @@ namespace ManagerSystem.InGame
 
         public override void Tick()
         {
-            // foreach (PrapSpawner spawner in _autoSpawners.Values)
-            // {
-            //     spawner.Tick(_raceStatus.TravelDistance);
-            // }
+            foreach (PrapSpawner spawner in _autoSpawners.Values)
+            {
+                spawner.Tick(_raceStatus.TravelDistance);
+            }
         }
 
         public void FixedPrapPosition(Prap target, Vector3 prevPosition)

@@ -11,18 +11,14 @@ namespace InGame.PrapManagement
 {
     public class GroundSpawner : PrapSpawner
     {
-        protected RaceStatus raceStatus;
-        
-        public GroundSpawner(PrapManager inManager, GroundSpawnLayer targetLayer, RaceStatus raceStatus) : base(inManager, targetLayer)
+        public GroundSpawner(PrapManager inManager, GroundSpawnLayer targetLayer, RaceStatus raceStatus) : base(inManager, targetLayer, raceStatus)
         {
-            this.raceStatus = raceStatus;
-            SpawnPrapsOnLayer(0f).Forget();
+            SpawnPrapsAsManyAsPossible(0).Forget();
         }
         
-        public async override UniTaskVoid SpawnPrapsOnLayer(float travelDistance)
+        public async override UniTask<float> SpawnPrapsOnLayer(float travelDistance)
         {
-            if (_targetLayer == null) return;
-            _isSpawning = true;
+            if (_targetLayer == null) return _spawnBaseX;
             
             EPrapType targetPrapType = _targetLayer.PrapType;
             PrapDatas? datas = DataContainer.Praps.Get(targetPrapType, travelDistance);
@@ -31,22 +27,14 @@ namespace InGame.PrapManagement
                 _targetPrapData = datas.Value.GetRandomOrNull();
             }
 
-            if (_targetPrapData == null) return;
+            if (_targetPrapData == null) return _spawnBaseX;
 
             Prap newPrap = _prapManager?.CreatePrap(_targetPrapData, _startSpawnPos, _targetLayer.transform);
-
-            if (_targetLayer is GroundSpawnLayer groundSpawnLayer)
-            {
-                groundSpawnLayer.SetPrapAndReturnRightPosX(newPrap, raceStatus.Velocity, raceStatus.MaxVelocity);
-            }
-            else
-            {
-                _targetLayer.SetPrapAndReturnRightPosX(newPrap);
-            }
+            float newPrapRightX = _targetLayer.SetPrapAndReturnRightPosX(newPrap, raceStatus.Velocity, raceStatus.MaxVelocity);
 
             await UniTask.Yield();
 
-            _isSpawning = false;
+            return newPrapRightX;
         }
     }
 }

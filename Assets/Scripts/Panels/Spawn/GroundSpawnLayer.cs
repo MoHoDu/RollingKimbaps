@@ -16,19 +16,14 @@ namespace Panels.Spawn
             base.Initialize();
             this.PrapType = EPrapType.GROUND;
         }
-        
-        public override float SetPrapAndReturnRightPosX(Prap newPrap)
-        {
-            return SetPrapAndReturnRightPosX(newPrap, 1f, 8f);
-        }
 
-        public float SetPrapAndReturnRightPosX(Prap newPrap, float curVelocity, float maxVelocity)
+        public override float SetPrapAndReturnRightPosX(Prap newPrap, float curVelocity, float maxVelocity)
         {
             // 새 프랍을 검사 후 추가
             if (newPrap is null || _spawnedPraps.Values.Contains(newPrap)) return -1f;
             
             // 마지막 프랍 정보 가져옴
-            (float startX, Prap prap) lastPrap = GetLastPrap();
+            (float endX, Prap prap) lastPrap = GetLastPrap();
             
             // 새 프랍의 Prap.OnSpawned()를 실행하여 생성 시 효과 및 세팅 작업을 함
             int tileCount = GetGroundTileCount(curVelocity, maxVelocity);
@@ -36,16 +31,14 @@ namespace Panels.Spawn
             
             // 마지막 프랍 위치에서 최소 ~ 최대 간격을 두어 위치 상정
             float currentSpace = Random.Range(MinSpace, MaxSpace);
-            float newPrapX = lastPrap.startX - newPrap.GetWidth() - currentSpace;
             
             // 상정된 위치대로 위치 이동 
-            newPrap.transform.localPosition = Vector3.right * newPrapX;
-            
-            // 새롭게 리스트에 추가 
-            _spawnedPraps.TryAdd(newPrap.GetStartPosLocalX(), newPrap);
+            // 새롭게 리스트에 추가
+            PlaceNewPrap(newPrap, lastPrap.endX, currentSpace);
+            UpdateSpawnedData();
             
             // 세팅이 끝난 새 프랍의 왼쪽 끝 x 월드 좌표를 전달
-            return newPrap.GetStartPosWorldX();
+            return newPrap.GetRightPosWorldX();
         }
 
         protected int GetGroundTileCount(float velocity, float maxVelocity)

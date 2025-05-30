@@ -41,7 +41,8 @@ namespace EnumFiles
         FOREOBJECT,
         FRONTOBJECT,
         MIDDLEOBJECT,
-        BACKOBJECT
+        BACKOBJECT,
+        BACKTERRAIN,
     }
 
     public enum ECharacterState

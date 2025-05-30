@@ -1,7 +1,4 @@
-﻿using System;
-using DG.Tweening;
-using GameDatas;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Panels.Base
 {
@@ -16,8 +13,8 @@ namespace Panels.Base
 
         protected override void Initialize()
         {
-            startPosition = transform.position;
-            targetPosition = transform.position;
+            startPosition = transform.localPosition;
+            targetPosition = transform.localPosition;
         }
 
         public void SetDuration(float timer)
@@ -31,8 +28,8 @@ namespace Panels.Base
             // 단, 다음 Tick()과 자연스럽게 연결되도록 해야 함
             
             // 이동 시작점과 목표점 계산
-            startPosition = transform.position;
-            targetPosition = startPosition + Vector3.right * (tickDistance * gap);
+            startPosition = transform.localPosition;
+            targetPosition = startPosition - Vector3.right * (tickDistance * gap);
             elapsed = 0f;
             isMoving = true;
         }
@@ -46,7 +43,7 @@ namespace Panels.Base
                 // tickDuration 대비 elapsed의 %를 0~1로 변환
                 float t = Mathf.Clamp01(elapsed / tickDuration);
                 // 실제 위치를 시작 위치와 타겟 위치의 t 비율만큼 이동
-                transform.position = Vector3.Lerp(startPosition, targetPosition, t);
+                transform.localPosition = Vector3.Lerp(startPosition, targetPosition, t);
                 if (t >= 1f)
                 {
                     isMoving = false;
