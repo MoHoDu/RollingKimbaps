@@ -65,7 +65,7 @@ namespace InGame
 
             if (_characterState == ECharacterState.WAITFORREVIE)
             {
-                _inputJumped = 0;
+                _inputJumped = 2;
                 character.Recover();
                 _statusManager.CharacterStatus.OnPlay();
             }
@@ -83,7 +83,8 @@ namespace InGame
                 return;
 
             if (isDead || _inputJumped >= _maxJumped) return;
-            if (!_isGrounded) return;
+            // 처음 점프는 반드시 땅에서만 실행 되도록 함 
+            if (_inputJumped == 0 && !_isGrounded) return;
             _inputJumped++;
             
             character.OnJump();

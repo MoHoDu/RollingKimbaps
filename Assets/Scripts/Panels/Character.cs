@@ -31,10 +31,11 @@ namespace Panels
         // 계산용 데이터들
         private float normalGravity;
         private float addedGravity;
-        private float _maxRotationSpeed = 360f; 
-        private float _groundCheckDistance = 0.05f;
-        private float _jumpForce = 25f;
-        private float _addedGravityForce = 2f;
+        private const float _rotationSpeed = 50f;
+        private const float _maxRotationSpeed = 360f; 
+        private const float _groundCheckDistance = 0.05f;
+        private const float _jumpForce = 25f;
+        private const float _addedGravityForce = 2f;
         
         protected override void Initialize()
         {
@@ -185,9 +186,10 @@ namespace Panels
             if (velocity == 0) return;
             
             // 회전 속도 계산
-            float rotationSpeed = Mathf.Clamp(velocity * _maxRotationSpeed, 0f, _maxRotationSpeed);
+            float rotationSpeed = Mathf.Clamp(velocity * _rotationSpeed, 0f, _maxRotationSpeed);
+            rotationSpeed = velocity >= 0 ? -rotationSpeed : rotationSpeed;
             // Z축으로 회전 적용
-            body.Rotate(0f, 0f, rotationSpeed * -1f * Time.fixedDeltaTime);
+            body.Rotate(0f, 0f, rotationSpeed * Time.fixedDeltaTime);
         }
 
         protected override void FixedUpdate()
