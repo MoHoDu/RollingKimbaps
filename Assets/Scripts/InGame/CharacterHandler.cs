@@ -26,6 +26,7 @@ namespace InGame
         private LayerMask _groundLayer;
         private LayerMask _obstacleLayer;
         private LayerMask _deadzoneLayer;
+        private LayerMask _ingredientLayer;
         private int _inputJumped = 0;
         private readonly int _maxJumped = 2;
         
@@ -40,6 +41,7 @@ namespace InGame
             _groundLayer = LayerMask.GetMask("ground");
             _obstacleLayer = LayerMask.GetMask("obstacle");
             _deadzoneLayer = LayerMask.GetMask("deadzone");
+            _ingredientLayer = LayerMask.GetMask("ingredient");
         }
 
         public override void Initialize(params object[] datas)
@@ -138,14 +140,27 @@ namespace InGame
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
-            
-            if (IsObstacleCollision(collision))
+
+            // 재료 수집 여부 확인
+            if (IsIngredientCollision(collision))
             {
-                OnDamaged(0.5f).Forget();
+                // 충돌체에서 IngredientData 가져오기
+                // 데이터를 가지고 조합 매니저에 수집 재료 넣기
+                //   - 현재 레시피 파악
+                //   - UI에 만족된 오더 표시 
+                // 데이터를 가지고 조합 매니저에서 이너 재료 프리팹 가져오기
+                // character에 넘겨주어 ingredientsInKimbap에서 재료 세팅
+                //   - 이펙트 후 변경
             }
-            else if (InDeadZone(collision))
+            
+            // 장애물 및 지형 충돌 여부 확인
+            if (InDeadZone(collision))
             {
                 OnDied().Forget();
+            }
+            else if (IsObstacleCollision(collision))
+            {
+                OnDamaged(0.5f).Forget();
             }
             else if (IsGroundCollision(collision))
             {
@@ -203,6 +218,12 @@ namespace InGame
         private bool IsObstacleCollision(Collision2D collision)
         {
             return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 && 
+                   collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
+        }
+        
+        private bool IsIngredientCollision(Collision2D collision)
+        {
+            return ((1 << collision.gameObject.layer) & _ingredientLayer) != 0 && 
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }
 
