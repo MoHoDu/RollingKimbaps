@@ -30,8 +30,8 @@ namespace InGame
         private readonly int _maxJumped = 2;
         
         // 이벤트 
-        public Action OnDeath;
-        public Action OnRevive;
+        public event Action OnDeath;
+        public event Action OnRevive;
 
         private void Awake()
         {
@@ -54,8 +54,13 @@ namespace InGame
             }
         }
 
-        public void OnStartGame()
+        public override void OnStartGame()
         {
+            if (character.HPbarUI != null)
+            {
+                _statusManager?.CharacterStatus?.AddEventOnHPChanged(character.HPbarUI.SetHP);
+            }
+            
             character.OnStart(_statusManager.RaceStatus, _statusManager.CharacterStatus);
         }
         
@@ -107,13 +112,36 @@ namespace InGame
             }
         }
         
+        private async UniTaskVoid OnDamaged(float inDamage)
+        {
+            if (_characterState is not ECharacterState.NORMAL) return;
+            
+            _statusManager.CharacterStatus.OnDamaged(inDamage);
+            if (_statusManager.CharacterStatus.State == ECharacterState.DIED)
+            {
+                // 캐릭터 애니메이션
+                await character.OnDied();
+            
+                if (_statusManager.CharacterStatus.Life > 0)
+                {
+                    OnRevive?.Invoke();
+                    character.Rebirth();
+                }
+            }
+            else
+            {
+                // 캐릭터 깜빡임 + 잠시 장애물 통과
+                await character.OnDamaged();
+            }
+        }
+        
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
             
             if (IsObstacleCollision(collision))
             {
-                OnDied().Forget();
+                OnDamaged(0.5f).Forget();
             }
             else if (InDeadZone(collision))
             {

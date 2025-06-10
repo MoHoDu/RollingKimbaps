@@ -9,8 +9,11 @@ namespace GameDatas
         public int Life { get; private set; }  = 5;
         public float HP { get; private set; } = 1f;
         public ECharacterState State { get; private set; } = ECharacterState.WAITFORREVIE;
-        
-        private Action _onDeath;
+
+        private event Action _onDamaged;
+        private event Action _onDeath;
+
+        private event Action<float> _onHPChanged;
         
         public CharacterStatus()
         {
@@ -31,6 +34,11 @@ namespace GameDatas
                 HP = 1f;
                 OnDied();
             }
+            else
+            {
+                _onDamaged?.Invoke();
+                _onHPChanged?.Invoke(HP);
+            }
         }
 
         public void OnDied()
@@ -41,12 +49,14 @@ namespace GameDatas
             {
                 _onDeath?.Invoke();
             }
+            _onHPChanged?.Invoke(0f);
         }
 
         public void OnRevived()
         {
             HP = 1f;
             State = ECharacterState.WAITFORREVIE;
+            _onHPChanged?.Invoke(HP);
         }
 
         public void OnPlay()
@@ -54,10 +64,22 @@ namespace GameDatas
             State = ECharacterState.NORMAL;
         }
         
-        public void AddEventOnDeath(Action onDeath)
+        public void AddEventOnDeath(Action eventAction)
         {
-            _onDeath -= onDeath;
-            _onDeath += onDeath;
+            _onDeath -= eventAction;
+            _onDeath += eventAction;
+        }
+        
+        public void AddEventOnDamaged(Action eventAction)
+        {
+            _onDamaged -= eventAction;
+            _onDamaged += eventAction;
+        }
+        
+        public void AddEventOnHPChanged(Action<float> eventAction)
+        {
+            _onHPChanged -= eventAction;
+            _onHPChanged += eventAction;
         }
     }
 }

@@ -16,6 +16,7 @@ namespace Panels
         [Bind("Body")] Transform body;
         [Bind("Body")] SpriteRenderer bodyRenderer;
         [Bind("Body")] Collider2D bodyCollider;
+        [Bind("HPbarUI")] HPbarUI hpbarUI;
         
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
@@ -23,6 +24,9 @@ namespace Panels
         // 개방 데이터
         public Collider2D BodyCollider => bodyCollider;
         public bool IsGrounded = false;
+        
+        // UI 가져오기
+        public HPbarUI HPbarUI => hpbarUI;
 
         // DI
         private RaceStatus _raceInfo;
@@ -49,7 +53,7 @@ namespace Panels
             
             WaitForStart();
         }
-
+        
         public void OnStart(RaceStatus raceStatus, CharacterStatus characterStatus)
         {
             bodyCollider.enabled = false;
@@ -95,6 +99,17 @@ namespace Panels
             bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(-1, LoopType.Yoyo).SetId("Blink");
         }
 
+        public async UniTask OnDamaged()
+        {
+            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            Color baseClolor = bodyRenderer.color;
+            Tween tween = bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(5, LoopType.Yoyo);
+            
+            await tween.AsyncWaitForCompletion();
+            bodyRenderer.color = baseClolor;
+            gameObject.layer = LayerMask.NameToLayer("character");
+        }
+
         public async UniTask OnDied()
         {
             // 회전값 초기화 
@@ -119,7 +134,7 @@ namespace Panels
 
         public void Recover()
         {
-            // 깜빡이기 멈추고 알파 복구
+            // 이전 효과 제거
             DOTween.Kill("Blink");
             Color finalColor = bodyRenderer.color;
             finalColor.a = 1f;
@@ -131,6 +146,9 @@ namespace Panels
             
             // 콜라이더 On
             bodyCollider.enabled = true;
+            
+            // 무적 시간동안만 깜빡임 유지 및 장애물 충돌 무시
+            OnDamaged().Forget();
         }
 
         public void OnJump()

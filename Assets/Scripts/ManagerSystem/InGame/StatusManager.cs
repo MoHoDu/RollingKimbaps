@@ -1,4 +1,5 @@
-﻿using GameDatas;
+﻿using EnumFiles;
+using GameDatas;
 
 namespace ManagerSystem.InGame
 {
@@ -17,6 +18,8 @@ namespace ManagerSystem.InGame
         
         public CharacterStatus CharacterStatus { get; private set; } = new CharacterStatus();
         public RaceStatus RaceStatus { get; private set; } = new RaceStatus();
+
+        private bool _needToInitVelocity = false;
         
         public override void Initialize()
         {
@@ -39,8 +42,23 @@ namespace ManagerSystem.InGame
                 RaceStatus.AddDistance();
                 // 시간을 더함
                 RaceStatus.AddTime();
-                // 속력을 높임
-                RaceStatus.AddVelocity();
+                // 죽음 이후에 다시 1초 후 시작 속력으로 초기화
+                if (_needToInitVelocity)
+                {
+                    RaceStatus.InitVelocity();
+                    _needToInitVelocity = false;
+                }
+                // 죽은 경우에 속력을 잠시 0으로 만듦
+                else if (CharacterStatus.State == ECharacterState.DIED)
+                {
+                    RaceStatus.StopVelocity();
+                    _needToInitVelocity = true;
+                }
+                // 그 외의 경우 속력 높임
+                else
+                {
+                    RaceStatus.AddVelocity();
+                }
             }
         }
 
