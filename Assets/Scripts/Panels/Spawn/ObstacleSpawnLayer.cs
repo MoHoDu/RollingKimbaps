@@ -14,6 +14,7 @@ namespace Panels.Spawn
         
         protected Prap _prevGroundPrap;
         protected float _targetStartX = 0f;
+        protected const float _obstacleMaxWidth = 5f;
 
         protected override void Initialize()
         {
@@ -22,10 +23,14 @@ namespace Panels.Spawn
             _targetStartX = ScreenScaler.CAM_LEFTSIDE.x - MaxSpace;
         }
 
+        /// <summary>
+        /// 타겟 그라운드의 오른쪽 끝 지점이 이전 장애물 위치에서 최대 간격 + 최대 장애물 너비 값한 값보다 큰지 확인 (크다면 더 생성 가능)
+        /// </summary>
+        /// <returns>그라운드에 장애물 생성 가능 여부</returns>
         public bool CanGenerateObstacleOnGround()
         {
             (float endX, Prap prap) lastPrap = GetLastPrap();
-            return _prevGroundPrap != null && lastPrap.endX + MaxSpace < _prevGroundPrap.GetRightPosLocalX(transform);
+            return _prevGroundPrap != null && lastPrap.endX + MaxSpace + _obstacleMaxWidth < _prevGroundPrap.GetRightPosLocalX(transform);
         }
         
         public override float SetPrapAndReturnRightPosX(Prap newPrap, RaceStatus raceStatus)
