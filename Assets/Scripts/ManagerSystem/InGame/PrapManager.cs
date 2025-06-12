@@ -107,6 +107,21 @@ namespace ManagerSystem.InGame
 
             return null;
         }
+
+        public Prap CreatePrapInRealDistance(PrapData data, Vector3 position)
+        {
+            SpawnLayer layer = GetDefaultLayer(data.Type);
+            Vector2 inPosition = position;
+            if (layer != null)
+            {
+                if (layer.TryGetComponent<FlowLayer>(out var flowLayer))
+                {
+                    inPosition.x = inPosition.x * flowLayer.FlowGap;
+                }
+            }
+            Transform parent = layer?.transform;
+            return CreatePrap(data, inPosition, parent);
+        }
         
         public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null)
         {

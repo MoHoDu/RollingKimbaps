@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8284168791308024770}
   - component: {fileID: 5668133653424262758}
+  - component: {fileID: 3622339929242239719}
   m_Layer: 0
   m_Name: Ham
   m_TagString: Untagged
@@ -87,3 +88,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &3622339929242239719
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5177755223998641353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb2802667c6c4026b473b79701253262, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prapData: {fileID: 0}
+  PrevPosition: {x: 0, y: 100, z: 0}

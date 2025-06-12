@@ -112,7 +112,6 @@ namespace ManagerSystem.InGame
         public override void Initialize(params object[] datas)
         {
             base.Initialize(datas);
-            Order.Initialize();
 
             foreach (var data in datas)
             {
@@ -125,6 +124,9 @@ namespace ManagerSystem.InGame
                     _statusManager = statusManager;
                 }
             }
+            
+            Order.Initialize(_prapManager);
+            IngredientPlacer.Initialize(this, _prapManager);
         }
 
         /// <summary>
@@ -236,7 +238,7 @@ namespace ManagerSystem.InGame
                     RecipeData newRecipe = _collectedRecipes.GetNewRecipeForOrder();
                     if (newRecipe != null)
                     {
-                        Order.AddOrder(newRecipe);
+                        Order.AddOrder(newRecipe, currentDistance);
                     }
                 }
 

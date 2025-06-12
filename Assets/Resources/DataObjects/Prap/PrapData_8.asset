@@ -18,5 +18,5 @@ MonoBehaviour:
   rarity: 0
   description: "\uC2E0\uC120\uD55C \uC6B0\uC5C9."
   Type: 3
-  Path: Prefabs/Placed/Burdock
+  Path: Prefabs/Ingredients/Placed/Burdock
   AppearanceDistance: 0

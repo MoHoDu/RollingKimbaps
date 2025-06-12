@@ -59,12 +59,12 @@ namespace Panels
             _middleGrounds.Add(_middle);
         }
 
-        public Orderer SetPerson(float posX)
+        public OrdererPrap SetPerson(float posX)
         {
             string prefabPath = _personPrefabNames[Random.Range(0, _personPrefabNames.Length)];
             GameObject go = Managers.Resource.Instantiate(prefabPath, _personParent);
 
-            if (go.TryGetComponent<Orderer>(out Orderer orderer))
+            if (go.TryGetComponent<OrdererPrap>(out OrdererPrap orderer))
             {
                 go.transform.position = new Vector3(posX, 0, 0);
                 return orderer;

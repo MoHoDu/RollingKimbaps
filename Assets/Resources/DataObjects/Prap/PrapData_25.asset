@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2df1e369f0a643e1b068621eaeb69ac3, type: 3}
-  m_Name: PrapData_1
+  m_Name: PrapData_25
   m_EditorClassIdentifier: 
-  id: 1
-  displayName: "\uB2F9\uADFC"
+  id: 25
+  displayName: "\uC190\uB2D805"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uC8FC\uD669\uBE5B\uC758 \uC791\uBB3C. \uB300\uBD80\uBD84\uC758 \uC694\uB9AC\uC5D0
-    \uC4F0\uC778\uB2E4."
-  Type: 3
-  Path: Prefabs/Ingredients/Placed/Carrot
+  description: "\uD669\uC778 \uB0A8\uC131 \uC190\uB2D8"
+  Type: 10
+  Path: Prefabs/Persons/Person_05
   AppearanceDistance: 0

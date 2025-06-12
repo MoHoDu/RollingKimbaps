@@ -18,5 +18,5 @@ MonoBehaviour:
   rarity: 0
   description: "\uB290\uB07C\uD568\uACFC \uACE0\uC18C\uD568\uC744 \uB298\uB824\uC900\uB2E4."
   Type: 3
-  Path: Prefabs/Placed/Cheese
+  Path: Prefabs/Ingredients/Placed/Cheese
   AppearanceDistance: 0

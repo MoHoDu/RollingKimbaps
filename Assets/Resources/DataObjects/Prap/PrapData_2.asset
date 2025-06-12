@@ -19,5 +19,5 @@ MonoBehaviour:
   description: "\uC720\uAE30\uB18D\uC73C\uB85C \uAE38\uB7EC\uB0B8 \uB9DB\uC788\uB294
     \uB2F9\uADFC."
   Type: 3
-  Path: Prefabs/Placed/Carrot
+  Path: Prefabs/Ingredients/Placed/Carrot
   AppearanceDistance: 500

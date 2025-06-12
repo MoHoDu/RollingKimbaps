@@ -43,9 +43,9 @@ namespace Panels
             _coroutine = StartCoroutine(DestroyAndInstantiateGrounds());
         }
 
-        public (bool isAvailable, Orderer orderer) TryPlacePerson(float posX)
+        public (bool isAvailable, OrdererPrap orderer) TryPlacePerson(float posX)
         {
-            (bool isAvailable, Orderer orderer) result = (false, null);
+            (bool isAvailable, OrdererPrap orderer) result = (false, null);
             
             List<GroundUI> availableGrounds = grounds.Where(g => g.StartPos <= posX && g.EndPos >= posX).ToList();
 

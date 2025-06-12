@@ -19,5 +19,5 @@ MonoBehaviour:
   description: "\uBC29\uBAA9\uD55C \uC816\uC18C\uC5D0\uAC8C\uC11C \uC5BB\uC740 \uACE0\uAE09
     \uCE58\uC988."
   Type: 3
-  Path: Prefabs/Placed/Cheese
+  Path: Prefabs/Ingredients/Placed/Cheese
   AppearanceDistance: 500

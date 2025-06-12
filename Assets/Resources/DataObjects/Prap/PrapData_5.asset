@@ -18,5 +18,5 @@ MonoBehaviour:
   rarity: 0
   description: "\uAE40\uBC25\uC6A9 \uD584."
   Type: 3
-  Path: Prefabs/Placed/Ham
+  Path: Prefabs/Ingredients/Placed/Ham
   AppearanceDistance: 0

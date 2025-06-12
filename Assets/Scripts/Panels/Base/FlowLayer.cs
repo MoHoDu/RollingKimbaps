@@ -11,6 +11,8 @@ namespace Panels.Base
         private bool isMoving = false;
         private float tickDuration = 1f;
 
+        public float FlowGap => gap;
+
         protected override void Initialize()
         {
             startPosition = transform.localPosition;

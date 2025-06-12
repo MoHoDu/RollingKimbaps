@@ -43,6 +43,7 @@ namespace EnumFiles
         MIDDLEOBJECT,
         BACKOBJECT,
         BACKTERRAIN,
+        ORDERER,
     }
 
     public enum ECharacterState

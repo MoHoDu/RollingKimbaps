@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using EnumFiles;
 using ManagerSystem;
 using Panels;
 
@@ -8,45 +10,34 @@ namespace GameDatas
     public class OrderData
     {
         public RecipeData recipe;
-        public Orderer orderer;
-        public List<IngredientData> requires;
+        public OrdererPrap OrdererPrap;
+        public List<EIngredientIndex> requires;
         public int score = 0;
 
-        public OrderData(RecipeData recipe, Orderer orderer)
+        public event Action OnClearOrder;
+        public event Action onFailedOrder;
+
+        public OrderData(RecipeData recipe, OrdererPrap ordererPrap)
         {
             this.recipe = recipe;
-            this.orderer = orderer;
+            this.OrdererPrap = ordererPrap;
             score = recipe.price;
+            requires = recipe.requiredIngredients;
         }
 
-        public bool ServingKimbap(params IngredientData[] ingredients)
+        public bool CanServe(RecipeData recipe)
         {
-            List<IngredientData> required_copied = requires.ToList(); 
-            foreach (IngredientData ingredient in ingredients)
-            {
-                if (required_copied.Contains(ingredient))
-                {
-                    required_copied.Remove(ingredient);
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            return recipe.id == this.recipe.id;
+        }
 
-            // 성공
-            if (required_copied.Count == 0)
-            {
-                // 메뉴판 처리 
-                
-                // Orderer UI 처리 
-                orderer.Successed();
+        public void OnServed()
+        {
+            OnClearOrder?.Invoke();
+        }
 
-                return true;
-            }
-            
-            // 실패
-            return false;
+        public void OnFailed()
+        {
+            onFailedOrder?.Invoke();
         }
     }
 }

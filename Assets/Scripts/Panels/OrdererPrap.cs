@@ -1,14 +1,17 @@
 using Attributes;
+using GameDatas;
+using InGame;
 using Panels.Base;
 using UnityEngine;
 
 namespace Panels
 {
     [RequireComponent(typeof(Animator))]
-    public class Orderer : BindUI
+    public class OrdererPrap : Prap
     {
         [Bind("Camera")] private Camera _camera;
         private Animator _animator;
+        private OrderData _orderInfo;
 
         protected override void Initialize()
         {
@@ -18,10 +21,28 @@ namespace Panels
             _camera.enabled = false;
         }
 
+        public override void OnSpawned(params object[] args)
+        {
+            foreach (var arg in args)
+            {
+                if (arg is OrderData menu)
+                {
+                    _orderInfo = menu;
+                    _orderInfo.OnClearOrder += Successed;
+                    _orderInfo.onFailedOrder += Failed;
+                }
+            }
+        }
+
         public void Successed()
         {
             _camera.enabled = true;
             _animator.SetTrigger("Successed");
+        }
+
+        public void Failed()
+        {
+            
         }
     }
 }
