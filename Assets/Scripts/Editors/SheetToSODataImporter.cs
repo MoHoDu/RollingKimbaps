@@ -10,6 +10,7 @@ using System;
 using Unity.EditorCoroutines.Editor;
 using EnumFiles;
 using System.Collections.Generic;
+using Utils;
 #endif
 
 public enum SheetType
@@ -181,7 +182,7 @@ public class SheetToSODataImporter : EditorWindow
         var headers = lines[0].Split(',');
         for (int i = 1; i < lines.Length; i++)
         {
-            var cols = lines[i].Split(',');
+            var cols = CsvUtil.SplitCsvLine(lines[i]);
             if (cols.Length < headers.Length) continue;
 
             var so = CreateSO();
@@ -211,11 +212,11 @@ public class SheetToSODataImporter : EditorWindow
                 case "displayName": so.displayName = value; break;
                 case "rarity": so.rarity = (Rarity)Enum.Parse(typeof(Rarity), value); break;
                 case "path":
-                    {
-                        string assetPath = Path.Combine("Assets/Resources", value) + ".png";
-                        var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-                        so.icon = sprite;
-                    }
+                {
+                    string assetPath = Path.Combine("Assets/Resources", value) + ".png";
+                    var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+                    so.icon = sprite;
+                }
                     break;
                 case "description": so.description = value; break;
             }
@@ -225,9 +226,14 @@ public class SheetToSODataImporter : EditorWindow
                 switch (header)
                 {
                     case "type": ingredient.type = (IngredientType)Enum.Parse(typeof(IngredientType), value); break;
-                    case "groupId": ingredient.groupId = value; break;
+                    case "groupId":
+                        EIngredientIndex index = (EIngredientIndex)Enum.Parse(typeof(EIngredientIndex), value);
+                        ingredient.groupId = index;
+                        break;
                     case "grade": ingredient.grade = int.Parse(value); break;
                     case "satisfy": ingredient.satisfy = int.Parse(value); break;
+                    case "placedPath": ingredient.placedPath = value; break;
+                    case "innerPath": ingredient.innerPath = value; break;
                 }
             }
             else if (so is RecipeData recipe)
@@ -239,12 +245,18 @@ public class SheetToSODataImporter : EditorWindow
                     case "price": recipe.price = int.Parse(value); break;
                     case "satisfy": recipe.satisfy = int.Parse(value); break;
                     case "requiredIngredients":
-                        recipe.requiredIngredients = new List<string>();
-                        string[] ingredientIds = value.Split(',');
+                        recipe.requiredIngredients = new List<EIngredientIndex>();
+                        string[] ingredientIds = CsvUtil.SplitCsvLine(value);
                         foreach (string ingredientId in ingredientIds)
                         {
-                            recipe.requiredIngredients.Add(ingredientId);
+                            string replaced = ingredientId.Trim();
+                            EIngredientIndex index = (EIngredientIndex)Enum.Parse(typeof(EIngredientIndex), replaced);
+                            recipe.requiredIngredients.Add(index);
                         }
+
+                        break;
+                    case "appearanceMinDistance":
+                        recipe.appearanceMinDistance = float.Parse(value);
                         break;
                 }
             }
@@ -260,9 +272,9 @@ public class SheetToSODataImporter : EditorWindow
                 switch (header)
                 {
                     case "type":
-                        prap.Type = (EPrapType)Enum.Parse(typeof(EPrapType), value); 
+                        prap.Type = (EPrapType)Enum.Parse(typeof(EPrapType), value);
                         break;
-                    case "appearanceDistance": 
+                    case "appearanceDistance":
                         prap.AppearanceDistance = int.Parse(value); break;
                     case "path":
                         prap.Path = value; break;

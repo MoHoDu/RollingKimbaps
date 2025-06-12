@@ -47,5 +47,6 @@ namespace Utils
         
         public int Count => _buffer.Count;
         public T this[int index] => _buffer[index];
+        public Stack<T> GetCopied() => new Stack<T>(_buffer.ToArray());
     }
 }

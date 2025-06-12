@@ -13,12 +13,14 @@ MonoBehaviour:
   m_Name: IngredientData_4
   m_EditorClassIdentifier: 
   id: 4
-  displayName: "\uBC25"
+  displayName: "\uD584"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uAC13 \uC9C0\uC740 \uC300. \uAE40\uBC25\uC6A9\uC73C\uB85C \uAC04\uC744
-    \uD574\uB450\uC5C8\uB2E4."
-  groupId: rice
-  type: 15
+  description: "\uAE40\uBC25\uC6A9 \uD584."
+  groupId: 2
+  type: 1
   grade: 1
   satisfy: 0
+  placedPath: Prefabs/Placed/Ham
+  innerPath: Prefabs/Inner/Ham
+  position: {x: 0, y: 0, z: 0}

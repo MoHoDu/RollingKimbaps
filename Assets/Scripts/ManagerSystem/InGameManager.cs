@@ -62,7 +62,7 @@ namespace ManagerSystem
             SpawnLayer[] spawnLayers = stageManager?.FindSpawnLayers();
             Prap.Initialize(this, spawnLayers);
             
-            Combination.Initialize(Prap);
+            Combination.Initialize(Prap, Status);
 
             // 매니저 리스트에 추가
             _managers.Add(Status);

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using EnumFiles;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Data/Recipe")]
@@ -8,5 +9,6 @@ public class RecipeData : SOData
     public int grade;
     public int price;
     public int satisfy;
-    public List<string> requiredIngredients;
+    public List<EIngredientIndex> requiredIngredients;
+    public float appearanceMinDistance;
 }

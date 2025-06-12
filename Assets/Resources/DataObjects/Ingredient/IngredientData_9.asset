@@ -13,12 +13,16 @@ MonoBehaviour:
   m_Name: IngredientData_9
   m_EditorClassIdentifier: 
   id: 9
-  displayName: "\uB2E8\uBB34\uC9C0"
+  displayName: "\uAE08\uBE5B \uB2E8\uBB34\uC9C0"
   icon: {fileID: 0}
-  rarity: 0
-  description: "\uAE40\uBC25\uC758 \uC0C1\uD07C\uD55C \uB9DB\uC744 \uC0B4\uB824\uC8FC\uB294
-    \uB2E8\uBB34\uC9C0."
-  groupId: pickled_radish
+  rarity: 3
+  description: "\uD280\uC9C0 \uC54A\uACE0 \uAE40\uBC25\uC758 \uC2DD\uAC10\uACFC \uB9DB\uC744
+    \uC62C\uB824\uC8FC\uB294 \uACE0\uAE09 \uB2E8\uBB34\uC9C0. \uAE08\uBE5B\uC774
+    \uB09C\uB2E4."
+  groupId: 4
   type: 0
-  grade: 1
-  satisfy: 0
+  grade: 2
+  satisfy: 10
+  placedPath: Prefabs/Placed/Pickled_radish
+  innerPath: Prefabs/Inner/Pickled_radish
+  position: {x: 0, y: 0, z: 0}

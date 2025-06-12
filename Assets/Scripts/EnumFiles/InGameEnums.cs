@@ -55,8 +55,10 @@ namespace EnumFiles
     public enum EIngredientIndex
     {
         CARROT = 0,
-        CUCUMBER = 1,
-        HAM = 2,
-        
+        CUCUMBER,
+        HAM,
+        CHEESE,
+        PICKLED_RADISH,
+        BURDOCK,
     }
 }

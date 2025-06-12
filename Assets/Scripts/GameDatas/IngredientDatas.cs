@@ -8,7 +8,7 @@ namespace GameDatas
     public class IngredientDatas : BaseData<IngredientData>
     {
         public Dictionary<string, IngredientData> Data { get; private set; } = new Dictionary<string, IngredientData>();
-        public Dictionary<string, List<IngredientData>> GroupData { get; private set; } = new Dictionary<string, List<IngredientData>>();
+        public Dictionary<EIngredientIndex, List<IngredientData>> GroupData { get; private set; } = new Dictionary<EIngredientIndex, List<IngredientData>>();
 
         protected override void Set(List<IngredientData> inList)
         {
@@ -36,7 +36,7 @@ namespace GameDatas
             return null;
         }
 
-        public List<IngredientData> GetGroup(string groupId)
+        public List<IngredientData> GetGroup(EIngredientIndex groupId)
         {
             if (GroupData.TryGetValue(groupId, out List<IngredientData> group))
             {
@@ -46,7 +46,7 @@ namespace GameDatas
             return null;
         }
 
-        public bool CheckingGroup(string groupId, IngredientData ingredient)
+        public bool CheckingGroup(EIngredientIndex groupId, IngredientData ingredient)
         {
             if (GroupData.TryGetValue(groupId, out List<IngredientData> group))
             {

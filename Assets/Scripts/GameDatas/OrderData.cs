@@ -17,13 +17,6 @@ namespace GameDatas
             this.recipe = recipe;
             this.orderer = orderer;
             score = recipe.price;
-            
-            requires = new List<IngredientData>();
-            foreach (var ingredientId in recipe.requiredIngredients)
-            {
-                IngredientData ingredient = DataContainer.IngredientDatas.Get(ingredientId);
-                if (ingredient != null) requires.Add(ingredient);
-            }
         }
 
         public bool ServingKimbap(params IngredientData[] ingredients)
