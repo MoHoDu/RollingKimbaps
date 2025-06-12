@@ -51,4 +51,12 @@ namespace EnumFiles
         NORMAL,
         DIED
     }
+
+    public enum EIngredientIndex
+    {
+        CARROT = 0,
+        CUCUMBER = 1,
+        HAM = 2,
+        
+    }
 }

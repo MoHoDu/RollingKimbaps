@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameDatas;
 using InGame.Combination;
 using Panels;
+using Utils;
 
 namespace ManagerSystem.InGame
 {
     public class CollectionInfo
     {
-        // 오더 정보 
-        public List<RecipeData> OrderList = new();
-        
-        // 배치된 재료 정보 
-        public List<IngredientData> PlacedIngredients = new();
-        
-        // 수집한 레시피, 재료 목록
-        public List<RecipeData> CollectedRecipes = new();
-        public List<IngredientData> CollectedIngredients = new();
+        // 보유 레시피
+        public HashSet<RecipeData> recipeList = new();
+        // 재료 비트마스크 to 레시피 딕셔너리
+        public Dictionary<uint, RecipeData> ingredientToRecipe = new();
+        // 최근 레시피 FixedCapacityStack 5개
+        public FixedCapacityStack<RecipeData> recentRecipes = new(5);
+        // 오더 대기 큐 : 다음 차례에 오더로 생성될 레시피 큐
+        public Queue<RecipeData> waitList = new(3);
     }
     
     public class CombinationManager : BaseManager
