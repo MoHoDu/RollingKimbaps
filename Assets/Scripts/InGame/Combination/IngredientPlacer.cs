@@ -28,7 +28,7 @@ namespace InGame.Combination
         private List<SpawnedIngredient> _activeIngredients = new();     // 활성화 되어 있는 재료들
         private Dictionary<int, int[]> placedCountPerRecipe = new();    // 레시피 당 추가 스폰이 필요한 각 재료의 개수
         private float lastSpawnX = float.NegativeInfinity;              // 이전 스폰 X 위치
-        private float spawnDistance = 10f;                              // 거리 기준 간격
+        private float spawnDistance = 20f;                              // 거리 기준 간격
         private float gapTime = 0.7f;                                   // 플레이어가 gapTime 이후에 새로운 재료에 도달
         private float marginTime = 1.0f;                                // 레시피가 끝나기 전 최소 여유 시간
         private int floorCount = 2;                                     // 재료를 한 번에 생성할 최대 개수 (y로 나열하므로 층이라 표현)

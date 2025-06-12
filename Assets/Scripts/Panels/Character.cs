@@ -107,7 +107,7 @@ namespace Panels
             
             await tween.AsyncWaitForCompletion();
             bodyRenderer.color = baseClolor;
-            gameObject.layer = LayerMask.NameToLayer("character");
+            body.gameObject.layer = LayerMask.NameToLayer("character");
         }
 
         public async UniTask OnDied()

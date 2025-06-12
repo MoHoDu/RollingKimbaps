@@ -56,7 +56,6 @@ namespace InGame.Combination
 
             // 데이터 추가
             Orders.Add(newOrder);
-            Debug.Log($"새로운 오더 추가: {newOrder.recipe.displayName}");
         }
 
         private float CalculateOrdererPositionX(RecipeData recipe, float currentDistance)

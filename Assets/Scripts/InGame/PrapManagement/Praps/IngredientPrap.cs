@@ -51,33 +51,41 @@ namespace InGame.PrapManagement.Praps
             base.OnSpawned(args);
         }
 
-        private async UniTask DestroyEffect()
+        private void DestroyEffect()
         {
             _collider.enabled = false;
             
             // 페이드 애니메이션 대기
-            await _spriteRenderer.DOFade(0f, 1f).AsyncWaitForCompletion();
-            
-            // 프랍 제거
-            Managers.Resource.Destroy(this.gameObject);
+            // 시퀀스 생성
+            var seq = DOTween.Sequence();
+
+            // 1) 약간 팝업(확대)
+            seq.Append(transform.DOScale(2f, 0.15f)
+                .SetEase(Ease.OutBack));
+
+            // 2) 축소와 페이드아웃을 동시에
+            seq.Append(transform.DOScale(Vector3.zero, 0.3f)
+                .SetEase(Ease.InQuad));
+            seq.Join(_spriteRenderer.DOFade(0f, 0.3f));
+
+            // 완료 콜백
+            seq.OnComplete(() =>
+            {
+                // 프랍 제거
+                Managers.Resource.Destroy(this.gameObject);
+            });
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (isTriggered) return;
+            // LayerMask 검사
+            if ((_characterLayer.value & (1 << collision.gameObject.layer)) == 0)
+                return;
+            isTriggered = true;
             
-            if (IsCharacterCollision(collision))
-            {
-                isTriggered = true;
-                
-                OnTriggerd?.Invoke(data);
-                DestroyEffect().Forget();
-            }
-        }
-        
-        private bool IsCharacterCollision(Collider2D collision)
-        {
-            return ((1 << collision.gameObject.layer) & _characterLayer) != 0;
+            OnTriggerd?.Invoke(data);
+            DestroyEffect();
         }
 
         public override void OnDestroy()
