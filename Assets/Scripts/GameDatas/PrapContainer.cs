@@ -65,6 +65,7 @@ namespace GameDatas
     public class PrapContainer : BaseData<PrapData>
     {
         public Dictionary<EPrapType, SortedList<float, PrapDatas>> Data { get; private set; } = new();
+        public Dictionary<(EPrapType, string), PrapData> TypeAndIDToData { get; private set; } = new();
         
         protected override void Set(List<PrapData> inList)
         {
@@ -85,6 +86,8 @@ namespace GameDatas
                 {
                     prapDataList.Add(item.AppearanceDistance, new PrapDatas(new List<PrapData> { item }));
                 }
+
+                TypeAndIDToData.TryAdd((prapType, item.id), item);
             }
         }
 
@@ -107,6 +110,11 @@ namespace GameDatas
             }
 
             return null;
+        }
+
+        public PrapData Get(EPrapType prapType, string id)
+        {
+            return TypeAndIDToData.GetValueOrDefault((prapType, id), null);
         }
     }
 }

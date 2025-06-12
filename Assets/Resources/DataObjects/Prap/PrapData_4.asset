@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: PrapData_4
   m_EditorClassIdentifier: 
   id: 4
-  displayName: "\uC791\uC740 \uB098\uBB34"
+  displayName: "\uACE0\uAE09 \uCE58\uC988"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uC791\uC740 \uB098\uBB34"
-  Type: 2
-  Path: Prefabs/Obstacles/tree_small
-  AppearanceDistance: 0
+  description: "\uBC29\uBAA9\uD55C \uC816\uC18C\uC5D0\uAC8C\uC11C \uC5BB\uC740 \uACE0\uAE09
+    \uCE58\uC988."
+  Type: 3
+  Path: Prefabs/Placed/Cheese
+  AppearanceDistance: 500

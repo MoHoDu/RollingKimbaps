@@ -15,10 +15,11 @@ MonoBehaviour:
   id: 0
   displayName: "\uB2F9\uADFC"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uC8FC\uD669\uBE5B\uC758 \uC791\uBB3C. \uB300\uBD80\uBD84\uC758 \uC694\uB9AC\uC5D0
     \uC4F0\uC778\uB2E4."
   groupId: 0
+  prapID: 1
   type: 0
   grade: 1
   satisfy: 0

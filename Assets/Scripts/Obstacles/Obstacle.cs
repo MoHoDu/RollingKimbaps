@@ -1,6 +1,7 @@
 using System.Linq;
 using Attributes;
 using DG.Tweening;
+using Cysharp.Threading.Tasks;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
@@ -38,18 +39,18 @@ namespace Obstacles
         {
             if (IsCharacterCollision(collision))
             {
-                DestroyEffect();
+                DestroyEffect().Forget();
             }
         }
 
-        private void DestroyEffect()
+        private async UniTaskVoid DestroyEffect()
         {
-            // 콜라이더를 없앰 or 충돌하지 않게 함 
+            // prevent duplicate triggers
             _collider.enabled = false;
-            
-            // Dotween을 사용하여 파티클 재생과 동시에 1초동안 스프라이트의 알파 값을 0으로 서서히 줄임
-            _spriteRenderer.DOFade(0f, 1f);
-            _broken_particle.Play();
+            // await the fade tween completion via DOTween Async extension
+            await _spriteRenderer.DOFade(0f, 1f).AsyncWaitForCompletion();
+            // after fade completes, destroy this game object
+            Managers.Resource.Destroy(this.gameObject);
         }
 
         private void OnParticleSystemStopped()

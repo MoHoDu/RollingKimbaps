@@ -15,9 +15,10 @@ MonoBehaviour:
   id: 4
   displayName: "\uD584"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uAE40\uBC25\uC6A9 \uD584."
   groupId: 2
+  prapID: 5
   type: 1
   grade: 1
   satisfy: 0

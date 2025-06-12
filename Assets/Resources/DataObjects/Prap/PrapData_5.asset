@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PrapData_5
   m_EditorClassIdentifier: 
   id: 5
-  displayName: "\uADF8\uB77C\uC6B4\uB4DC"
+  displayName: "\uD584"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uAE30\uBCF8 \uADF8\uB77C\uC6B4\uB4DC"
-  Type: 1
-  Path: Prefabs/Ground
+  description: "\uAE40\uBC25\uC6A9 \uD584."
+  Type: 3
+  Path: Prefabs/Placed/Ham
   AppearanceDistance: 0

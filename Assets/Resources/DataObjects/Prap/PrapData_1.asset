@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: PrapData_1
   m_EditorClassIdentifier: 
   id: 1
-  displayName: "\uD070 \uBC14\uC704"
+  displayName: "\uB2F9\uADFC"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uCEE4\uB2E4\uB780 \uBC14\uC704"
-  Type: 2
-  Path: Prefabs/Obstacles/rock_big
+  description: "\uC8FC\uD669\uBE5B\uC758 \uC791\uBB3C. \uB300\uBD80\uBD84\uC758 \uC694\uB9AC\uC5D0
+    \uC4F0\uC778\uB2E4."
+  Type: 3
+  Path: Prefabs/Placed/Carrot
   AppearanceDistance: 0

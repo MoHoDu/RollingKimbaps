@@ -10,14 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2df1e369f0a643e1b068621eaeb69ac3, type: 3}
-  m_Name: PrapData_6
+  m_Name: PrapData_13
   m_EditorClassIdentifier: 
-  id: 6
-  displayName: "\uACE0\uAE09 \uD584"
+  id: 13
+  displayName: "\uD070 \uB098\uBB34"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uAD6D\uB0B4\uC0B0 \uB3FC\uC9C0 \uACE0\uAE30\uB85C \uB9CC\uB4E0 \uC9C8
-    \uC88B\uC740 \uD584."
-  Type: 3
-  Path: Prefabs/Placed/Ham
-  AppearanceDistance: 500
+  description: "\uCEE4\uB2E4\uB780 \uB098\uBB34"
+  Type: 2
+  Path: Prefabs/Obstacles/tree_big
+  AppearanceDistance: 100

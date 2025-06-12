@@ -5,6 +5,7 @@ using EnumFiles;
 public class IngredientData : SOData
 {
     public EIngredientIndex groupId;
+    public string prapID;
     public IngredientType type; // 예: Vegetables, Meats
     public int grade;
     public int satisfy;

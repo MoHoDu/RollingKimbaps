@@ -15,9 +15,10 @@ MonoBehaviour:
   id: 6
   displayName: "\uC624\uC774"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uC2E0\uC120\uD55C \uC624\uC774."
   groupId: 1
+  prapID: 7
   type: 0
   grade: 1
   satisfy: 0

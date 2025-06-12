@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: PrapData_9
   m_EditorClassIdentifier: 
   id: 9
-  displayName: "\uC0C1\uB2E8 \uB808\uC774\uC5B4 \uB098\uBB34"
+  displayName: "\uB2E8\uBB34\uC9C0"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uBC14\uB85C \uB4A4 \uB808\uC774\uC5B4\uC758 \uB098\uBB34"
-  Type: 6
-  Path: Prefabs/TreeObj_Front
+  description: "\uAE40\uBC25\uC758 \uC0C1\uD07C\uD55C \uB9DB\uC744 \uC0B4\uB824\uC8FC\uB294
+    \uB2E8\uBB34\uC9C0."
+  Type: 3
+  Path: Prefabs/Placed/Pickled_radish
   AppearanceDistance: 0

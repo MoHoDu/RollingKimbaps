@@ -9,7 +9,7 @@ using Random = UnityEngine.Random;
 
 namespace ManagerSystem.InGame
 {
-    public class CollectionInfo
+    public class CollectedRecipeInfo
     {
         // 보유 레시피
         public HashSet<RecipeData> recipeList = new();
@@ -43,6 +43,11 @@ namespace ManagerSystem.InGame
                 // 최근 추가 레시피에 추가
                 recentRecipes.Push(recipe);
             }
+        }
+
+        public RecipeData GetRecipe(uint ingredient)
+        {
+            return ingredientToRecipe.GetValueOrDefault(ingredient, null);
         }
 
         public RecipeData GetNewRecipeForOrder()
@@ -92,7 +97,9 @@ namespace ManagerSystem.InGame
         public IngredientPlacer IngredientPlacer { get; private set; } = new();
         
         // 수집 정보 
-        public CollectionInfo CurrentCollection = new();
+        private CollectedRecipeInfo _collectedRecipes = new();
+        private HashSet<IngredientData> _collectedIngredients = new();
+        private Dictionary<EIngredientIndex, IngredientData> _collectedIngredientType = new();
         
         // DI
         private PrapManager _prapManager;
@@ -131,8 +138,66 @@ namespace ManagerSystem.InGame
             if (newRecipes != null)
             {
                 foreach (var recipe in newRecipes)
-                    CurrentCollection.AddRecipe(recipe);
+                    _collectedRecipes.AddRecipe(recipe);
             }
+        }
+
+        /// <summary>
+        /// 재료를 수집 하였을 때에 리스트에 추가
+        /// </summary>
+        /// <param name="ingredient">수집한 재료 데이터</param>
+        public void OnCollectedIngredient(IngredientData ingredient)
+        {
+            if (_collectedIngredientType.TryGetValue(ingredient.groupId, out var prev))
+            {
+                if (ingredient.rarity > prev.rarity)
+                {
+                    _collectedIngredients.Remove(prev);
+                    _collectedIngredients.Add(ingredient);
+                    _collectedIngredientType[ingredient.groupId] = ingredient;
+                }
+            }
+            else
+            {
+                _collectedIngredients.Add(ingredient);
+                _collectedIngredientType.Add(ingredient.groupId, ingredient);
+            }
+        }
+
+        /// <summary>
+        /// 현재 수집한 재료로 만들어지는 레시피가 있으면 반환
+        /// </summary>
+        /// <returns>만들어지는 레시피</returns>
+        public RecipeData GetCurrentRecipe()
+        {
+            uint curIngredient = 0;
+            foreach (var ingredient in _collectedIngredientType.Keys)
+            {
+                curIngredient |= (1u << (int)ingredient);
+            }
+            
+            return _collectedRecipes.GetRecipe(curIngredient);
+        }
+
+        /// <summary>
+        /// 현재 재료로 조합한 레시피의 점수 반환
+        /// </summary>
+        /// <returns>점수</returns>
+        public int GetRewards()
+        {
+            int rewards = 0;
+            
+            // 레시피 기본 가격
+            RecipeData recipe = GetCurrentRecipe();
+            rewards += recipe.price;
+            
+            // 사용 재료에 따른 손님의 팁
+            foreach (var ingredientType in _collectedIngredientType.Keys)
+            {
+                rewards += (int)ingredientType;
+            }
+            
+            return rewards;
         }
 
         /// <summary>
@@ -168,7 +233,7 @@ namespace ManagerSystem.InGame
                 if (Order.CanCreateOrder())
                 {
                     // waitList에서 레시피를 꺼내 새로운 오더 추가
-                    RecipeData newRecipe = CurrentCollection.GetNewRecipeForOrder();
+                    RecipeData newRecipe = _collectedRecipes.GetNewRecipeForOrder();
                     if (newRecipe != null)
                     {
                         Order.AddOrder(newRecipe);

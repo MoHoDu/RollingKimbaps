@@ -230,6 +230,7 @@ public class SheetToSODataImporter : EditorWindow
                         EIngredientIndex index = (EIngredientIndex)Enum.Parse(typeof(EIngredientIndex), value);
                         ingredient.groupId = index;
                         break;
+                    case "prapId": ingredient.prapID = value; break;
                     case "grade": ingredient.grade = int.Parse(value); break;
                     case "satisfy": ingredient.satisfy = int.Parse(value); break;
                     case "placedPath": ingredient.placedPath = value; break;

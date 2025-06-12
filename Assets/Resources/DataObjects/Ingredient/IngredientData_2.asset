@@ -15,9 +15,10 @@ MonoBehaviour:
   id: 2
   displayName: "\uCE58\uC988"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uB290\uB07C\uD568\uACFC \uACE0\uC18C\uD568\uC744 \uB298\uB824\uC900\uB2E4."
   groupId: 3
+  prapID: 3
   type: 4
   grade: 1
   satisfy: 0

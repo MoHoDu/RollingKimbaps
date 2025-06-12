@@ -139,7 +139,7 @@ namespace InGame
             }
         }
 
-        public void OnDestroy()
+        public virtual void OnDestroy()
         {
             Managers.InGame?.Prap?.DestroyPrap(this);
         }
