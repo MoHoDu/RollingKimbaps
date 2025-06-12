@@ -4,6 +4,7 @@ using EnumFiles;
 using GameDatas;
 using InGame;
 using InGame.PrapManagement;
+using Obstacles;
 using Panels;
 using Panels.Base;
 using Panels.Spawn;
@@ -15,6 +16,7 @@ namespace ManagerSystem.InGame
     {
         // 활성화 된 프랍들
         private Dictionary<Vector3, Prap> _activePraps = new();
+        private Dictionary<Vector3, Obstacle> _activeObstacles = new();
         
         // 생성 시 부모 지정 안 했을 때에 디폴트 부모 객체 
         private Transform _defaultParent;
@@ -108,7 +110,7 @@ namespace ManagerSystem.InGame
             return null;
         }
 
-        public Prap CreatePrapInRealDistance(PrapData data, Vector3 position)
+        public Prap CreatePrapInRealDistance(PrapData data, Vector3 position, bool setLocalized = false)
         {
             SpawnLayer layer = GetDefaultLayer(data.Type);
             Vector2 inPosition = position;
@@ -120,10 +122,18 @@ namespace ManagerSystem.InGame
                 }
             }
             Transform parent = layer?.transform;
-            return CreatePrap(data, inPosition, parent);
+            return CreatePrap(data, inPosition, parent, setLocalized);
         }
         
-        public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null)
+        /// <summary>
+        /// 프랍을 생성
+        /// </summary>
+        /// <param name="data">프랍 데이터</param>
+        /// <param name="position">위치</param>
+        /// <param name="parent">부모 객체</param>
+        /// <param name="setLocalized">로컬 위치인지, 월드 위치인지</param>
+        /// <returns>생성된 프랍</returns>
+        public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null, bool setLocalized = false)
         {
             if (data == null) return null;
             
@@ -165,8 +175,13 @@ namespace ManagerSystem.InGame
             
             Vector3 parentPos = parent.transform.position;
             Vector3 prapPostion = new Vector3(position.x, position.y, parentPos.z);
-            clone.transform.position = prapPostion;
+            if (!setLocalized) clone.transform.position = prapPostion;
             clone.transform.SetParent(parent);
+            if (setLocalized)
+            {
+                clone.transform.localPosition = position;
+                prapPostion = clone.transform.position;
+            }
             clone.name = data.displayName;
             
             clonePrap.PrevPosition = prapPostion;
@@ -204,6 +219,23 @@ namespace ManagerSystem.InGame
             }
         }
 
+        /// <summary>
+        /// 새로운 프랍을 생성 가능한지 확인
+        /// </summary>
+        /// <param name="inPosition">타겟 지점</param>
+        /// <returns>가능 여부</returns>
+        public bool CanCreateNewPrap(Vector3 inPosition, EPrapType prapType, bool isLocalPos = false)
+        {
+            if (isLocalPos)
+            {
+                SpawnLayer parentLayer = GetDefaultLayer(prapType);
+                inPosition = parentLayer.transform.TransformPoint(inPosition);
+            }
+            
+            if (_activePraps.TryGetValue(inPosition, out _)) return false;
+            return !IsColliderOnLayer(inPosition, 2f, "obstacle", "ground");
+        }
+        
         public override void Tick()
         {
             foreach (PrapSpawner spawner in _autoSpawners.Values)
@@ -240,6 +272,26 @@ namespace ManagerSystem.InGame
             {
                 spawner.Tick(_raceStatus.TravelDistance);
             }
+        }
+        
+        /// <summary>
+        /// Canvas 상에서 
+        /// </summary>
+        /// <param name="targetPos"></param>
+        /// <param name="size"></param>
+        /// <param name="layerNames"></param>
+        /// <returns></returns>
+        public bool IsColliderOnLayer(Vector2 targetPos, float size, params string[] layerNames)
+        {
+            foreach (string layerName in layerNames)
+            {
+                int layerMask = LayerMask.GetMask(layerName);
+
+                Collider2D hit = Physics2D.OverlapBox(targetPos, Vector2.one * size, 0);
+                if (hit != null) return true;
+            }
+
+            return false;
         }
     }
 }

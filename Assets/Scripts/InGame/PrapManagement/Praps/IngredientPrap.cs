@@ -1,6 +1,7 @@
 using System;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using InGame.Combination;
 using ManagerSystem;
 using UnityEngine;
 
@@ -15,13 +16,14 @@ namespace InGame.PrapManagement.Praps
         
         // DI
         private IngredientData data;
+        private SpawnedIngredient spawnedInfo;
         
         // values
         private LayerMask _characterLayer;
         private bool isTriggered = false;
         
         public event Action<IngredientData> OnTriggerd;
-        public event Action<IngredientPrap> OnDestroyed; 
+        public event Action<SpawnedIngredient> OnDestroyed; 
 
         protected override void Initialize()
         {
@@ -39,6 +41,10 @@ namespace InGame.PrapManagement.Praps
                 if (arg is IngredientData ingredientData)
                 {
                     data = ingredientData;
+                }
+                else if (arg is SpawnedIngredient info)
+                {
+                    spawnedInfo = info;
                 }
             }
             
@@ -78,7 +84,7 @@ namespace InGame.PrapManagement.Praps
         {
             base.OnDestroy();
             
-            OnDestroyed?.Invoke(this);
+            OnDestroyed?.Invoke(spawnedInfo);
         }
     }
 }

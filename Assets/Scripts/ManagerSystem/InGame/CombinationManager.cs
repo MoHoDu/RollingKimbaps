@@ -126,7 +126,7 @@ namespace ManagerSystem.InGame
             }
             
             Order.Initialize(_prapManager);
-            IngredientPlacer.Initialize(this, _prapManager);
+            IngredientPlacer.Initialize(this, _prapManager, _statusManager.RaceStatus);
         }
 
         /// <summary>
@@ -179,6 +179,22 @@ namespace ManagerSystem.InGame
             }
             
             return _collectedRecipes.GetRecipe(curIngredient);
+        }
+
+        /// <summary>
+        /// 수집한 재료들을 비트마스크 형식으로 반환
+        /// </summary>
+        /// <returns>수집한 재료에 대한 비트마스크</returns>
+        public uint GetCollectedMask()
+        {
+            uint mask = 0;
+            foreach (var ingredient in _collectedIngredients)
+            {
+                EIngredientIndex index = ingredient.groupId;
+                mask |= (1u << (int)index);
+            }
+
+            return mask;
         }
 
         /// <summary>
@@ -246,6 +262,7 @@ namespace ManagerSystem.InGame
             }
             
             // 오더를 확인하여 재료 배치
+            IngredientPlacer.CheckOrderAndPlaceIngredients(Order.Orders);
         }
     }
 }

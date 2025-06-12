@@ -51,7 +51,7 @@ namespace InGame.Combination
             
             // 손님 프랍 생성
             OrdererPrap newOrderer = CreateNewOrderer(targetPos);
-            OrderData newOrder = new OrderData(newRecipe, newOrderer);
+            OrderData newOrder = new OrderData(newRecipe, newOrderer, targetPos.x);
             newOrderer.OnSpawned(newOrder);
 
             // 데이터 추가
