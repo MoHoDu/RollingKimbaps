@@ -1,5 +1,4 @@
 using System;
-using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using InGame.Combination;
 using ManagerSystem;
@@ -20,6 +19,7 @@ namespace InGame.PrapManagement.Praps
         
         // values
         private LayerMask _characterLayer;
+        private LayerMask _characterInvisableLayer;
         private bool isTriggered = false;
         
         public event Action<IngredientData> OnTriggerd;
@@ -32,6 +32,7 @@ namespace InGame.PrapManagement.Praps
             _collider = GetComponent<Collider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _characterLayer = LayerMask.GetMask("character");
+            _characterInvisableLayer = LayerMask.GetMask("invisable_character");
         }
         
         public override void OnSpawned(params object[] args)
@@ -80,7 +81,8 @@ namespace InGame.PrapManagement.Praps
         {
             if (isTriggered) return;
             // LayerMask 검사
-            if ((_characterLayer.value & (1 << collision.gameObject.layer)) == 0)
+            if ((_characterLayer.value & (1 << collision.gameObject.layer)) == 0
+                || (_characterInvisableLayer.value & (1 << collision.gameObject.layer)) == 0)
                 return;
             isTriggered = true;
             

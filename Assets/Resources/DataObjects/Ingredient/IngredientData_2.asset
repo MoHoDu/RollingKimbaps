@@ -22,6 +22,6 @@ MonoBehaviour:
   type: 4
   grade: 1
   satisfy: 0
-  placedPath: Prefabs/Placed/Cheese
-  innerPath: Prefabs/Inner/Cheese
+  placedPath: Prefabs/Ingredients/Placed/Cheese
+  innerPath: Prefabs/Ingredients/Inner/Cheese
   position: {x: 0, y: 0, z: 0}

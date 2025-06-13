@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using EnumFiles;
 using GameDatas;
@@ -17,8 +18,10 @@ namespace InGame.Combination
         private PrapManager _prapManager;
         
         // 계산을 위한 정해진 값
-        private readonly int _maxOrder = 6;
+        private readonly int _maxOrder = 4;
         private Dictionary<Rarity, float> _readyToOrderDistance;
+
+        private event Action<List<OrderData>> onChangedOrders;
 
         public bool CanCreateOrder()
         {
@@ -56,6 +59,30 @@ namespace InGame.Combination
 
             // 데이터 추가
             Orders.Add(newOrder);
+            
+            onChangedOrders?.Invoke(Orders);
+        }
+
+        public bool Serving(RecipeData recipe)
+        {
+            OrderData target = null;
+            foreach (OrderData order in Orders)
+            {
+                if (order.CanServe(recipe))
+                {
+                    order.OnServed();
+                    target = order;
+                    break;
+                }
+            }
+
+            if (target != null)
+            {
+                Orders.Remove(target);
+                return true;
+            }
+
+            return false;
         }
 
         private float CalculateOrdererPositionX(RecipeData recipe, float currentDistance)

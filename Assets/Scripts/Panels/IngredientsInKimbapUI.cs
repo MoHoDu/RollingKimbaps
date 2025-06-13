@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Panels.Base;
 using UnityEngine;
 
@@ -6,33 +7,69 @@ namespace Panels
 {
     public class IngredientsInKimbapUI : BindUI
     {
-        public Dictionary<int, List<Vector3>> _ingredientPositions = new();
-        public List<CorrectedIngredient> _ingredients = new();
-        private int _ingredientsMaxCount;      
+        [Tooltip("내부 위치 설정을 담고 있는 ScriptableObject")]
+        public InnerPlacePositionSO Settings;
+        
+        private List<CollectedIngredient> _ingredients = new();
+        private int _ingredientsMaxCount;
+
+        private RectTransform _rect = null;
+        
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            // SO가 할당되지 않은 경우 에러 로그 출력
+            if (Settings == null)
+            {
+                Debug.LogWarning("SectionSettingsSO가 할당되지 않았습니다.", this);
+            }
+        }
+#endif
         
         protected override void Initialize()
         {
             base.Initialize();
             _ingredientsMaxCount = BaseValues.MAX_COLLECTED_INGREDIENTS;
+            TryGetComponent<RectTransform>(out _rect);
         }
 
-        public void AddIngredient(CorrectedIngredient ingredient)
+        public void ClearIngredients()
         {
-            if (ingredient?.gameObject == null) return;
+            _ingredients.Clear();
+            UpdatePosition();
+        }
+
+        public bool AddIngredient(CollectedIngredient ingredient)
+        {
+            if (ingredient?.gameObject == null) return false;
+            if (_ingredients.Any(i => i.Data.groupId == ingredient.Data.groupId))
+            {
+                return false;
+            }
             
             _ingredients.Add(ingredient);
             UpdatePosition();
+
+            return true;
         }
 
         private void UpdatePosition()
         {
             int currentCount = _ingredients.Count;
-            if (_ingredientPositions.TryGetValue(currentCount, out var ingredientPositions))
+            InnerPosition? positionInfo = Settings.GetPositionInfo(currentCount); 
+            if (positionInfo.HasValue)
             {
                 for (int i = 0; i < currentCount; i++)
                 {
-                    Vector3 ingredientPosition = ingredientPositions[i];
-                    _ingredients[i].transform.position = ingredientPosition;
+                    Vector3 ingredientPosition = positionInfo.Value.placePositions[i];
+                    if (_rect)
+                    {
+                        if (_ingredients[i].TryGetComponent(out RectTransform target))
+                        {
+                            target.anchoredPosition = ingredientPosition;
+                        }
+                    }
+                    else _ingredients[i].transform.localPosition = ingredientPosition;
                 }
             }
         }

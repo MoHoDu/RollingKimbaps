@@ -23,6 +23,6 @@ MonoBehaviour:
   type: 0
   grade: 1
   satisfy: 0
-  placedPath: Prefabs/Placed/Carrot
-  innerPath: Prefabs/Inner/Carrot
+  placedPath: Prefabs/Ingredients/Placed/Carrot
+  innerPath: Prefabs/Ingredients/Inner/Carrot
   position: {x: 0, y: 0, z: 0}

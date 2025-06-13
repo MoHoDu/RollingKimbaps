@@ -32,6 +32,11 @@ namespace ManagerSystem.InGame
             RaceStatus.Initialize(1f);
         }
 
+        public void GetScore(int score)
+        {
+            Score += score;
+        }
+
         public override void Tick()
         {
             base.Tick();

@@ -4,7 +4,6 @@ using DG.Tweening;
 using EnumFiles;
 using GameDatas;
 using InGame;
-using Panels.Base;
 using UnityEngine;
 
 namespace Panels
@@ -17,6 +16,7 @@ namespace Panels
         [Bind("Body")] SpriteRenderer bodyRenderer;
         [Bind("Body")] Collider2D bodyCollider;
         [Bind("HPbarUI")] HPbarUI hpbarUI;
+        [Bind("Ingredients")] IngredientsInKimbapUI innerIngredients;
         
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
@@ -27,6 +27,7 @@ namespace Panels
         
         // UI 가져오기
         public HPbarUI HPbarUI => hpbarUI;
+        public Transform innerParent  => innerIngredients?.transform;
 
         // DI
         private RaceStatus _raceInfo;
@@ -112,6 +113,9 @@ namespace Panels
 
         public async UniTask OnDied()
         {
+            // 소지 재료 초기화
+            ClearIngredients();
+            
             // 회전값 초기화 
             body.localRotation = Quaternion.identity;
             
@@ -208,6 +212,16 @@ namespace Panels
             rotationSpeed = velocity >= 0 ? -rotationSpeed : rotationSpeed;
             // Z축으로 회전 적용
             body.Rotate(0f, 0f, rotationSpeed * Time.fixedDeltaTime);
+        }
+
+        public bool AddIngredient(CollectedIngredient innerObj)
+        {
+            return innerIngredients.AddIngredient(innerObj);
+        }
+
+        public void ClearIngredients()
+        {
+            innerIngredients.ClearIngredients();
         }
 
         protected override void FixedUpdate()

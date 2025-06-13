@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -12,6 +13,8 @@ namespace ManagerSystem
         private Dictionary<string, CanvasUI> uiDict = new Dictionary<string, CanvasUI>();
 
         private Canvas canvas;
+        private SafeArea safeArea;
+        private Transform _defaultParent;       // 생성되는 CanvasUI 디폴트 부모
 
         private static CanvasManager instance;
 
@@ -39,6 +42,38 @@ namespace ManagerSystem
             // 존재하는 캔버스와 RectTransform 가져오기
             MainRect = GetComponent<RectTransform>();
             canvas = GetComponent<Canvas>();
+            
+            // SafeArea 가져오기
+            safeArea = transform.GetComponentInChildren<SafeArea>();
+            if (safeArea == null)
+            {
+                GameObject go = new GameObject("SafeArea", typeof(SafeArea), typeof(RectTransform));
+                RectTransform rt = go.GetComponent<RectTransform>();
+                safeArea = go.GetComponent<SafeArea>();
+
+                go.transform.SetParent(transform);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchorMin = new Vector2(0f, 0f);
+                rt.anchorMax = new Vector2(1f, 1f);
+
+                safeArea.SetSafeArea();
+            }
+            
+            // 디폴트 부모 설정
+            _defaultParent = safeArea.transform;
+
+            // SafeArea 아래로 하위 오브젝트 정렬
+            List<Transform> childTr = new();
+            foreach (Transform child in transform)
+            {
+                if (child == safeArea.transform) continue;
+                childTr.Add(child);
+            }
+
+            foreach (Transform child in childTr)
+            {
+                child.SetParent(safeArea.transform, false);
+            }
 
             // Scaler 조절 
             CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
@@ -83,7 +118,7 @@ namespace ManagerSystem
 
             // 리소스에서 이름으로 UI프리팹 검색, 없다면 정지
             string uiPath = $"{BaseValues.CanvasUIDirectory}/{uiName}";
-            GameObject go = Managers.Resource.Instantiate(uiPath, transform);
+            GameObject go = Managers.Resource.Instantiate(uiPath, _defaultParent);
             if (go is null)
             {
                 Debug.LogWarning($"[Canvas warn] Fail to Instantiate : {uiName}");

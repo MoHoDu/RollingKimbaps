@@ -95,6 +95,9 @@ namespace ManagerSystem
                 characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
                 characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
                 
+                // 다른 컴포넌트에 DI
+                Combination.SetHandler(characterHandler);
+                
                 return true;
             }
             

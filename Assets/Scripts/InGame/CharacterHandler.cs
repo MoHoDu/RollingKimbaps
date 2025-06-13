@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using EnumFiles;
+using InGame.PrapManagement.Praps;
 using ManagerSystem;
 using ManagerSystem.InGame;
 using Panels;
@@ -41,6 +42,7 @@ namespace InGame
             _groundLayer = LayerMask.GetMask("ground");
             _obstacleLayer = LayerMask.GetMask("obstacle");
             _deadzoneLayer = LayerMask.GetMask("deadzone");
+            _ingredientLayer = LayerMask.GetMask("ingredient");
         }
 
         public override void Initialize(params object[] datas)
@@ -134,6 +136,21 @@ namespace InGame
                 // 캐릭터 깜빡임 + 잠시 장애물 통과
                 await character.OnDamaged();
             }
+        }
+
+        public void OnCollectedIngredient(IngredientData data)
+        {
+            string prefabPath = data.innerPath;
+            GameObject go = Managers.Resource.Instantiate(prefabPath, character.innerParent);
+            if (go.TryGetComponent<CollectedIngredient>(out var ci))
+            {
+                ci.Data = data;
+                if (!character.AddIngredient(ci))
+                {
+                    Managers.Resource.Destroy(go);   
+                }
+            }
+            else Managers.Resource.Destroy(go);
         }
         
         private void OnCollisionEnter2D(Collision2D collision)

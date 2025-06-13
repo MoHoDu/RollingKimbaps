@@ -23,6 +23,6 @@ MonoBehaviour:
   type: 0
   grade: 1
   satisfy: 0
-  placedPath: Prefabs/Placed/Pickled_radish
-  innerPath: Prefabs/Inner/Pickled_radish
+  placedPath: Prefabs/Ingredients/Placed/Pickled_radish
+  innerPath: Prefabs/Ingredients/Inner/Pickled_radish
   position: {x: 0, y: 0, z: 0}

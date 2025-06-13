@@ -22,6 +22,6 @@ MonoBehaviour:
   type: 0
   grade: 1
   satisfy: 0
-  placedPath: Prefabs/Placed/Burdock
-  innerPath: Prefabs/Inner/Burdock
+  placedPath: Prefabs/Ingredients/Placed/Burdock
+  innerPath: Prefabs/Ingredients/Inner/Burdock
   position: {x: 0, y: 0, z: 0}

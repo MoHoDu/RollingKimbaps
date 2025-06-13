@@ -23,6 +23,6 @@ MonoBehaviour:
   type: 1
   grade: 2
   satisfy: 5
-  placedPath: Prefabs/Placed/Ham
-  innerPath: Prefabs/Inner/Ham
+  placedPath: Prefabs/Ingredients/Placed/Ham
+  innerPath: Prefabs/Ingredients/Inner/Ham
   position: {x: 0, y: 0, z: 0}

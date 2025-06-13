@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using EnumFiles;
+using InGame;
 using InGame.Combination;
-using Panels;
 using UnityEngine;
 using Utils;
-using Random = UnityEngine.Random;
 
 namespace ManagerSystem.InGame
 {
@@ -104,6 +102,7 @@ namespace ManagerSystem.InGame
         // DI
         private PrapManager _prapManager;
         private StatusManager _statusManager;
+        private CharacterHandler _handler;
         
         // default values
         private float _lastCheckedDistance = -100f;
@@ -127,6 +126,11 @@ namespace ManagerSystem.InGame
             
             Order.Initialize(_prapManager);
             IngredientPlacer.Initialize(this, _prapManager, _statusManager.RaceStatus);
+        }
+
+        public void SetHandler(CharacterHandler inHandler)
+        {
+            IngredientPlacer.SetHandler(inHandler);
         }
 
         /// <summary>
@@ -166,6 +170,12 @@ namespace ManagerSystem.InGame
             }
         }
 
+        public void ClearCollectedIngredients()
+        {
+            _collectedIngredients.Clear();
+            _collectedIngredientType.Clear();
+        }
+
         /// <summary>
         /// 현재 수집한 재료로 만들어지는 레시피가 있으면 반환
         /// </summary>
@@ -197,6 +207,25 @@ namespace ManagerSystem.InGame
             return mask;
         }
 
+        public void OnTryServing()
+        {
+            RecipeData recipe = GetCurrentRecipe();
+            if (Order.Serving(recipe))
+            {
+                // 복제 김밥 UI가 위로 날라가는 애니메이션 
+                // 보상 제공
+                int rewards = GetRewards();
+                _statusManager.GetScore(rewards);
+                // 보상을 UI로 송출 
+            }
+            else
+            {
+                // 복제 김밥 UI가 땅으로 떨어지는 애니메이션 
+                // 재료 삭제
+                ClearCollectedIngredients();
+            }
+        }
+
         /// <summary>
         /// 현재 재료로 조합한 레시피의 점수 반환
         /// </summary>
@@ -218,28 +247,17 @@ namespace ManagerSystem.InGame
             return rewards;
         }
 
-        /// <summary>
-        /// 재료 수집 시에 수집된 재료 프리팹을 생성 및 반환
-        /// </summary>
-        /// <param name="inData">재료 데이터</param>
-        /// <returns>생성된 재료 프리팹 or null</returns>
-        public CorrectedIngredient GetIngredientInner(IngredientData inData)
-        {
-            string innerPath = inData.innerPath;
-            var go = Managers.Resource.Instantiate(innerPath);
-            CorrectedIngredient ingredient = null;
-            go.TryGetComponent<CorrectedIngredient>(out ingredient);
-            if (ingredient == null)
-            {
-                Managers.Resource.Destroy(go);
-                return null;
-            }
-            
-            return ingredient;
-        }
-
         public override void Tick()
         {
+            // 만약 플레이어 상태가 죽음 or 부활 대기 상태라면
+            ECharacterState curState = _statusManager.CharacterStatus.State;
+            if (curState == ECharacterState.WAITFORREVIE
+                || curState == ECharacterState.DIED)
+            {
+                // 모아둔 재료 삭제
+                ClearCollectedIngredients();
+            }
+            
             // 이동 거리를 확인 후 최소 거리 이상 갔다면 실행
             float currentDistance = _statusManager.RaceStatus.TravelDistance;
             if (currentDistance - _lastCheckedDistance >= READ_RECIPE_SPACE)

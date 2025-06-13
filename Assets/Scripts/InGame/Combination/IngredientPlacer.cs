@@ -6,6 +6,7 @@ using GameDatas;
 using InGame.PrapManagement.Praps;
 using ManagerSystem;
 using ManagerSystem.InGame;
+using Panels;
 using UnityEngine;
 using Utils;
 
@@ -23,6 +24,7 @@ namespace InGame.Combination
         private CombinationManager _combinationManager;
         private PrapManager _prapManager;
         private RaceStatus _inRaceState;
+        private CharacterHandler _player;
         
         // 계산을 위한 값들
         private List<SpawnedIngredient> _activeIngredients = new();     // 활성화 되어 있는 재료들
@@ -43,6 +45,11 @@ namespace InGame.Combination
             _inRaceState = raceStatus;
             lastSpawnX = float.NegativeInfinity;
             totalIngredientCount = Enum.GetValues(typeof(EIngredientIndex)).Length;
+        }
+
+        public void SetHandler(CharacterHandler player)
+        {
+            _player = player;
         }
 
         public void CheckOrderAndPlaceIngredients(List<OrderData> orderList)
@@ -310,6 +317,7 @@ namespace InGame.Combination
                 
                 // OnTrigger에 _combinationManager.OnCollectIngredient() 연결 
                 ingredientPrap.OnTriggerd += _combinationManager.OnCollectedIngredient;
+                ingredientPrap.OnTriggerd += _player.OnCollectedIngredient;
 
                 // OnDestroyed에 RemoveIngredient() 연결
                 ingredientPrap.OnDestroyed += RemoveIngredient;
