@@ -82,7 +82,7 @@ namespace InGame.PrapManagement.Praps
             if (isTriggered) return;
             // LayerMask 검사
             if ((_characterLayer.value & (1 << collision.gameObject.layer)) == 0
-                || (_characterInvisableLayer.value & (1 << collision.gameObject.layer)) == 0)
+                && (_characterInvisableLayer.value & (1 << collision.gameObject.layer)) == 0)
                 return;
             isTriggered = true;
             

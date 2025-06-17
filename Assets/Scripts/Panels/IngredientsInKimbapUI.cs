@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
 
@@ -35,6 +36,10 @@ namespace Panels
 
         public void ClearIngredients()
         {
+            foreach (var ingredient in _ingredients)
+            {
+                Managers.Resource.Destroy(ingredient.gameObject);
+            }
             _ingredients.Clear();
             UpdatePosition();
         }

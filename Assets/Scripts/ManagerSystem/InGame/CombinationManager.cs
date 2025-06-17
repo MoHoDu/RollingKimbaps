@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using EnumFiles;
 using InGame;
 using InGame.Combination;
+using Panels;
 using UnityEngine;
 using Utils;
 
@@ -107,6 +109,9 @@ namespace ManagerSystem.InGame
         // default values
         private float _lastCheckedDistance = -100f;
         private const float READ_RECIPE_SPACE = 50f;
+        
+        // Events
+        private event Action<HashSet<IngredientData>> onChangedIngredients;
 
         public override void Initialize(params object[] datas)
         {
@@ -168,12 +173,27 @@ namespace ManagerSystem.InGame
                 _collectedIngredients.Add(ingredient);
                 _collectedIngredientType.Add(ingredient.groupId, ingredient);
             }
+            
+            onChangedIngredients?.Invoke(_collectedIngredients);
         }
 
         public void ClearCollectedIngredients()
         {
             _collectedIngredients.Clear();
             _collectedIngredientType.Clear();
+            
+            onChangedIngredients?.Invoke(_collectedIngredients);
+        }
+
+        public void AddListenerOnChangedIngredients(Action<HashSet<IngredientData>> action)
+        {
+            onChangedIngredients -= action;
+            onChangedIngredients += action;
+        }
+
+        public void RemoveListenerOnChangedIngredients(Action<HashSet<IngredientData>> action)
+        {
+            onChangedIngredients -= action;
         }
 
         /// <summary>
@@ -245,6 +265,13 @@ namespace ManagerSystem.InGame
             }
             
             return rewards;
+        }
+
+        public override void OnStartGame()
+        {
+            base.OnStartGame();
+            OrdersUI ordersUI = Order.SetOrdersUI();
+            AddListenerOnChangedIngredients(ordersUI.OnChangedCollection);
         }
 
         public override void Tick()

@@ -44,6 +44,20 @@ namespace InGame.Combination
             };
         }
 
+        public OrdersUI SetOrdersUI()
+        {
+            OrdersUI ui = CanvasManager.Instance?.GetUIOrCreateUI<OrdersUI>();
+            AddEventListenerOnOrder(ui.CheckNewOrderList);
+
+            return ui;
+        }
+        
+        public void AddEventListenerOnOrder(Action<List<OrderData>> listener)
+        {
+            onChangedOrders -= listener;
+            onChangedOrders += listener;
+        }
+
         public void AddOrder(RecipeData newRecipe, float currentDistance)
         {
             if (Orders.Count >= _maxOrder) return;

@@ -35,7 +35,7 @@ namespace Panels
             }
             else
             {
-                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", gameType, defaultData, saveDatas);
+                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", null, gameType, defaultData, saveDatas);
                 panel.AddEventOnDeleteData((data) =>
                 {
                     bool result = Managers.Save.RemoveData(data);

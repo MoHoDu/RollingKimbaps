@@ -92,6 +92,8 @@ namespace ManagerSystem
                 inputManager.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
                 characterHandler.OnDeath -= Status.CharacterStatus.OnDied;
                 characterHandler.OnDeath += Status.CharacterStatus.OnDied;
+                characterHandler.OnDeath -= Combination.ClearCollectedIngredients;
+                characterHandler.OnDeath += Combination.ClearCollectedIngredients;
                 characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
                 characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
                 

@@ -105,20 +105,21 @@ namespace ManagerSystem
         /// <param name="infos">세팅이 필요한 정보</param>
         /// <typeparam name="T">UI 컴포넌트</typeparam>
         /// <returns>생성된 UI</returns>
-        public T AddCanvasUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
+        public T AddCanvasUI<T>(string uiName = null, Transform parent = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             // uiName이 Null이라면, 컴포넌트 타입의 이름으로 합니다.
             uiName ??= typeof(T).Name;
 
             // 이미 켜져 있다면, 정지
-            if (uiDict.TryGetValue(uiName, out CanvasUI ui))
-            {
-                return null;
-            }
+            // if (uiDict.TryGetValue(uiName, out CanvasUI ui))
+            // {
+            //     return null;
+            // }
 
             // 리소스에서 이름으로 UI프리팹 검색, 없다면 정지
             string uiPath = $"{BaseValues.CanvasUIDirectory}/{uiName}";
-            GameObject go = Managers.Resource.Instantiate(uiPath, _defaultParent);
+            parent ??= _defaultParent;
+            GameObject go = Managers.Resource.Instantiate(uiPath, parent);
             if (go is null)
             {
                 Debug.LogWarning($"[Canvas warn] Fail to Instantiate : {uiName}");
@@ -134,14 +135,16 @@ namespace ManagerSystem
 
             // 캔버스 메니저 하위로 옮김
             RectTransform rect = go.GetComponent<RectTransform>();
-            rect.SetParent(transform, false);
+            Vector2 size = rect.sizeDelta;
+            rect.SetParent(parent, false);
+            rect.sizeDelta = size;
 
             // 캔버스에서 해당 UI의 깊이 설정
             int depth = baseDepth + (uiDict.Count * gap);
             canvasUI.SetUIDepth(depth);
 
             // UI목록에 추가 
-            uiDict.Add(uiName, canvasUI);
+            uiDict.TryAdd(uiName, canvasUI);
 
             // 만약 설정해야 하는 정보가 있다면, 정보를 UI에 등록 
             if (infos != null)
@@ -248,13 +251,13 @@ namespace ManagerSystem
         /// <param name="infos">UI에 설정할 데이터들</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetUIOrCreateUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
+        public T GetUIOrCreateUI<T>(string uiName = null, Transform parent = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             T ui = GetUI<T>(uiName);
 
             if (ui is null)
             {
-                ui = AddCanvasUI<T>(uiName, infos);
+                ui = AddCanvasUI<T>(uiName, parent, infos);
             }
 
             return ui;
