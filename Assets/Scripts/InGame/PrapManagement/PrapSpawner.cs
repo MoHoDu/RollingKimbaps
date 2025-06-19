@@ -68,7 +68,7 @@ namespace InGame.PrapManagement
             do
             { 
                 _curSpawnX = await SpawnPrapsOnLayer(travelDistance);
-            } while (_curSpawnX < _spawnBaseX && _targetLayer.CanSpawn());
+            } while (_targetLayer?.transform != null && _curSpawnX < _spawnBaseX && _targetLayer.CanSpawn());
             
             _isSpawning = false;
         }

@@ -11,6 +11,7 @@ namespace ManagerSystem
     public class CanvasManager : MonoBehaviour
     {
         private Dictionary<string, CanvasUI> uiDict = new Dictionary<string, CanvasUI>();
+        private Dictionary<string, int> uiCountDict = new Dictionary<string, int>();
 
         private Canvas canvas;
         private SafeArea safeArea;
@@ -110,12 +111,6 @@ namespace ManagerSystem
             // uiName이 Null이라면, 컴포넌트 타입의 이름으로 합니다.
             uiName ??= typeof(T).Name;
 
-            // 이미 켜져 있다면, 정지
-            // if (uiDict.TryGetValue(uiName, out CanvasUI ui))
-            // {
-            //     return null;
-            // }
-
             // 리소스에서 이름으로 UI프리팹 검색, 없다면 정지
             string uiPath = $"{BaseValues.CanvasUIDirectory}/{uiName}";
             parent ??= _defaultParent;
@@ -143,8 +138,30 @@ namespace ManagerSystem
             int depth = baseDepth + (uiDict.Count * gap);
             canvasUI.SetUIDepth(depth);
 
+            // uiCountDict에서 uiName으로 카운트 가져오기
+            int uiCount = 1;
+            if (uiCountDict.TryGetValue(uiName, out uiCount))
+            {
+                // 카운트가 있다면, 카운트 증가
+                uiCount++;
+                uiCountDict[uiName] = uiCount;
+            }
+            else
+            {
+                // 없다면, 새로 추가
+                uiCountDict.Add(uiName, 1);
+            }
+
             // UI목록에 추가 
-            uiDict.TryAdd(uiName, canvasUI);
+            if (!uiDict.TryAdd(uiName, canvasUI))
+            {
+                // $"{uiName}{(카운트 + 1)}"을 키값으로 uiDict에 ui 추가
+                string key = $"{uiName}@{uiCount}";
+                if (!uiDict.ContainsKey(key))
+                {
+                    uiDict.Add(key, canvasUI);
+                }
+            }
 
             // 만약 설정해야 하는 정보가 있다면, 정보를 UI에 등록 
             if (infos != null)
@@ -173,6 +190,11 @@ namespace ManagerSystem
         public void RemoveCanvasUI(string uiName)
         {
             if (uiDict.Count == 0) return;
+
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                uiName = $"{uiName}@{uiCount}";
+            }
 
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
@@ -212,6 +234,31 @@ namespace ManagerSystem
             // UI 리스트에서 해당 키를 제거
             uiDict.Remove(uiData.Key);
 
+            // 제거된 만큼 카운트 감소
+            // 만약 키값에 @숫자가 있다면, 해당 숫자만 가져와서 uiCountDict을 업데이트
+            string key = uiData.Key;
+            if (key.Contains('@'))
+            {
+                string uiName = key.Split('@')[0];
+                if (uiCountDict.TryGetValue(uiName, out int uiCount))
+                {
+                    uiCount--;
+                    if (uiCount <= 0)
+                    {
+                        uiCountDict.Remove(uiName);
+                    }
+                    else
+                    {
+                        uiCountDict[uiName] = uiCount;
+                    }
+                }
+            }
+            else
+            {
+                // 키값에 @숫자가 없다면, 1개 이므로 그냥 제거
+                uiCountDict.Remove(key);
+            }
+
             // 빠지는 UI들로 인하여 UI Sorting 재조정
             foreach (var ui in uiDict)
             {
@@ -235,6 +282,15 @@ namespace ManagerSystem
         {
             // uiName이 Null인 경우 T 타입 이름으로 검색
             uiName ??= typeof(T).Name;
+
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                // uiCount가 1보다 크면, @숫자를 붙여서 검색
+                if (uiCount > 1)
+                {
+                    uiName = $"{uiName}@{uiCount}";
+                }
+            }
 
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
@@ -270,6 +326,15 @@ namespace ManagerSystem
         /// <returns>해당하는 UI</returns>
         public CanvasUI GetUI(string uiName)
         {
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                // uiCount가 1보다 크면, @숫자를 붙여서 검색
+                if (uiCount > 1)
+                {
+                    uiName = $"{uiName}@{uiCount}";
+                }
+            }
+
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
                 return ui.GetComponent<CanvasUI>();

@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
-using DG.Tweening;
 using EnumFiles;
 using GameDatas;
 using InGame;
@@ -10,7 +9,6 @@ using ManagerSystem.InGame;
 using Panels.Base;
 using Unity.VisualScripting;
 using Utils;
-using Sequence = DG.Tweening.Sequence;
 
 namespace ManagerSystem
 {
@@ -21,6 +19,7 @@ namespace ManagerSystem
         public FlowManager Flow { get; private set; } = new();
         public PrapManager Prap { get; private set; } = new();
         public CombinationManager Combination { get; private set; } = new();
+        public InGameUIManager GameUI { get; private set; } = new();
         
         private HashSet<IBaseManager> _managers = new();
         
@@ -30,10 +29,10 @@ namespace ManagerSystem
         private CharacterHandler characterHandler;
         
         // DI
-        public StageManager stageManager { get; private set; }
-        public InputManager inputManager { get; private set; }
-        public ResourceManager resourceManager { get; private set; }
-        public UIManager uiManager { get; private set; }
+        public StageManager Stage { get; private set; }
+        public InputManager Input { get; private set; }
+        public ResourceManager Resource { get; private set; }
+        public UIManager UI { get; private set; }
         
         // 정해진 시간마다 반복적으로 실행할 로직
         private Coroutine _tickSequence;
@@ -45,23 +44,24 @@ namespace ManagerSystem
 
             ScreenScaler.Initialize();
 
-            stageManager = Managers.Stage;
-            resourceManager = Managers.Resource;
-            uiManager = Managers.UI;
+            Stage = Managers.Stage;
+            Resource = Managers.Resource;
+            UI = Managers.UI;
             
-            stageManager.AddEventAfterSceneOpened("GameScene", (_) => InitManagers());
+            Stage.AddEventAfterSceneOpened("GameScene", (_) => InitManagers());
         }
 
         public async void InitManagers()
         {
-            inputManager = InputManager.Instance;
+            Input = InputManager.Instance;
             
             Status.Initialize();
+            GameUI.Initialize(this);
 
-            FlowLayer[] flowLayers = stageManager?.FindFlowLayers();
+            FlowLayer[] flowLayers = Stage?.FindFlowLayers();
             Flow.Initialize(this, flowLayers);
             
-            SpawnLayer[] spawnLayers = stageManager?.FindSpawnLayers();
+            SpawnLayer[] spawnLayers = Stage?.FindSpawnLayers();
             Prap.Initialize(this, spawnLayers);
             
             Combination.Initialize(Prap, Status);
@@ -71,6 +71,7 @@ namespace ManagerSystem
             _managers.Add(Flow);
             _managers.Add(Prap);
             _managers.Add(Combination);
+            _managers.Add(GameUI);
 
             await UniTask.WaitForSeconds(1);
             OnStartGame();
@@ -84,7 +85,7 @@ namespace ManagerSystem
                 PrapData characterPrap = characterPraps.Value.GetFirstOrNull();
                 if (characterPrap is null) return false;
 
-                Prap _prap = Prap.CreatePrap(characterPrap, new Vector3(0, 0, 0), uiManager.InGamePanel.transform);
+                Prap _prap = Prap.CreatePrap(characterPrap, new Vector3(0, 0, 0), UI.InGamePanel.transform);
                 characterHandler = _prap.GetOrAddComponent<CharacterHandler>();
                 
                 // 초기화 

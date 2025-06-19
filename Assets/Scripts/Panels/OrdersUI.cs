@@ -70,7 +70,7 @@ namespace Panels
 
             foreach (var orderData in prevOrders)
             {
-                CanvasManager.Instance.ReleseUI(_orderUIList[orderData]);
+                _orderUIList[orderData]?.Close();
                 _orderUIList.Remove(orderData);
             }
             
@@ -146,6 +146,13 @@ namespace Panels
                 rect.sizeDelta = new Vector2(400f, 150f);
             }
             _orderUIList[order] = newOrderUI;
+            newOrderUI.OnClosedEvent += () =>
+            {
+                if (_orderUIList.ContainsKey(order))
+                {
+                    _orderUIList.Remove(order);
+                }
+            };
         }
 
         private IEnumerator PlayIngredientAnimations()

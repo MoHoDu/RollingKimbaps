@@ -112,6 +112,8 @@ namespace ManagerSystem.InGame
         
         // Events
         private event Action<HashSet<IngredientData>> onChangedIngredients;
+        public event Action<(int rewards, int tips)> onSuccessedServing;
+        public event Action onFailedServing;
 
         public override void Initialize(params object[] datas)
         {
@@ -128,7 +130,7 @@ namespace ManagerSystem.InGame
                     _statusManager = statusManager;
                 }
             }
-            
+
             Order.Initialize(_prapManager);
             IngredientPlacer.Initialize(this, _prapManager, _statusManager.RaceStatus);
         }
@@ -230,19 +232,23 @@ namespace ManagerSystem.InGame
         public void OnTryServing()
         {
             RecipeData recipe = GetCurrentRecipe();
-            if (Order.Serving(recipe))
-            {
-                // 복제 김밥 UI가 위로 날라가는 애니메이션 
+            if (recipe != null && Order.Serving(recipe))
+            { 
                 // 보상 제공
                 int rewards = GetRewards();
-                _statusManager.GetScore(rewards);
-                // 보상을 UI로 송출 
+                int tips = GetTips();
+                _statusManager.GetScore(rewards + tips);
+                // 서빙 성공 시 이벤트 호출: 보상을 UI로 송출 등
+                onSuccessedServing?.Invoke((rewards, tips));
             }
             else
             {
                 // 복제 김밥 UI가 땅으로 떨어지는 애니메이션 
                 // 재료 삭제
                 ClearCollectedIngredients();
+                
+                // 서빙 실패 시 이벤트 호출: Failed 효과 등
+                onFailedServing?.Invoke();
             }
         }
 
@@ -258,13 +264,21 @@ namespace ManagerSystem.InGame
             RecipeData recipe = GetCurrentRecipe();
             rewards += recipe.price;
             
-            // 사용 재료에 따른 손님의 팁
+            return rewards;
+        }
+
+        /// <summary>
+        /// 사용한 재료에 따라 추가적으로 받은 팁 계산
+        /// </summary>
+        /// <returns>팁</returns>
+        public int GetTips()
+        {
+            int tips = 0;
             foreach (var ingredientType in _collectedIngredientType.Keys)
             {
-                rewards += (int)ingredientType;
+                tips += (int)ingredientType;
             }
-            
-            return rewards;
+            return tips;
         }
 
         public override void OnStartGame()

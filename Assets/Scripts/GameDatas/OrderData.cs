@@ -47,7 +47,7 @@ namespace GameDatas
 
         public bool CanServe(RecipeData recipe)
         {
-            return recipe.id == this.recipe.id;
+            return recipe.groupId == this.recipe.groupId;
         }
 
         public void OnServed()

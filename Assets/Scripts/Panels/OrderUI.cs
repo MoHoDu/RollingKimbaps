@@ -39,9 +39,27 @@ namespace Panels
                 {
                     _data = orderData;
                     List<IngredientData> required = GetRequiredIngredients(_data);
-                    
+
                     SetIngredientsUI(required);
                     SetKimbapUI(required);
+                    
+                    orderData.OnClearOrder += () =>
+                    {
+                        if (kimbapAnimation != null && kimbapAnimation.IsActive())
+                        {
+                            kimbapAnimation.Kill();
+                        }
+
+                        foreach (var ingredient in ingredientAnimations)
+                        {
+                            if (ingredient.Value.IsActive())
+                            {
+                                ingredient.Value.Kill();
+                            }
+                        }
+
+                        Close();
+                    };
                 }
             }
         }

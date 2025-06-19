@@ -1,4 +1,5 @@
-﻿using EnumFiles;
+﻿using System;
+using EnumFiles;
 using GameDatas;
 
 namespace ManagerSystem.InGame
@@ -20,21 +21,34 @@ namespace ManagerSystem.InGame
         public RaceStatus RaceStatus { get; private set; } = new RaceStatus();
 
         private bool _needToInitVelocity = false;
+
+        // event
+        public event Action<int> OnScoreChanged;
         
         public override void Initialize()
         {
             base.Initialize();
-            
+
             GameStatus = EGameStatus.WAIT;
             Score = 0;
-            
+
             CharacterStatus.Initialize();
             RaceStatus.Initialize(1f);
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+
+            // 이벤트 해제
+            OnScoreChanged = null;
+            CharacterStatus.ClearEvents();
         }
 
         public void GetScore(int score)
         {
             Score += score;
+            OnScoreChanged?.Invoke(Score);
         }
 
         public override void Tick()

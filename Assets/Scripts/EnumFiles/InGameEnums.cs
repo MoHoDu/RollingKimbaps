@@ -29,6 +29,7 @@ namespace EnumFiles
         PAUSE = 2,  // 멈춤
         RESUME = 3, // 재개
         TEST,
+        LOG,        // 로그
     }
 
     public enum EPrapType

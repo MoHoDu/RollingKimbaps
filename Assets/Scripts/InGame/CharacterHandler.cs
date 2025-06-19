@@ -19,6 +19,7 @@ namespace InGame
         // DI
         InGameManager _inGameManager;
         StatusManager _statusManager;
+        CombinationManager _combinationManager;
         private EGameStatus _gameStatus => _statusManager.GameStatus;
         private ECharacterState _characterState => _statusManager.CharacterStatus.State;
         private bool _isGrounded => character.IsGrounded;
@@ -53,6 +54,7 @@ namespace InGame
                 {
                     _inGameManager = inGameManager;
                     _statusManager = _inGameManager.Status;
+                    _combinationManager = _inGameManager.Combination;   
                 }
             }
         }
@@ -82,11 +84,25 @@ namespace InGame
                 GetJump();
             }
         }
+        
+        public void InputSubmitKey()
+        {
+            if (_gameStatus is not EGameStatus.PLAY) return;
+
+            if (_characterState == ECharacterState.NORMAL)
+            {
+                // 서빙 처리
+                _combinationManager.OnTryServing();
+
+                // 서빙 후 재료 제거
+                character.ClearIngredients();
+            }
+        }
 
         private void GetJump()
         {
             bool isDead = _characterState != ECharacterState.NORMAL;
-            
+
             if (_gameStatus is not EGameStatus.PLAY)
                 return;
 
@@ -94,7 +110,7 @@ namespace InGame
             // 처음 점프는 반드시 땅에서만 실행 되도록 함 
             if (_inputJumped == 0 && !_isGrounded) return;
             _inputJumped++;
-            
+
             character.OnJump();
         }
 

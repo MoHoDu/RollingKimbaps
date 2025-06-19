@@ -7,21 +7,26 @@ namespace ManagerSystem
     {
         public CanvasManager CanvasManager { get; private set; }
         public InGamePanel InGamePanel { get; private set; }
-        
+
         public void FindCanvasAndGamePanel()
         {
             CanvasManager = CanvasManager.Instance;
             InGamePanel = InGamePanel.Instance;
         }
 
+        public T GetComponentFromCanvas<T>() where T : MonoBehaviour
+        {
+            return CanvasManager?.transform.GetComponent<T>();
+        }
+
         public T[] GetComponentsFromCanvas<T>() where T : MonoBehaviour
         {
             return CanvasManager?.transform.GetComponentsInChildren<T>();
         }
-        
+
         public T[] GetComponentsFromPanel<T>() where T : MonoBehaviour
         {
             return InGamePanel?.transform.GetComponentsInChildren<T>();
-        }
+        }        
     }
 }

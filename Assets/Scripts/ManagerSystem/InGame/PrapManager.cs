@@ -44,8 +44,8 @@ namespace ManagerSystem.InGame
             {
                 if (data is InGameManager ingame)
                 {
-                    _resourceManager = ingame.resourceManager;
-                    _stageManager = ingame.stageManager;
+                    _resourceManager = ingame.Resource;
+                    _stageManager = ingame.Stage;
                     _raceStatus = ingame.Status.RaceStatus;
                 }
                 else if (data is SpawnLayer[] layers)

@@ -6,15 +6,16 @@ namespace GameDatas
     [Serializable]
     public class CharacterStatus
     {
-        public int Life { get; private set; }  = 5;
+        public int Life { get; private set; } = 5;
         public float HP { get; private set; } = 1f;
         public ECharacterState State { get; private set; } = ECharacterState.WAITFORREVIE;
 
         private event Action _onDamaged;
         private event Action _onDeath;
 
+        private event Action<int> _onLifeChanged;
         private event Action<float> _onHPChanged;
-        
+
         public CharacterStatus()
         {
             Initialize();
@@ -50,6 +51,7 @@ namespace GameDatas
                 _onDeath?.Invoke();
             }
             _onHPChanged?.Invoke(0f);
+            _onLifeChanged?.Invoke(Life);
         }
 
         public void OnRevived()
@@ -63,23 +65,37 @@ namespace GameDatas
         {
             State = ECharacterState.NORMAL;
         }
-        
+
         public void AddEventOnDeath(Action eventAction)
         {
             _onDeath -= eventAction;
             _onDeath += eventAction;
         }
-        
+
         public void AddEventOnDamaged(Action eventAction)
         {
             _onDamaged -= eventAction;
             _onDamaged += eventAction;
         }
-        
+
         public void AddEventOnHPChanged(Action<float> eventAction)
         {
             _onHPChanged -= eventAction;
             _onHPChanged += eventAction;
+        }
+
+        public void AddEventOnLifeChanged(Action<int> eventAction)
+        {
+            _onLifeChanged -= eventAction;
+            _onLifeChanged += eventAction;
+        }
+
+        public void ClearEvents()
+        {
+            _onDeath = null;
+            _onDamaged = null;
+            _onHPChanged = null;
+            _onLifeChanged = null;
         }
     }
 }

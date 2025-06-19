@@ -23,7 +23,7 @@ namespace Utils
             await UniTask.WaitUntil(() => InputManager.Instance != null);
             
             Managers.InGame.InitManagers();
-            Managers.InGame.inputManager.AddEvent(EInputType.TEST, OnTestLogic);
+            Managers.InGame.Input.AddEvent(EInputType.TEST, OnTestLogic);
         }
 
         public void OnTestLogic()
