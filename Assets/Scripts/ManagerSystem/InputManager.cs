@@ -70,6 +70,22 @@ namespace ManagerSystem
             return OnInputCallbacks?.GetValueOrDefault(inputType, null);
         }
 
+        public void OnPrimaryTouch(InputValue context)
+        {
+            Vector2 currentTouchPosition = context.Get<Vector2>();
+            // 터치 위치가 스크린의 좌측과 우측 중에 어디인지 판별
+            if (currentTouchPosition.x < Screen.width / 2)
+            {
+                // 왼쪽 터치: 점프
+                GetCallbacks(EInputType.JUMP)?.Invoke();
+            }
+            else
+            {
+                // 오른쪽 터치: 서빙
+                GetCallbacks(EInputType.SUBMIT)?.Invoke();
+            }
+        }
+
         public void OnJump(InputValue context)
         {
             GetCallbacks(EInputType.JUMP)?.Invoke();

@@ -91,7 +91,8 @@ namespace ManagerSystem
                 characterHandler.Initialize(this);
                 
                 // 이벤트 연결 
-                inputManager.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
+                Input.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
+                Input.AddEvent(EInputType.SUBMIT, characterHandler.InputSubmitKey);
                 characterHandler.OnDeath -= Status.CharacterStatus.OnDied;
                 characterHandler.OnDeath += Status.CharacterStatus.OnDied;
                 characterHandler.OnDeath -= Combination.ClearCollectedIngredients;

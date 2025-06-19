@@ -31,38 +31,34 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PrimaryTouch",
+                    "type": "Value",
+                    "id": "0d5257b3-a15d-4142-91c0-9df6ce9d5f9d",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Submit",
+                    "type": "Button",
+                    "id": "2c739437-d46e-465c-b290-a96f9a1c6750",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "09d15029-4381-45ec-89eb-f4115908de0f",
-                    "path": "<Keyboard>/space",
+                    "path": "<Keyboard>/z",
                     "interactions": "",
                     "processors": "",
                     "groups": ";PC",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "45a2cf43-e6cb-463a-8264-3c3c7d161f34",
-                    "path": "<Mouse>/leftButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";PC",
-                    "action": "Jump",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "f184d13a-95d7-4896-afc4-4702824fc2ec",
-                    "path": "<Pointer>/press",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": ";Mobile",
                     "action": "Jump",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -86,6 +82,28 @@
                     "processors": "",
                     "groups": ";PC",
                     "action": "Test",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f184d13a-95d7-4896-afc4-4702824fc2ec",
+                    "path": "<Touchscreen>/primaryTouch/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Mobile;PC",
+                    "action": "PrimaryTouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6e88c33d-704f-4dd3-b720-7fb52929ddee",
+                    "path": "<Keyboard>/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Submit",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
