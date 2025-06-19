@@ -76,7 +76,7 @@ namespace Panels
                         _ingredients.Add(mask, ui);
                         if (!ingredientAnimations.TryGetValue(mask, out _))
                         {
-                            Tween tw = GetIngredientAnimation(ui);
+                            Tween tw = SetIngredientAnimation(ui);
                             ingredientAnimations.Add(mask, tw);
                         }
                     }
@@ -92,7 +92,7 @@ namespace Panels
                 GenerateInnerObj(ingredient);
             }
 
-            kimbapAnimation = GetKimbapAnimation(_kimbapUI);
+            kimbapAnimation = SetKimbapAnimation(_kimbapUI);
         }
 
         private void GenerateInnerObj(IngredientData data)
@@ -111,13 +111,18 @@ namespace Panels
         }
 #endregion
 
-        private Tween GetKimbapAnimation(RectTransform image)
+        public Tween GetIngredientAnimation(uint mask)
+        {
+            return ingredientAnimations.GetValueOrDefault(mask);
+        }
+
+        private Tween SetKimbapAnimation(RectTransform image)
         {
             Vector2 size = image.sizeDelta;
             Tween tw = image
                 .DOSizeDelta(new Vector2(120f, 120f), .3f)
                 .SetEase(Ease.InQuad)
-                .SetLoops(-1, LoopType.Yoyo)
+                .SetLoops(1, LoopType.Yoyo)
                 .SetAutoKill(false)
                 .OnPause(() =>
                 {
@@ -128,18 +133,23 @@ namespace Panels
             return tw;
         }
 
-        private Tween GetIngredientAnimation(Image image)
+        private Tween SetIngredientAnimation(Image image)
         {
             Vector2 size = image.rectTransform.sizeDelta;
-            Tween tw = image.rectTransform
-                .DOSizeDelta(new Vector2(100f, 100f), .3f)
-                .SetEase(Ease.InQuad)
-                .SetLoops(-1, LoopType.Yoyo)
-                .SetAutoKill(false)
-                .OnPause(() =>
+            Sequence tw = DOTween.Sequence()
+                .Append(
+                    image.rectTransform
+                    .DOSizeDelta(new Vector2(100f, 100f), .3f)
+                    .SetEase(Ease.InQuad))
+                .Append(
+                    image.rectTransform
+                        .DOSizeDelta(size, .3f)
+                        .SetEase(Ease.InQuad))
+                .OnKill(() =>
                 {
                     image.rectTransform.sizeDelta = size;
                 })
+                .SetAutoKill(false)
                 .Pause();
 
             return tw;

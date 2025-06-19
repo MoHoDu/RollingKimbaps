@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
+using EnumFiles;
 using GameDatas;
 using ManagerSystem;
 using ManagerSystem.InGame;
@@ -19,13 +23,32 @@ namespace Panels
         private Dictionary<OrderData, OrderUI> _orderUIList = new Dictionary<OrderData, OrderUI>();
         private List<OrderUI> _orderUIs => _orderUIList?.Values?.ToList();
         
-        // Animations
-        private Coroutine _anim;
-        private Dictionary<uint, bool> _ingredientAnims = new Dictionary<uint, bool>();
-        private Dictionary<OrderUI, bool> _recipeAnims = new Dictionary<OrderUI, bool>();
-        
         // 정보 
         private uint _requiredIngredients = 0;
+        private uint _collectionIdx = 0;
+        
+        // 애니메이션
+        Coroutine _animCoroutine;
+        HashSet<Tween> activeTweens = new HashSet<Tween>();
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+
+            OnClosedEvent += () =>
+            {
+                if (_animCoroutine != null)
+                {
+                    StopCoroutine(_animCoroutine);
+                    _animCoroutine = null;
+                }
+            };
+        }
+
+        private void OnDestroy()
+        {
+            OnClosedEvent?.Invoke();
+        }
 
         public void CheckNewOrderList(List<OrderData> orderList)
         {
@@ -50,14 +73,55 @@ namespace Panels
                 CanvasManager.Instance.ReleseUI(_orderUIList[orderData]);
                 _orderUIList.Remove(orderData);
             }
+            
+            RefreshAnimations();
         }
-
-        // TODO.
+        
+        /// <summary>
+        /// 재료 수집 목록을 보고 애니메이션을 동시 정지, 재생
+        /// </summary>
+        /// <param name="collection">수집된 재료 리스트</param>
         public void OnChangedCollection(HashSet<IngredientData> collection)
         {
-            // _requiredIngredients을 보면서 0인 값에 대한 애니메이션은 정지
-            // _requiredIngredients을 보면서 1인 값은 재생 목록에 추가
-            // 재생 목록을 동시 재생
+            _collectionIdx = 0;
+            foreach (var collect in collection)
+            {
+                _collectionIdx |= 1u << (int)collect.groupId;
+            }
+
+            RefreshAnimations();
+
+            if (_animCoroutine == null) _animCoroutine = StartCoroutine(PlayIngredientAnimations());
+        }
+
+        private void RefreshAnimations()
+        {
+            for (int i = 0; i < Enum.GetValues(typeof(EIngredientIndex)).Length; i++)
+            {
+                uint ingredientIndex = 1u << i;
+                
+                // 재료에 해당하는 모든 tween을 가져옴 
+                List<Tween> tweens = new List<Tween>();
+                foreach (var orderData in _orderUIList.Keys)
+                {
+                    if ((orderData.Mask & ingredientIndex) != 0)
+                    {
+                        OrderUI orderUI = _orderUIList[orderData];
+                        Tween tween = orderUI.GetIngredientAnimation(ingredientIndex);
+                        if (tween != null) tweens.Add(tween);
+                    }
+                }
+
+                bool isOn = (_collectionIdx & ingredientIndex) != 0;
+
+                foreach (var tween in tweens)
+                {
+                    // _requiredIngredients을 보면서 1인 값은 재생 목록에 추가
+                    if (isOn) activeTweens.Add(tween);
+                    // _requiredIngredients을 보면서 0인 값에 대한 애니메이션은 정지
+                    else activeTweens.Remove(tween);
+                }
+            }
         }
 
         private void GenerateOrderUI(OrderData order)
@@ -69,6 +133,41 @@ namespace Panels
                 rect.sizeDelta = new Vector2(400f, 150f);
             }
             _orderUIList[order] = newOrderUI;
+        }
+
+        private IEnumerator PlayIngredientAnimations()
+        {
+            do
+            {
+                Tween[] previousActiveTweens = activeTweens.ToArray();
+                foreach (Tween tween in previousActiveTweens)
+                {
+                    if (tween != null)
+                    {
+                        if (tween.IsActive())
+                        {
+                            if (tween.IsComplete()) tween.Restart();
+                            else tween.Play();
+                        }
+                        else
+                        {
+                            tween.Restart();
+                        }
+                    }
+                }
+
+                foreach (Tween tween in previousActiveTweens)
+                {
+                    if (tween != null && tween.IsActive())
+                    {
+                        yield return tween.WaitForCompletion();
+                    }
+                }
+
+                yield return new WaitForFixedUpdate();
+            } while (activeTweens.Count > 0);
+            
+            _animCoroutine = null;
         }
     }
 }

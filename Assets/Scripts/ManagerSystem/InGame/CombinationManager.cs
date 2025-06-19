@@ -282,7 +282,7 @@ namespace ManagerSystem.InGame
                 || curState == ECharacterState.DIED)
             {
                 // 모아둔 재료 삭제
-                ClearCollectedIngredients();
+                if (_collectedIngredients.Count != 0) ClearCollectedIngredients();
             }
             
             // 이동 거리를 확인 후 최소 거리 이상 갔다면 실행
