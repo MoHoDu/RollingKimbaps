@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -8,6 +9,7 @@ using InGame;
 using ManagerSystem.InGame;
 using Panels.Base;
 using Unity.VisualScripting;
+using Utils;
 using Sequence = DG.Tweening.Sequence;
 
 namespace ManagerSystem
@@ -34,7 +36,7 @@ namespace ManagerSystem
         public UIManager uiManager { get; private set; }
         
         // 정해진 시간마다 반복적으로 실행할 로직
-        private Sequence _tickSequence;
+        private Coroutine _tickSequence;
         private readonly float _tickTime = 1f;
 
         public override void Initialize(params object[] datas)
@@ -127,23 +129,23 @@ namespace ManagerSystem
             this.characterHandler?.OnStartGame();
             
             // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
-            _tickSequence = DOTween.Sequence()
-                .AppendInterval(_tickTime)
-                .AppendCallback(() =>
+            _tickSequence = CoroutineHelper.StartNewCoroutine(Tick());
+        }
+
+        private IEnumerator Tick()
+        {
+            do
+            {
+                if (_gameStatus is EGameStatus.PLAY)
                 {
-                    if (_gameStatus is EGameStatus.PLAY)
+                    foreach (var manager in _managers)
                     {
-                        foreach (var manager in _managers)
-                        {
-                            manager.Tick();
-                        }
+                        manager.Tick();
                     }
-                    else if (_gameStatus is EGameStatus.WAIT or EGameStatus.RESULT)
-                    {
-                        _tickSequence?.Kill();
-                    }
-                })
-                .SetLoops(-1);
+                }
+
+                yield return new WaitForSeconds(1f);
+            } while (_gameStatus is EGameStatus.PLAY or EGameStatus.PAUSE);
         }
 
         public void StopGame()
