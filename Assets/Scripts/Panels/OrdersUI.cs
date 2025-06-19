@@ -102,24 +102,37 @@ namespace Panels
                 
                 // 재료에 해당하는 모든 tween을 가져옴 
                 List<Tween> tweens = new List<Tween>();
+                List<Tween> disactiveTweens = new List<Tween>();
                 foreach (var orderData in _orderUIList.Keys)
                 {
                     if ((orderData.Mask & ingredientIndex) != 0)
                     {
                         OrderUI orderUI = _orderUIList[orderData];
                         Tween tween = orderUI.GetIngredientAnimation(ingredientIndex);
-                        if (tween != null) tweens.Add(tween);
+                        if (tween != null)
+                        {
+                            // 오더에 불필요한 재료를 수집한 경우에는 정지 
+                            uint extraCollected = _collectionIdx & ~orderData.Mask;
+                            if (extraCollected == 0) tweens.Add(tween);
+                            else disactiveTweens.Add(tween);
+                        }
                     }
                 }
 
                 bool isOn = (_collectionIdx & ingredientIndex) != 0;
-
+                
                 foreach (var tween in tweens)
                 {
                     // _requiredIngredients을 보면서 1인 값은 재생 목록에 추가
                     if (isOn) activeTweens.Add(tween);
                     // _requiredIngredients을 보면서 0인 값에 대한 애니메이션은 정지
                     else activeTweens.Remove(tween);
+                }
+
+                // 잘못된 재료가 들어간 오더의 애니메이션은 정지
+                foreach (var tween in disactiveTweens)
+                {
+                    activeTweens.Remove(tween);
                 }
             }
         }
