@@ -103,11 +103,12 @@ namespace Panels
         public async UniTask OnDamaged()
         {
             body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
-            Color baseClolor = bodyRenderer.color;
+            Color baseColor = bodyRenderer.color;
+            baseColor.a = 1f;
             Tween tween = bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(5, LoopType.Yoyo);
             
             await tween.AsyncWaitForCompletion();
-            bodyRenderer.color = baseClolor;
+            bodyRenderer.color = baseColor;
             body.gameObject.layer = LayerMask.NameToLayer("character");
         }
 
