@@ -41,7 +41,7 @@ jobs:
         if: always()
         uses: Ilshidur/action-discord@master
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
           args: |
             🚦 **Unity Test 결과 알림**
@@ -50,16 +50,3 @@ jobs:
             - 커밋: ${{ github.sha }}
             - [워크플로우 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             - 결과: **${{ job.status }}**
-
-      - name: PR에 테스트 실패 메시지 남기기
-        if: failure()
-        uses: peter-evans/create-or-update-comment@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            ❌ **Unity Test가 실패했습니다!**
-            - 워크플로우: [자세히 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            - 브랜치: `${{ github.ref }}`
-            - 커밋: `${{ github.sha }}`
-          edit-mode: replace
