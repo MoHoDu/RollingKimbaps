@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -10,8 +11,11 @@ namespace ManagerSystem
     public class CanvasManager : MonoBehaviour
     {
         private Dictionary<string, CanvasUI> uiDict = new Dictionary<string, CanvasUI>();
+        private Dictionary<string, int> uiCountDict = new Dictionary<string, int>();
 
         private Canvas canvas;
+        private SafeArea safeArea;
+        private Transform _defaultParent;       // 생성되는 CanvasUI 디폴트 부모
 
         private static CanvasManager instance;
 
@@ -39,6 +43,38 @@ namespace ManagerSystem
             // 존재하는 캔버스와 RectTransform 가져오기
             MainRect = GetComponent<RectTransform>();
             canvas = GetComponent<Canvas>();
+            
+            // SafeArea 가져오기
+            safeArea = transform.GetComponentInChildren<SafeArea>();
+            if (safeArea == null)
+            {
+                GameObject go = new GameObject("SafeArea", typeof(SafeArea), typeof(RectTransform));
+                RectTransform rt = go.GetComponent<RectTransform>();
+                safeArea = go.GetComponent<SafeArea>();
+
+                go.transform.SetParent(transform);
+                rt.pivot = new Vector2(0.5f, 0.5f);
+                rt.anchorMin = new Vector2(0f, 0f);
+                rt.anchorMax = new Vector2(1f, 1f);
+
+                safeArea.SetSafeArea();
+            }
+            
+            // 디폴트 부모 설정
+            _defaultParent = safeArea.transform;
+
+            // SafeArea 아래로 하위 오브젝트 정렬
+            List<Transform> childTr = new();
+            foreach (Transform child in transform)
+            {
+                if (child == safeArea.transform) continue;
+                childTr.Add(child);
+            }
+
+            foreach (Transform child in childTr)
+            {
+                child.SetParent(safeArea.transform, false);
+            }
 
             // Scaler 조절 
             CanvasScaler canvasScaler = GetComponent<CanvasScaler>();
@@ -70,20 +106,15 @@ namespace ManagerSystem
         /// <param name="infos">세팅이 필요한 정보</param>
         /// <typeparam name="T">UI 컴포넌트</typeparam>
         /// <returns>생성된 UI</returns>
-        public T AddCanvasUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
+        public T AddCanvasUI<T>(string uiName = null, Transform parent = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             // uiName이 Null이라면, 컴포넌트 타입의 이름으로 합니다.
             uiName ??= typeof(T).Name;
 
-            // 이미 켜져 있다면, 정지
-            if (uiDict.TryGetValue(uiName, out CanvasUI ui))
-            {
-                return null;
-            }
-
             // 리소스에서 이름으로 UI프리팹 검색, 없다면 정지
             string uiPath = $"{BaseValues.CanvasUIDirectory}/{uiName}";
-            GameObject go = Managers.Resource.Instantiate(uiPath, transform);
+            parent ??= _defaultParent;
+            GameObject go = Managers.Resource.Instantiate(uiPath, parent);
             if (go is null)
             {
                 Debug.LogWarning($"[Canvas warn] Fail to Instantiate : {uiName}");
@@ -99,14 +130,38 @@ namespace ManagerSystem
 
             // 캔버스 메니저 하위로 옮김
             RectTransform rect = go.GetComponent<RectTransform>();
-            rect.SetParent(transform, false);
+            Vector2 size = rect.sizeDelta;
+            rect.SetParent(parent, false);
+            rect.sizeDelta = size;
 
             // 캔버스에서 해당 UI의 깊이 설정
             int depth = baseDepth + (uiDict.Count * gap);
             canvasUI.SetUIDepth(depth);
 
+            // uiCountDict에서 uiName으로 카운트 가져오기
+            int uiCount = 1;
+            if (uiCountDict.TryGetValue(uiName, out uiCount))
+            {
+                // 카운트가 있다면, 카운트 증가
+                uiCount++;
+                uiCountDict[uiName] = uiCount;
+            }
+            else
+            {
+                // 없다면, 새로 추가
+                uiCountDict.Add(uiName, 1);
+            }
+
             // UI목록에 추가 
-            uiDict.Add(uiName, canvasUI);
+            if (!uiDict.TryAdd(uiName, canvasUI))
+            {
+                // $"{uiName}{(카운트 + 1)}"을 키값으로 uiDict에 ui 추가
+                string key = $"{uiName}@{uiCount}";
+                if (!uiDict.ContainsKey(key))
+                {
+                    uiDict.Add(key, canvasUI);
+                }
+            }
 
             // 만약 설정해야 하는 정보가 있다면, 정보를 UI에 등록 
             if (infos != null)
@@ -135,6 +190,11 @@ namespace ManagerSystem
         public void RemoveCanvasUI(string uiName)
         {
             if (uiDict.Count == 0) return;
+
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                uiName = $"{uiName}@{uiCount}";
+            }
 
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
@@ -174,6 +234,31 @@ namespace ManagerSystem
             // UI 리스트에서 해당 키를 제거
             uiDict.Remove(uiData.Key);
 
+            // 제거된 만큼 카운트 감소
+            // 만약 키값에 @숫자가 있다면, 해당 숫자만 가져와서 uiCountDict을 업데이트
+            string key = uiData.Key;
+            if (key.Contains('@'))
+            {
+                string uiName = key.Split('@')[0];
+                if (uiCountDict.TryGetValue(uiName, out int uiCount))
+                {
+                    uiCount--;
+                    if (uiCount <= 0)
+                    {
+                        uiCountDict.Remove(uiName);
+                    }
+                    else
+                    {
+                        uiCountDict[uiName] = uiCount;
+                    }
+                }
+            }
+            else
+            {
+                // 키값에 @숫자가 없다면, 1개 이므로 그냥 제거
+                uiCountDict.Remove(key);
+            }
+
             // 빠지는 UI들로 인하여 UI Sorting 재조정
             foreach (var ui in uiDict)
             {
@@ -198,6 +283,15 @@ namespace ManagerSystem
             // uiName이 Null인 경우 T 타입 이름으로 검색
             uiName ??= typeof(T).Name;
 
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                // uiCount가 1보다 크면, @숫자를 붙여서 검색
+                if (uiCount > 1)
+                {
+                    uiName = $"{uiName}@{uiCount}";
+                }
+            }
+
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
                 return ui.GetComponent<T>();
@@ -213,13 +307,13 @@ namespace ManagerSystem
         /// <param name="infos">UI에 설정할 데이터들</param>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public T GetUIOrCreateUI<T>(string uiName = null, [CanBeNull] params object[] infos) where T : CanvasUI
+        public T GetUIOrCreateUI<T>(string uiName = null, Transform parent = null, [CanBeNull] params object[] infos) where T : CanvasUI
         {
             T ui = GetUI<T>(uiName);
 
             if (ui is null)
             {
-                ui = AddCanvasUI<T>(uiName, infos);
+                ui = AddCanvasUI<T>(uiName, parent, infos);
             }
 
             return ui;
@@ -232,6 +326,15 @@ namespace ManagerSystem
         /// <returns>해당하는 UI</returns>
         public CanvasUI GetUI(string uiName)
         {
+            if (uiCountDict.TryGetValue(uiName, out int uiCount))
+            {
+                // uiCount가 1보다 크면, @숫자를 붙여서 검색
+                if (uiCount > 1)
+                {
+                    uiName = $"{uiName}@{uiCount}";
+                }
+            }
+
             if (uiDict.TryGetValue(uiName, out CanvasUI ui))
             {
                 return ui.GetComponent<CanvasUI>();

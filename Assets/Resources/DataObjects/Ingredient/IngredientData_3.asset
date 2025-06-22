@@ -15,10 +15,14 @@ MonoBehaviour:
   id: 3
   displayName: "\uACE0\uAE09 \uCE58\uC988"
   icon: {fileID: 0}
-  rarity: 3
+  rarity: 1000
   description: "\uBC29\uBAA9\uD55C \uC816\uC18C\uC5D0\uAC8C\uC11C \uC5BB\uC740 \uACE0\uAE09
     \uCE58\uC988."
-  groupId: cheese
+  groupId: 3
+  prapID: 4
   type: 4
   grade: 3
   satisfy: 5
+  placedPath: Prefabs/Ingredients/Placed/Cheese
+  innerPath: Prefabs/Ingredients/Inner/Cheese
+  position: {x: 0, y: 0, z: 0}

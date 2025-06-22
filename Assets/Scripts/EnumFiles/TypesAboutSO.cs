@@ -14,6 +14,7 @@ namespace EnumFiles
         Ingredient,
         Recipe,
         Skill,
+        Prap
     }
 
     public enum IngredientType
@@ -38,11 +39,11 @@ namespace EnumFiles
 
     public enum Rarity
     {
-        Common,
-        Uncommon,
-        Rare,
-        Epic,
-        Legendary,
+        Common = 100,
+        Uncommon = 500,
+        Rare = 800,
+        Epic = 1000,
+        Legendary = 2000,
     }
 
     public enum SkillKey

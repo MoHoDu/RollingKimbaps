@@ -53,17 +53,19 @@ namespace Panels
                 newSave.saveMinute = DateTime.Now.Minute;
 
                 onSaveButtonClicked?.Invoke(newSave);
+                
+                SaveData = newSave;
             }
             
             // 게임 씬으로 진입
-            TempSetGameScene();
+            TempSetGameScene(SaveData);
 
             // SaveData를 게임 컨트롤러에 데이터 적용
         }
         
-        private void TempSetGameScene()
+        private void TempSetGameScene(SaveData save)
         {
-            SceneManager.LoadScene("GameScene");
+            Managers.Stage.LoadSceneAsync("GameScene", save);
         }
     }
 }

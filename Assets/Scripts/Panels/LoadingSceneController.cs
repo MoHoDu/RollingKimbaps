@@ -38,20 +38,11 @@ namespace Panels
 
         public async UniTaskVoid StartLoadData()
         {
-            // AndroidPermissionChecker.SetCallbacks(SetUIOnDeniedPermission, SetUIOnDeniedPermissionAndDoNotAskAgain);
-            
             await UniTask.Delay(1000);
-            DataContainer.LoadDataFromSO(SetBarStatusOnLoadSO, TempSetMainScene).Forget();
-
-            // 외부 저장소 사용 X -> playerpref
-            // AndroidPermissionChecker.InitPermission(SetBarStatusOnRequestPermissions, (isAccepted) =>
-            // {
-            //     if (isAccepted)
-            //         DataContainer.LoadDataFromSO(SetBarStatusOnLoadSO, TempSetMainScene).Forget();
-            // }).Forget();
+            DataContainer.LoadDataFromSO(SetBarStatusOnLoadSO, SetMainScene).Forget();
         }
 
-        private void TempSetMainScene()
+        private void SetMainScene()
         {
             SceneManager.LoadScene("MainScene");
         }

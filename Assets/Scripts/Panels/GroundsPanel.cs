@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using GameDatas;
 using ManagerSystem;
 using Panels.Base;
 using UnityEngine;
@@ -26,17 +27,37 @@ namespace Panels
 
         protected bool _playGame = true;
         protected Coroutine _coroutine;
-        
-        protected GroundBuilder _groundBuilder = new GroundBuilder();
+
+        private GroundBuilder _builder;
         
         [Range(0, 1)] public float Hardness { get; set; } = 0f;
 
-        public void StartGame()
+        public void StartGame(RaceStatus raceStatus)
         {
+            // 오더가 들어왔을 때에 세팅하는 함수 연결 
+            // raceStatus.SetFunction(TryPlacePerson);
+            
             // 처음 시작 지점의 평지 생성 
             AddGround(_startPointWidth);
 
             _coroutine = StartCoroutine(DestroyAndInstantiateGrounds());
+        }
+
+        public (bool isAvailable, OrdererPrap orderer) TryPlacePerson(float posX)
+        {
+            (bool isAvailable, OrdererPrap orderer) result = (false, null);
+            
+            List<GroundUI> availableGrounds = grounds.Where(g => g.StartPos <= posX && g.EndPos >= posX).ToList();
+
+            if (availableGrounds.Any())
+            {
+                result.isAvailable = true;
+                
+                GroundUI selectedGround = availableGrounds.First();
+                result.orderer = selectedGround.SetPerson(posX);
+            }
+            
+            return result;
         }
 
         protected void AddGround(int tileCount)
@@ -53,8 +74,8 @@ namespace Panels
                 newGroundPos = lastGroundEndPos + (Vector3.right * space);
             }
             
-            _groundBuilder.InitBuilder(transform);
-            GroundUI newGround = _groundBuilder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
+            _builder.InitBuilder(transform);
+            GroundUI newGround = _builder.SetGroundWidth(tileCount).SetLocalPosition(newGroundPos).Build();
             newGround.name = _groundObjName;
             
             if (newGround != null) grounds.Add(newGround);

@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: IngredientData_8
   m_EditorClassIdentifier: 
   id: 8
-  displayName: "\uC6B0\uC5C9"
+  displayName: "\uB2E8\uBB34\uC9C0"
   icon: {fileID: 0}
-  rarity: 0
-  description: "\uC2E0\uC120\uD55C \uC6B0\uC5C9."
-  groupId: burdock
+  rarity: 100
+  description: "\uAE40\uBC25\uC758 \uC0C1\uD07C\uD55C \uB9DB\uC744 \uC0B4\uB824\uC8FC\uB294
+    \uB2E8\uBB34\uC9C0."
+  groupId: 4
+  prapID: 9
   type: 0
   grade: 1
   satisfy: 0
+  placedPath: Prefabs/Ingredients/Placed/Pickled_radish
+  innerPath: Prefabs/Ingredients/Inner/Pickled_radish
+  position: {x: 0, y: 0, z: 0}

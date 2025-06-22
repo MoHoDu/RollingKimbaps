@@ -12,6 +12,8 @@ namespace Panels
     public class GroundUI : BindUI
     {
         [Bind("Obstacles")] Transform _obstacleParent;
+        [Bind("Persons")] Transform _personParent;
+        
         [Bind("Leftside")] GameObject _leftside;
         [Bind("Middle")] GameObject _middle;
         [Bind("Rightside")] GameObject _rightside;
@@ -21,6 +23,11 @@ namespace Panels
         public int MiddleGroundsCount { get; private set; } = 1;
         public int TileCount => MiddleGroundsCount + 2;
         public float GroundWidth => TileCount * _tileWidth;
+        
+        // 위치 값 
+        public float StartPos => transform.position.x;
+        public float EndPos => _rightside.transform.position.x;
+        
 
         private readonly float _tileWidth = 2.9f;
         
@@ -34,12 +41,37 @@ namespace Panels
             "Prefabs/Obstacles/tree_big",
             "Prefabs/Obstacles/tree_small"
         };
+        
+        private readonly string[] _personPrefabNames =
+        {
+            "Prefabs/Persons/person_01", 
+            "Prefabs/Persons/person_02", 
+            "Prefabs/Persons/person_03",
+            "Prefabs/Persons/person_04",
+            "Prefabs/Persons/person_05",
+            "Prefabs/Persons/person_06"
+        };
 
         protected override void Initialize()
         {
             base.Initialize();
             
             _middleGrounds.Add(_middle);
+        }
+
+        public OrdererPrap SetPerson(float posX)
+        {
+            string prefabPath = _personPrefabNames[Random.Range(0, _personPrefabNames.Length)];
+            GameObject go = Managers.Resource.Instantiate(prefabPath, _personParent);
+
+            if (go.TryGetComponent<OrdererPrap>(out OrdererPrap orderer))
+            {
+                go.transform.position = new Vector3(posX, 0, 0);
+                return orderer;
+            }
+            
+            Managers.Resource.Destroy(go);
+            return null;
         }
 
         public List<Vector3> SetObstacles()

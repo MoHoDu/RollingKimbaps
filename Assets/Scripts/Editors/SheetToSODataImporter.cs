@@ -10,6 +10,7 @@ using System;
 using Unity.EditorCoroutines.Editor;
 using EnumFiles;
 using System.Collections.Generic;
+using Utils;
 #endif
 
 public enum SheetType
@@ -18,6 +19,7 @@ public enum SheetType
     Ingredient,
     Recipe,
     Skill,
+    Prap,
 }
 
 #if UNITY_EDITOR
@@ -25,7 +27,7 @@ public class SheetToSODataImporter : EditorWindow
 {
     // Base URL for CSV export of a specific sheet via Google’s gviz API
     private string csvUrl = "https://docs.google.com/spreadsheets/d/1H3YBSqqe-uq7tG-rQWrHeaIxmsuK3nrIjAMwh_gAiIc/export?format=csv";
-    private string outputFolder = "Assets/Resources/DataObjects";
+    private const string outputFolder = "Assets/Resources/DataObjects";
     private SheetType sheetType = SheetType.Ingredient;
     private SheetType currentSheetType = SheetType.Ingredient;
     private static readonly Dictionary<SheetType, string> sheetTypeToSheetGids = new Dictionary<SheetType, string>
@@ -33,6 +35,7 @@ public class SheetToSODataImporter : EditorWindow
         { SheetType.Ingredient, "0" },
         { SheetType.Recipe, "141497470" },
         { SheetType.Skill, "1804540317" },
+        { SheetType.Prap, "1960134854" }
     };
 
     // Constructs the full CSV URL for the selected sheet
@@ -54,6 +57,8 @@ public class SheetToSODataImporter : EditorWindow
                 return ScriptableObject.CreateInstance<RecipeData>();
             case SheetType.Skill:
                 return ScriptableObject.CreateInstance<SkillData>();
+            case SheetType.Prap:
+                return ScriptableObject.CreateInstance<PrapData>();
             default:
                 return null;
         }
@@ -69,7 +74,6 @@ public class SheetToSODataImporter : EditorWindow
     {
         GUILayout.Label("Google Sheet to ScriptableObjects", EditorStyles.boldLabel);
         csvUrl = EditorGUILayout.TextField("CSV URL", csvUrl);
-        outputFolder = "Assets/DataObjects";
         sheetType = (SheetType)EditorGUILayout.EnumPopup("Sheet Type", sheetType);
 
         GUILayout.Space(20);
@@ -178,7 +182,7 @@ public class SheetToSODataImporter : EditorWindow
         var headers = lines[0].Split(',');
         for (int i = 1; i < lines.Length; i++)
         {
-            var cols = lines[i].Split(',');
+            var cols = CsvUtil.SplitCsvLine(lines[i]);
             if (cols.Length < headers.Length) continue;
 
             var so = CreateSO();
@@ -189,7 +193,7 @@ public class SheetToSODataImporter : EditorWindow
                 SetValuesInSO(so, header, value);
             }
 
-            var assetPathOut = Path.Combine(outputDataFolder, currentSheetType.ToString() + "Data" + "_" + so.id + ".asset");
+            var assetPathOut = Path.Combine(outputDataFolder, currentSheetType.ToString() + "Data" + "_" + so.id + ".asset").Replace("\\", "/");
             AssetDatabase.CreateAsset(so, assetPathOut);
         }
 
@@ -208,11 +212,11 @@ public class SheetToSODataImporter : EditorWindow
                 case "displayName": so.displayName = value; break;
                 case "rarity": so.rarity = (Rarity)Enum.Parse(typeof(Rarity), value); break;
                 case "path":
-                    {
-                        string assetPath = Path.Combine("Assets/Resources", value) + ".png";
-                        var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-                        so.icon = sprite;
-                    }
+                {
+                    string assetPath = Path.Combine("Assets/Resources", value) + ".png";
+                    var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+                    so.icon = sprite;
+                }
                     break;
                 case "description": so.description = value; break;
             }
@@ -222,9 +226,15 @@ public class SheetToSODataImporter : EditorWindow
                 switch (header)
                 {
                     case "type": ingredient.type = (IngredientType)Enum.Parse(typeof(IngredientType), value); break;
-                    case "groupId": ingredient.groupId = value; break;
+                    case "groupId":
+                        EIngredientIndex index = (EIngredientIndex)Enum.Parse(typeof(EIngredientIndex), value);
+                        ingredient.groupId = index;
+                        break;
+                    case "prapId": ingredient.prapID = value; break;
                     case "grade": ingredient.grade = int.Parse(value); break;
                     case "satisfy": ingredient.satisfy = int.Parse(value); break;
+                    case "placedPath": ingredient.placedPath = value; break;
+                    case "innerPath": ingredient.innerPath = value; break;
                 }
             }
             else if (so is RecipeData recipe)
@@ -236,12 +246,18 @@ public class SheetToSODataImporter : EditorWindow
                     case "price": recipe.price = int.Parse(value); break;
                     case "satisfy": recipe.satisfy = int.Parse(value); break;
                     case "requiredIngredients":
-                        recipe.requiredIngredients = new List<string>();
-                        string[] ingredientIds = value.Split('+');
+                        recipe.requiredIngredients = new List<EIngredientIndex>();
+                        string[] ingredientIds = CsvUtil.SplitCsvLine(value);
                         foreach (string ingredientId in ingredientIds)
                         {
-                            recipe.requiredIngredients.Add(ingredientId);
+                            string replaced = ingredientId.Trim();
+                            EIngredientIndex index = (EIngredientIndex)Enum.Parse(typeof(EIngredientIndex), replaced);
+                            recipe.requiredIngredients.Add(index);
                         }
+
+                        break;
+                    case "appearanceMinDistance":
+                        recipe.appearanceMinDistance = float.Parse(value);
                         break;
                 }
             }
@@ -250,6 +266,19 @@ public class SheetToSODataImporter : EditorWindow
                 switch (header)
                 {
                     case "key": skill.key = (SkillKey)Enum.Parse(typeof(SkillKey), value); break;
+                }
+            }
+            else if (so is PrapData prap)
+            {
+                switch (header)
+                {
+                    case "type":
+                        prap.Type = (EPrapType)Enum.Parse(typeof(EPrapType), value);
+                        break;
+                    case "appearanceDistance":
+                        prap.AppearanceDistance = int.Parse(value); break;
+                    case "path":
+                        prap.Path = value; break;
                 }
             }
         }

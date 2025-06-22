@@ -13,12 +13,15 @@ MonoBehaviour:
   m_Name: IngredientData_6
   m_EditorClassIdentifier: 
   id: 6
-  displayName: "\uACE0\uAE09 \uD584"
+  displayName: "\uC624\uC774"
   icon: {fileID: 0}
-  rarity: 2
-  description: "\uAD6D\uB0B4\uC0B0 \uB3FC\uC9C0 \uACE0\uAE30\uB85C \uB9CC\uB4E0 \uC9C8
-    \uC88B\uC740 \uD584."
-  groupId: ham
-  type: 1
-  grade: 2
-  satisfy: 5
+  rarity: 100
+  description: "\uC2E0\uC120\uD55C \uC624\uC774."
+  groupId: 1
+  prapID: 7
+  type: 0
+  grade: 1
+  satisfy: 0
+  placedPath: Prefabs/Ingredients/Placed/Cucumber
+  innerPath: Prefabs/Ingredients/Inner/Cucumber
+  position: {x: 0, y: 0, z: 0}

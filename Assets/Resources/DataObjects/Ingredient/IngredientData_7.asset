@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: IngredientData_7
   m_EditorClassIdentifier: 
   id: 7
-  displayName: "\uC624\uC774"
+  displayName: "\uC6B0\uC5C9"
   icon: {fileID: 0}
-  rarity: 0
-  description: "\uC2E0\uC120\uD55C \uC624\uC774."
-  groupId: cucumber
+  rarity: 100
+  description: "\uC2E0\uC120\uD55C \uC6B0\uC5C9."
+  groupId: 5
+  prapID: 8
   type: 0
   grade: 1
   satisfy: 0
+  placedPath: Prefabs/Ingredients/Placed/Burdock
+  innerPath: Prefabs/Ingredients/Inner/Burdock
+  position: {x: 0, y: 0, z: 0}

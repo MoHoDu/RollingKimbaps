@@ -13,17 +13,14 @@ MonoBehaviour:
   m_Name: RecipeData_0
   m_EditorClassIdentifier: 
   id: 0
-  displayName: "\uAE30\uBCF8 \uAE40\uBC25"
+  displayName: "\uCDA9\uBB34 \uAE40\uBC25"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uAC00\uC7A5 \uAE30\uBCF8\uC801\uC778 \uAE40\uBC25. \uD638\uBD88\uD638
-    \uC5C6\uC774 \uBAA8\uB450 \uC88B\uC544\uD55C\uB2E4."
-  groupId: kimbap
+  description: "\uBC25\uACFC \uB2E8\uBB34\uC9C0\uB9CC \uC788\uC9C0\uB9CC \uC624\uB7AB\uB3D9\uC548
+    \uC0AC\uB791 \uBC1B\uC740 \uC804\uC124\uC801\uC778 \uAE40\uBC25"
+  groupId: Chungmu Kimbap
   grade: 1
   price: 1000
   satisfy: 5
-  requiredIngredients:
-  - carrot
-  - rice
-  - ham
-  - pickled_radish
+  requiredIngredients: 04000000
+  appearanceMinDistance: 0

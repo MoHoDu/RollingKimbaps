@@ -24,8 +24,43 @@ namespace EnumFiles
 
     public enum EInputType
     {
-        JUMP = 0,
-        PAUSE = 1,
-        RESUME = 2,
+        JUMP = 0,   // 점프 입력
+        SUBMIT = 1, // 서빙
+        PAUSE = 2,  // 멈춤
+        RESUME = 3, // 재개
+        TEST,
+        LOG,        // 로그
+    }
+
+    public enum EPrapType
+    {
+        CHARACTER,
+        GROUND,
+        OBSTACLE,
+        INGREDIENT,
+        BACKGROUND,
+        FOREOBJECT,
+        FRONTOBJECT,
+        MIDDLEOBJECT,
+        BACKOBJECT,
+        BACKTERRAIN,
+        ORDERER,
+    }
+
+    public enum ECharacterState
+    {
+        WAITFORREVIE,
+        NORMAL,
+        DIED
+    }
+
+    public enum EIngredientIndex
+    {
+        CARROT = 0,
+        CUCUMBER,
+        HAM,
+        CHEESE,
+        PICKLED_RADISH,
+        BURDOCK,
     }
 }

@@ -13,11 +13,16 @@ MonoBehaviour:
   m_Name: IngredientData_5
   m_EditorClassIdentifier: 
   id: 5
-  displayName: "\uD584"
+  displayName: "\uACE0\uAE09 \uD584"
   icon: {fileID: 0}
-  rarity: 0
-  description: "\uAE40\uBC25\uC6A9 \uD584."
-  groupId: ham
+  rarity: 800
+  description: "\uAD6D\uB0B4\uC0B0 \uB3FC\uC9C0 \uACE0\uAE30\uB85C \uB9CC\uB4E0 \uC9C8
+    \uC88B\uC740 \uD584."
+  groupId: 2
+  prapID: 6
   type: 1
-  grade: 1
-  satisfy: 0
+  grade: 2
+  satisfy: 5
+  placedPath: Prefabs/Ingredients/Placed/Ham
+  innerPath: Prefabs/Ingredients/Inner/Ham
+  position: {x: 0, y: 0, z: 0}

@@ -10,6 +10,7 @@ namespace ManagerSystem
 {
     public static class DataContainer
     {
+        public static PrapContainer Praps { get; private set; } = new();
         public static SaveDatas SaveFiles { get; private set; } = new();
         public static IngredientDatas IngredientDatas { get; private set; } = new();
         public static RecipeDatas RecipeDatas { get; private set; } = new();
