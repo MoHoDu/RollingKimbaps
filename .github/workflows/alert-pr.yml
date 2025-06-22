@@ -33,7 +33,13 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
         run: |
           USAGE_API="https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/usage"
-          USAGE=$(curl -s -H "Authorization: token $GH_TOKEN" "$USAGE_API" | jq '.billable.Ubuntu.minutes_used')
+          API_RESULT=$(curl -s -H "Authorization: token $GH_TOKEN" "$USAGE_API")
+          echo "$API_RESULT"
+
+          USAGE=$(echo "$API_RESULT" | jq '[.billable[]?.minutes_used] | add')
+          if [ -z "$USAGE" ] || [ "$USAGE" = "null" ]; then
+            USAGE=0
+          fi
           MAX=2000
           REMAIN=$((MAX-USAGE))
           PERCENT=$((USAGE*100/MAX))
