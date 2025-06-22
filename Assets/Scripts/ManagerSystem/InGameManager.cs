@@ -33,7 +33,7 @@ namespace ManagerSystem
         public ResourceManager Resource { get; private set; }
         public UIManager UI { get; private set; }
         
-        // 정해진 시간마다 반복적으로 실행할 로직
+        // 정해진 시간마다 반복적으로 실행할 로직 
         private Coroutine _tickSequence;
         private readonly float _tickTime = 1f;
 
