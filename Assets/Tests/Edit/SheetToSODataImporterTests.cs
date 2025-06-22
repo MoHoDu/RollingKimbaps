@@ -3,13 +3,13 @@ using NUnit.Framework;
 using System.Collections;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.TestTools; // 에디터 테스트
+using UnityEngine.TestTools; // 에디터 테스트
 using System.IO;
 using System.Linq;
 
 public class SheetToSODataImporterTests
 {
-    [UnityEditor.TestTools.UnityTest]
+    [UnityTest]
     public IEnumerator DownloadAllAndGenerateFromUrl_CreatesSOAssetsForAllSheetTypes()
     {
         // 준비: 테스트용 임포터 인스턴스 생성

@@ -7,7 +7,6 @@ using GameDatas;
 using InGame;
 using ManagerSystem.InGame;
 using Panels.Base;
-using Unity.VisualScripting;
 using Utils;
 
 namespace ManagerSystem
@@ -86,7 +85,8 @@ namespace ManagerSystem
                 if (characterPrap is null) return false;
 
                 Prap _prap = Prap.CreatePrap(characterPrap, new Vector3(0, 0, 0), UI.InGamePanel.transform);
-                characterHandler = _prap.GetOrAddComponent<CharacterHandler>();
+                characterHandler = _prap.GetComponent<CharacterHandler>();
+                if (characterHandler is null) characterHandler = _prap.gameObject.AddComponent<CharacterHandler>();
                 
                 // 초기화 
                 characterHandler.Initialize(this);
