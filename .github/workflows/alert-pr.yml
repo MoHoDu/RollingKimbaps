@@ -28,7 +28,6 @@ jobs:
 
       - name: github Actions 무료분 사용량 체크 및 Discord 알림
         if: always()
-        uses: Ilshidur/action-discord@master
         env:
           GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_URL }}
