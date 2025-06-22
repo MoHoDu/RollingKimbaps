@@ -15,7 +15,9 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: ./Library
-          key: Library-RollingKimbaps
+          key: Library-RollingKimbaps-${{ runner.os }}-${{ hashFiles('**/Assets/**', '**/Packages/**', '**/ProjectSettings/**') }}
+          restore-keys: |
+            Library-RollingKimbaps-
 
       - name: Run Unity Test Runner
         id: unity-tests
@@ -38,9 +40,10 @@ jobs:
       - name: Send Discord Notification
         if: always()
         uses: Ilshidur/action-discord@master
+        env:
+          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
         with:
-          webhook: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          message: |
+          args: |
             🚦 **Unity Test 결과 알림**
             - 프로젝트: ${{ github.repository }}
             - 브랜치: ${{ github.ref }}
@@ -59,3 +62,4 @@ jobs:
             - 워크플로우: [자세히 보기](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
             - 브랜치: `${{ github.ref }}`
             - 커밋: `${{ github.sha }}`
+          edit-mode: replace
