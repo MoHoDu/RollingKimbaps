@@ -2,8 +2,8 @@ using Cysharp.Threading.Tasks;
 using EnumFiles;
 using GameDatas;
 using ManagerSystem.InGame;
-using Panels.Base;
-using Panels.Spawn;
+using UIs.Base;
+using UIs.Spawn;
 
 namespace InGame.PrapManagement
 {

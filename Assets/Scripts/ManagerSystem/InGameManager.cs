@@ -6,8 +6,12 @@ using EnumFiles;
 using GameDatas;
 using InGame;
 using ManagerSystem.InGame;
-using Panels.Base;
+using UIs.Base;
 using Utils;
+using ManagerSystem.Base;
+using ManagerSystem.UIs;
+using UIs.Spawn;
+
 
 namespace ManagerSystem
 {
@@ -19,20 +23,20 @@ namespace ManagerSystem
         public PrapManager Prap { get; private set; } = new();
         public CombinationManager Combination { get; private set; } = new();
         public InGameUIManager GameUI { get; private set; } = new();
-        
+
         private HashSet<IBaseManager> _managers = new();
-        
+
         private EGameStatus _gameStatus => Status.GameStatus;
 
         // 캐릭터
         private CharacterHandler characterHandler;
-        
+
         // DI
         public StageManager Stage { get; private set; }
         public InputManager Input { get; private set; }
         public ResourceManager Resource { get; private set; }
         public UIManager UI { get; private set; }
-        
+
         // 정해진 시간마다 반복적으로 실행할 로직 
         private Coroutine _tickSequence;
         private readonly float _tickTime = 1f;
@@ -43,26 +47,42 @@ namespace ManagerSystem
 
             ScreenScaler.Initialize();
 
+            // 매니저 재정의
+            ReGenerateManagers();
+
             Stage = Managers.Stage;
             Resource = Managers.Resource;
             UI = Managers.UI;
-            
+
             Stage.AddEventAfterSceneOpened("GameScene", (_) => InitManagers());
+        }
+
+        private void ReGenerateManagers()
+        {
+            _managers.Clear();
+
+            Status = new StatusManager();
+            Flow = new FlowManager();
+            Prap = new PrapManager();
+            Combination = new CombinationManager();
+            GameUI = new InGameUIManager();
+
+            characterHandler = null;
         }
 
         public async void InitManagers()
         {
             Input = InputManager.Instance;
-            
+
             Status.Initialize();
             GameUI.Initialize(this);
 
             FlowLayer[] flowLayers = Stage?.FindFlowLayers();
             Flow.Initialize(this, flowLayers);
-            
+
             SpawnLayer[] spawnLayers = Stage?.FindSpawnLayers();
             Prap.Initialize(this, spawnLayers);
-            
+
             Combination.Initialize(Prap, Status);
 
             // 매니저 리스트에 추가
@@ -87,10 +107,10 @@ namespace ManagerSystem
                 Prap _prap = Prap.CreatePrap(characterPrap, new Vector3(0, 0, 0), UI.InGamePanel.transform);
                 characterHandler = _prap.GetComponent<CharacterHandler>();
                 if (characterHandler is null) characterHandler = _prap.gameObject.AddComponent<CharacterHandler>();
-                
+
                 // 초기화 
                 characterHandler.Initialize(this);
-                
+
                 // 이벤트 연결 
                 Input.AddEvent(EInputType.JUMP, characterHandler.InputJumpKey);
                 Input.AddEvent(EInputType.SUBMIT, characterHandler.InputSubmitKey);
@@ -100,20 +120,20 @@ namespace ManagerSystem
                 characterHandler.OnDeath += Combination.ClearCollectedIngredients;
                 characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
                 characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
-                
+
                 // 다른 컴포넌트에 DI
                 Combination.SetHandler(characterHandler);
-                
+
                 return true;
             }
-            
+
             return false;
         }
 
         public override void OnStartGame()
         {
             if (_gameStatus is not EGameStatus.WAIT) return;
-            
+
             // 캐릭터 생성 
             if (characterHandler is null && !CreateCharacter())
             {
@@ -123,13 +143,13 @@ namespace ManagerSystem
             // 시작 함수 차례로 실행 
             foreach (var manager in _managers)
             {
-                if (manager is StatusManager state) 
+                if (manager is StatusManager state)
                     state.OnStartGame(_tickTime);
-                else 
+                else
                     manager.OnStartGame();
             }
             this.characterHandler?.OnStartGame();
-            
+
             // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
             _tickSequence = CoroutineHelper.StartNewCoroutine(Tick());
         }
@@ -150,9 +170,47 @@ namespace ManagerSystem
             } while (_gameStatus is EGameStatus.PLAY or EGameStatus.PAUSE);
         }
 
-        public void StopGame()
+        public void PauseGame()
         {
-            
+            characterHandler?.OnPaused();
+
+            Status.OnPauseGame();
+            Flow.OnStopGame();
+
+            // 당장 틱 함수도 중지
+            if (_tickSequence != null) CoroutineHelper.StopAnyCoroutine(_tickSequence);
+            _tickSequence = null;
+        }
+
+        public void ResumeGame()
+        {
+            Status.OnResumeGame();
+
+            // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
+            _tickSequence = CoroutineHelper.StartNewCoroutine(Tick());
+
+            characterHandler?.OnResumed();
+        }
+
+        public void ReturnToMainMenu()
+        {
+            Status.OnQuitGame();
+
+            // 당장 틱 함수도 중지
+            if (_tickSequence != null) CoroutineHelper.StopAnyCoroutine(_tickSequence);
+            _tickSequence = null;
+
+            // 모든 매니저 종료 처리
+            foreach (var manager in _managers)
+            {
+                manager.OnDestroy();
+            }
+
+            // 매니저 재정의
+            ReGenerateManagers();
+
+            // 씬 이동 
+            Managers.Stage.LoadSceneAsync("MainScene");
         }
 
         public override void FixedUpdate()

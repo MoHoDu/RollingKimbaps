@@ -3,7 +3,7 @@ using Attributes;
 using DG.Tweening;
 using Cysharp.Threading.Tasks;
 using ManagerSystem;
-using Panels.Base;
+using UIs.Base;
 using UnityEngine;
 
 namespace Obstacles

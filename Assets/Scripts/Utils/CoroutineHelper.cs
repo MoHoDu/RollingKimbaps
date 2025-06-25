@@ -23,13 +23,18 @@ namespace Utils
             return coroutine;
         }
 
+        public static void StopAnyCoroutine(Coroutine coroutine)
+        {
+            if (coroutine != null) _instance?.StopCoroutine(coroutine);
+        }
+
         private void Update()
         {
             if (_activeCoroutines.Count > 0)
             {
                 _activeCoroutines.RemoveAll(c => c == null);
             }
-            
+
             if (_activeCoroutines.Count <= 0)
             {
                 _instance = null;

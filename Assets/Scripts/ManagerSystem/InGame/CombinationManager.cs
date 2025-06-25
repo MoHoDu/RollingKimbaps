@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using EnumFiles;
 using InGame;
 using InGame.Combination;
-using Panels;
+using UIs;
 using UnityEngine;
 using Utils;
+using ManagerSystem.Base;
+
 
 namespace ManagerSystem.InGame
 {
@@ -24,7 +26,7 @@ namespace ManagerSystem.InGame
         public void AddRecipe(RecipeData recipe)
         {
             if (recipeList.Contains(recipe)) return;
-            
+
             // 재료 리스트를 비트마스크로 변경
             uint required = 0;
             foreach (var ingredient in recipe.requiredIngredients)
@@ -62,14 +64,14 @@ namespace ManagerSystem.InGame
                 Debug.Log("대기열에 아무것도 없어 null 반환");
                 return null;
             }
-            
+
             return waitList.Dequeue();
         }
 
         private void FillWaitList()
         {
             Debug.Log("새롭게 대기열을 생성합니다.");
-            
+
             List<RecipeData> pool = new();
             Stack<RecipeData> copied = recentRecipes.GetCopied();
             int weight = 3;
@@ -89,27 +91,27 @@ namespace ManagerSystem.InGame
             }
         }
     }
-    
+
     public class CombinationManager : BaseManager
     {
         // 컨트롤러
         public OrderSystem Order { get; private set; } = new();
         public IngredientPlacer IngredientPlacer { get; private set; } = new();
-        
+
         // 수집 정보 
         private CollectedRecipeInfo _collectedRecipes = new();
         private HashSet<IngredientData> _collectedIngredients = new();
         private Dictionary<EIngredientIndex, IngredientData> _collectedIngredientType = new();
-        
+
         // DI
         private PrapManager _prapManager;
         private StatusManager _statusManager;
         private CharacterHandler _handler;
-        
+
         // default values
         private float _lastCheckedDistance = -100f;
         private const float READ_RECIPE_SPACE = 50f;
-        
+
         // Events
         private event Action<HashSet<IngredientData>> onChangedIngredients;
         public event Action<(int rewards, int tips)> onSuccessedServing;
@@ -175,7 +177,7 @@ namespace ManagerSystem.InGame
                 _collectedIngredients.Add(ingredient);
                 _collectedIngredientType.Add(ingredient.groupId, ingredient);
             }
-            
+
             onChangedIngredients?.Invoke(_collectedIngredients);
         }
 
@@ -183,7 +185,7 @@ namespace ManagerSystem.InGame
         {
             _collectedIngredients.Clear();
             _collectedIngredientType.Clear();
-            
+
             onChangedIngredients?.Invoke(_collectedIngredients);
         }
 
@@ -209,7 +211,7 @@ namespace ManagerSystem.InGame
             {
                 curIngredient |= (1u << (int)ingredient);
             }
-            
+
             return _collectedRecipes.GetRecipe(curIngredient);
         }
 
@@ -233,7 +235,7 @@ namespace ManagerSystem.InGame
         {
             RecipeData recipe = GetCurrentRecipe();
             if (recipe != null && Order.Serving(recipe))
-            { 
+            {
                 // 보상 제공
                 int rewards = GetRewards();
                 int tips = GetTips();
@@ -246,7 +248,7 @@ namespace ManagerSystem.InGame
                 // 복제 김밥 UI가 땅으로 떨어지는 애니메이션 
                 // 재료 삭제
                 ClearCollectedIngredients();
-                
+
                 // 서빙 실패 시 이벤트 호출: Failed 효과 등
                 onFailedServing?.Invoke();
             }
@@ -259,11 +261,11 @@ namespace ManagerSystem.InGame
         public int GetRewards()
         {
             int rewards = 0;
-            
+
             // 레시피 기본 가격
             RecipeData recipe = GetCurrentRecipe();
             rewards += recipe.price;
-            
+
             return rewards;
         }
 
@@ -298,14 +300,14 @@ namespace ManagerSystem.InGame
                 // 모아둔 재료 삭제
                 if (_collectedIngredients.Count != 0) ClearCollectedIngredients();
             }
-            
+
             // 이동 거리를 확인 후 최소 거리 이상 갔다면 실행
             float currentDistance = _statusManager.RaceStatus.TravelDistance;
             if (currentDistance - _lastCheckedDistance >= READ_RECIPE_SPACE)
             {
                 // 레시피 불러오기
                 GetRecipeDatas();
-                
+
                 // 새로운 오더 추가 가능한지 확인
                 if (Order.CanCreateOrder())
                 {
@@ -319,7 +321,7 @@ namespace ManagerSystem.InGame
 
                 _lastCheckedDistance = currentDistance;
             }
-            
+
             // 오더를 확인하여 재료 배치
             IngredientPlacer.CheckOrderAndPlaceIngredients(Order.Orders);
         }

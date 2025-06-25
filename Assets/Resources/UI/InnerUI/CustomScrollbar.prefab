@@ -552,6 +552,7 @@ GameObject:
   - component: {fileID: 1377126934712940798}
   - component: {fileID: 2132227943172628368}
   - component: {fileID: 2251953616210207553}
+  - component: {fileID: 5808761476695244347}
   m_Layer: 5
   m_Name: CustomScrollbar
   m_TagString: Untagged
@@ -566,7 +567,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8272343764125900941}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -667,6 +668,18 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5808761476695244347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8272343764125900941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ffb3e28866599cb43b9c0e57353b15cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8534819006221286548
 GameObject:
   m_ObjectHideFlags: 0

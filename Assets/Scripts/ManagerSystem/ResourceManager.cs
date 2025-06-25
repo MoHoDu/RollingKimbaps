@@ -1,6 +1,8 @@
 using System.IO;
 using JsonData;
 using UnityEngine;
+using ManagerSystem.Base;
+
 
 namespace ManagerSystem
 {

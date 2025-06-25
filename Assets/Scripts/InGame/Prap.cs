@@ -1,8 +1,8 @@
 ﻿using System;
 using ManagerSystem;
 using ManagerSystem.InGame;
-using Panels;
-using Panels.Base;
+using UIs;
+using UIs.Base;
 using UnityEngine;
 
 namespace InGame

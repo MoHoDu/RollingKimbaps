@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameDatas;
-using Panels.Base;
+using UIs.Base;
+using ManagerSystem.Base;
+
 
 namespace ManagerSystem.InGame
 {
@@ -39,6 +41,14 @@ namespace ManagerSystem.InGame
             foreach (var layer in _flowLayers)
             {
                 layer.Flow(_raceStatus.TickDistance);
+            }
+        }
+
+        public void OnStopGame()
+        {
+            foreach (var layer in _flowLayers)
+            {
+                layer.StopFlow();
             }
         }
     }

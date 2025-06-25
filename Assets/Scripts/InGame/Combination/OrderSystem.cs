@@ -5,8 +5,10 @@ using EnumFiles;
 using GameDatas;
 using ManagerSystem;
 using ManagerSystem.InGame;
-using Panels;
+using ManagerSystem.UIs;
+using UIs;
 using UnityEngine;
+
 
 namespace InGame.Combination
 {
@@ -121,6 +123,12 @@ namespace InGame.Combination
                     Prap prap = _prapManager.CreatePrapInRealDistance(data, pos);
                     if (prap is OrdererPrap orderer)
                     {
+                        // 지형에 발이 닿을 수 있도록 y값 수정
+                        prap.transform.localPosition = new Vector3(
+                            prap.transform.localPosition.x,
+                            0f,
+                            prap.transform.localPosition.z
+                        );
                         return orderer;
                     }
                     

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using EnumFiles;
 using ManagerSystem;
-using Panels;
+using UIs;
 
 namespace GameDatas
 {

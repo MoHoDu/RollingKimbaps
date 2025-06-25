@@ -6,7 +6,7 @@ using GameDatas;
 using InGame.PrapManagement.Praps;
 using ManagerSystem;
 using ManagerSystem.InGame;
-using Panels;
+using UIs;
 using UnityEngine;
 using Utils;
 

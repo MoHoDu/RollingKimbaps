@@ -5,10 +5,12 @@ using GameDatas;
 using InGame;
 using InGame.PrapManagement;
 using Obstacles;
-using Panels;
-using Panels.Base;
-using Panels.Spawn;
+using UIs;
+using UIs.Base;
+using UIs.Spawn;
 using UnityEngine;
+using ManagerSystem.Base;
+
 
 namespace ManagerSystem.InGame
 {
@@ -17,7 +19,7 @@ namespace ManagerSystem.InGame
         // 활성화 된 프랍들
         private Dictionary<Vector3, Prap> _activePraps = new();
         private Dictionary<Vector3, Obstacle> _activeObstacles = new();
-        
+
         // 생성 시 부모 지정 안 했을 때에 디폴트 부모 객체 
         private Transform _defaultParent;
         // 디폴트 스폰 레이어
@@ -26,10 +28,10 @@ namespace ManagerSystem.InGame
         private Dictionary<EPrapType, HashSet<SpawnLayer>> _spawnLayers = new();
         // 자동으로 생성할 필요가 있는 레이어와 담당 스포너
         private Dictionary<SpawnLayer, PrapSpawner> _autoSpawners = new();
-        
+
         // 캐시로 저장되어 있는 프랍들
         private Dictionary<PrapData, Prap> _prapCache = new();
-        
+
         // DI
         private ResourceManager _resourceManager;
         private StageManager _stageManager;
@@ -37,9 +39,9 @@ namespace ManagerSystem.InGame
 
         public override void Initialize(params object[] datas)
         {
-            _defaultParent = _stageManager?.FindObjectOrCreate("PrapCache")?.transform; 
+            _defaultParent = _stageManager?.FindObjectOrCreate("PrapCache")?.transform;
             _defaultParent ??= new GameObject("PrapCache").transform;
-            
+
             foreach (var data in datas)
             {
                 if (data is InGameManager ingame)
@@ -63,7 +65,7 @@ namespace ManagerSystem.InGame
                                 _defaultLayers.TryAdd(layer.PrapType, layer);
                             }
                         }
-                        
+
                         if (_spawnLayers.TryGetValue(layer.PrapType, out var targetLayers))
                         {
                             targetLayers.Add(layer);
@@ -74,7 +76,7 @@ namespace ManagerSystem.InGame
                             newLayers.Add(layer);
                             _spawnLayers.TryAdd(layer.PrapType, newLayers);
                         }
-                        
+
                         if (layer.autoGenerate)
                         {
                             PrapSpawner targetSpawner;
@@ -90,13 +92,13 @@ namespace ManagerSystem.InGame
                             {
                                 targetSpawner = new PrapSpawner(this, layer, _raceStatus);
                             }
-                            
+
                             _autoSpawners.TryAdd(layer, targetSpawner);
                         }
                     }
                 }
             }
-            
+
             base.Initialize(datas);
         }
 
@@ -124,7 +126,7 @@ namespace ManagerSystem.InGame
             Transform parent = layer?.transform;
             return CreatePrap(data, inPosition, parent, setLocalized);
         }
-        
+
         /// <summary>
         /// 프랍을 생성
         /// </summary>
@@ -136,14 +138,14 @@ namespace ManagerSystem.InGame
         public Prap CreatePrap(PrapData data, Vector3 position, Transform parent = null, bool setLocalized = false)
         {
             if (data == null) return null;
-            
+
             Prap prap = null;
             GameObject prapObj = null;
             if (parent is null)
             {
                 parent = GetDefaultLayer(data.Type)?.transform;
             }
-            
+
             parent ??= _defaultParent;
 
             _prapCache.TryGetValue(data, out prap);
@@ -156,7 +158,7 @@ namespace ManagerSystem.InGame
                     {
                         prap = prapObj.AddComponent<Prap>();
                     }
-                    
+
                     prap.prapData = data;
                     prap.gameObject.SetActive(false);
                     _prapCache.Add(data, prap);
@@ -166,13 +168,13 @@ namespace ManagerSystem.InGame
             {
                 prapObj = prap.gameObject;
             }
-            
-            if (prap == null) 
+
+            if (prap == null)
                 return null;
-            
+
             GameObject clone = GameObject.Instantiate(prapObj, parent);
             Prap clonePrap = clone.GetComponent<Prap>();
-            
+
             Vector3 parentPos = parent.transform.position;
             Vector3 prapPostion = new Vector3(position.x, position.y, parentPos.z);
             if (!setLocalized) clone.transform.position = prapPostion;
@@ -183,10 +185,10 @@ namespace ManagerSystem.InGame
                 prapPostion = clone.transform.position;
             }
             clone.name = data.displayName;
-            
+
             clonePrap.PrevPosition = prapPostion;
             clone.SetActive(true);
-            
+
             if (clonePrap is not Character && prapPostion.y < 90)
             {
                 if (!_activePraps.TryAdd(prapPostion, clonePrap))
@@ -205,7 +207,7 @@ namespace ManagerSystem.InGame
                     return null;
                 }
             }
-            
+
             return clonePrap;
         }
 
@@ -231,11 +233,11 @@ namespace ManagerSystem.InGame
                 SpawnLayer parentLayer = GetDefaultLayer(prapType);
                 inPosition = parentLayer.transform.TransformPoint(inPosition);
             }
-            
+
             if (_activePraps.TryGetValue(inPosition, out _)) return false;
             return !IsColliderOnLayer(inPosition, 2f, "obstacle", "ground");
         }
-        
+
         public override void Tick()
         {
             foreach (PrapSpawner spawner in _autoSpawners.Values)
@@ -259,7 +261,7 @@ namespace ManagerSystem.InGame
                             return;
                         }
                     }
-                    
+
                     Debug.LogWarning($"[Warning] 프랍({target.name})의 위치({target.transform.position})가 중복이 되어 제거합니다.");
                     DestroyPrap(target);
                 }
@@ -273,7 +275,7 @@ namespace ManagerSystem.InGame
                 spawner.Tick(_raceStatus.TravelDistance);
             }
         }
-        
+
         /// <summary>
         /// Canvas 상에서 
         /// </summary>
