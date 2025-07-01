@@ -57,7 +57,7 @@ namespace UIs
         
         public void OnStart(RaceStatus raceStatus, CharacterStatus characterStatus)
         {
-            bodyCollider.enabled = false;
+            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
             _charInfo = characterStatus;
             _raceInfo = raceStatus;
             Rebirth(false);
@@ -75,7 +75,7 @@ namespace UIs
             _rigidbody2D.simulated = false;
             
             // 콜라이더 Off
-            bodyCollider.enabled = false;
+            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
         }
 
         public void Rebirth(bool setRebirthValue = true)
@@ -88,7 +88,7 @@ namespace UIs
             EnableRigidbody(false);
             
             // 콜라이더 Off
-            bodyCollider.enabled = false;
+            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
             
             // 애니메이션 value 세팅 
             if (setRebirthValue) _animator.SetTrigger("rebirth");
@@ -160,7 +160,7 @@ namespace UIs
             EnableRigidbody(true);
             
             // 콜라이더 On
-            bodyCollider.enabled = true;
+            body.gameObject.layer = LayerMask.NameToLayer("character");
             
             // 무적 시간동안만 깜빡임 유지 및 장애물 충돌 무시
             OnDamaged().Forget();
