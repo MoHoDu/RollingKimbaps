@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "mcp:dev":  "cross-env MCP_REMOTE_CONFIG_DIR=./.mcp-auth-dev  gemini"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
+  }
+}
