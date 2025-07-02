@@ -1,6 +1,8 @@
 ﻿using System;
 using EnumFiles;
 using GameDatas;
+using ManagerSystem.Base;
+
 
 namespace ManagerSystem.InGame
 {
@@ -11,12 +13,12 @@ namespace ManagerSystem.InGame
         PAUSE,
         RESULT,
     }
-    
+
     public class StatusManager : BaseManager
     {
         public EGameStatus GameStatus { get; private set; } = EGameStatus.WAIT;
         public int Score { get; private set; } = 0;
-        
+
         public CharacterStatus CharacterStatus { get; private set; } = new CharacterStatus();
         public RaceStatus RaceStatus { get; private set; } = new RaceStatus();
 
@@ -24,7 +26,7 @@ namespace ManagerSystem.InGame
 
         // event
         public event Action<int> OnScoreChanged;
-        
+
         public override void Initialize()
         {
             base.Initialize();
@@ -94,19 +96,25 @@ namespace ManagerSystem.InGame
 
         public void OnPauseGame()
         {
-            if ( GameStatus == EGameStatus.PLAY)
+            if (GameStatus == EGameStatus.PLAY)
                 GameStatus = EGameStatus.PAUSE;
         }
-        
+
+        public void OnResumeGame()
+        {
+            if (GameStatus == EGameStatus.PAUSE)
+                GameStatus = EGameStatus.PLAY;
+        }
+
         public void OnQuitGame()
         {
-            if ( GameStatus == EGameStatus.PAUSE)
+            if (GameStatus == EGameStatus.PAUSE)
                 GameStatus = EGameStatus.WAIT;
         }
 
         public void OnFinishedGame()
         {
-            if ( GameStatus == EGameStatus.PLAY)
+            if (GameStatus == EGameStatus.PLAY)
                 GameStatus = EGameStatus.RESULT;
         }
         #endregion
@@ -115,7 +123,7 @@ namespace ManagerSystem.InGame
 
         protected void AddVelocity()
         {
-            
+
         }
 
         #endregion

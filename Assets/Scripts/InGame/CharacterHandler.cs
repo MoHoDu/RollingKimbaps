@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using EnumFiles;
-using InGame.PrapManagement.Praps;
 using ManagerSystem;
 using ManagerSystem.InGame;
-using Panels;
+using UIs;
 using UnityEngine;
+using ManagerSystem.Base;
 
 namespace InGame
 {
@@ -154,6 +154,16 @@ namespace InGame
             }
         }
 
+        public void OnPaused()
+        {
+            character?.EnableRigidbody(false);
+        }
+
+        public void OnResumed()
+        {
+            character?.EnableRigidbody(true);
+        }
+
         public void OnCollectedIngredient(IngredientData data)
         {
             string prefabPath = data.innerPath;
@@ -163,7 +173,7 @@ namespace InGame
                 ci.Data = data;
                 if (!character.AddIngredient(ci))
                 {
-                    Managers.Resource.Destroy(go);   
+                    Managers.Resource.Destroy(go);
                 }
             }
             else Managers.Resource.Destroy(go);

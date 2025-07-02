@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using EnumFiles;
 using ManagerSystem;
-using Panels;
+using UIs;
 using UnityEngine;
 
 namespace Utils

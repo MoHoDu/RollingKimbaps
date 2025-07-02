@@ -4,6 +4,7 @@ using EnumFiles;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using ManagerSystem.Base;
 
 namespace ManagerSystem
 {
@@ -72,17 +73,29 @@ namespace ManagerSystem
 
         public void OnPrimaryTouch(InputValue context)
         {
+            bool isReversed = Managers.Save.PlayerSettings.Data.ReverseTouch;
+
             Vector2 currentTouchPosition = context.Get<Vector2>();
             // 터치 위치가 스크린의 좌측과 우측 중에 어디인지 판별
             if (currentTouchPosition.x < Screen.width / 2)
             {
                 // 왼쪽 터치: 점프
-                GetCallbacks(EInputType.JUMP)?.Invoke();
+                if (isReversed)
+                {
+                    // 터치가 반전된 경우, 오른쪽 터치로 점프
+                    GetCallbacks(EInputType.SUBMIT)?.Invoke();
+                }
+                else GetCallbacks(EInputType.JUMP)?.Invoke();
             }
             else
             {
                 // 오른쪽 터치: 서빙
-                GetCallbacks(EInputType.SUBMIT)?.Invoke();
+                if (isReversed)
+                {
+                    // 터치가 반전된 경우, 왼쪽 터치로 서빙
+                    GetCallbacks(EInputType.JUMP)?.Invoke();
+                }
+                else GetCallbacks(EInputType.SUBMIT)?.Invoke();
             }
         }
 

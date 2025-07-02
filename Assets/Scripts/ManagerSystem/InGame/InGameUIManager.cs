@@ -1,5 +1,5 @@
-using System.Linq;
-using Panels;
+using UIs;
+using ManagerSystem.Base;
 
 namespace ManagerSystem.InGame
 {
@@ -26,7 +26,7 @@ namespace ManagerSystem.InGame
         {
             base.OnStartGame();
 
-            InGameUI?.SetInfoInPanel(_inGameManager.Status);
+            InGameUI?.SetInfoInUI(_inGameManager.Status);
         }
     }
 }

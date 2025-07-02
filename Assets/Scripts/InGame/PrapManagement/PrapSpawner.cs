@@ -3,8 +3,8 @@ using EnumFiles;
 using GameDatas;
 using ManagerSystem;
 using ManagerSystem.InGame;
-using Panels.Base;
 using UnityEngine;
+using UIs.Spawn;
 
 namespace InGame.PrapManagement
 {

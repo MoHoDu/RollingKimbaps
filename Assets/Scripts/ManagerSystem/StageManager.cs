@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
-using Panels.Base;
+using UIs.Base;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using ManagerSystem.Base;
+using UIs.Spawn;
+
 
 namespace ManagerSystem
 {
@@ -12,7 +15,7 @@ namespace ManagerSystem
         // 씬 전환 시점 이벤트
         private Dictionary<string, Action<float>> _onSceneLoading = new Dictionary<string, Action<float>>();
         private Action<float> _onSceneLoadingAll;
-        
+
         // 씬 전환 이후 이벤트
         private Dictionary<string, Action<object>> _onSceneOpened = new Dictionary<string, Action<object>>();
         private Action _onSceneChangedAll;
@@ -32,23 +35,23 @@ namespace ManagerSystem
         {
             // 비동기 씬 로딩 시작
             AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-            
+
             // 씬이 존재하지 않은 경우 종료
             if (asyncLoad == null)
             {
                 Debug.LogWarning($"[ERROR] 씬 전환 중 에러가 발생했습니다. {sceneName}에 해당하는 씬을 찾을 수 없습니다.");
                 return;
             }
-            
+
             // 씬이 자동으로 활성화 되지 않도록 설정
             asyncLoad.allowSceneActivation = false;
-            
+
             // 로딩 진행률 업데이트
             while (!asyncLoad.isDone)
             {
                 // 진행률 (0 ~ 0.9f)
                 float progress = Mathf.Clamp01(asyncLoad.progress / .9f);
-                
+
                 // 이벤트 실행
                 _onSceneLoadingAll?.Invoke(progress);
                 Action<float> inAction = null;
@@ -56,7 +59,7 @@ namespace ManagerSystem
                 {
                     inAction?.Invoke(progress);
                 }
-                
+
                 // 로딩이 90% 완료된 상황
                 if (asyncLoad.progress >= .9f)
                 {
@@ -64,23 +67,23 @@ namespace ManagerSystem
                     await UniTask.WaitForSeconds(1);
 
                     progress = 1f;
-                    
+
                     // 이벤트 실행
                     _onSceneLoadingAll?.Invoke(progress);
                     if (_onSceneLoading.TryGetValue(sceneName, out inAction))
                     {
                         inAction?.Invoke(progress);
                     }
-                    
+
                     // 이벤트 실행 대기
                     await UniTask.WaitForSeconds(1);
-                    
+
                     // 씬 활성화
                     asyncLoad.allowSceneActivation = true;
-                    
+
                     // 씬 로드 완료 대기
                     await UniTask.WaitUntil(() => asyncLoad.isDone);
-                    
+
                     // 씬 전환 이후 이벤트 호출
                     _onSceneChangedAll?.Invoke();
                     if (_onSceneOpened.TryGetValue(sceneName, out var onLoaded))
@@ -108,7 +111,7 @@ namespace ManagerSystem
                 _onSceneLoading.Add(sceneName, action);
             }
         }
-        
+
         /// <summary>
         /// 모든 씬 전환 중 실행될 이벤트 함수 등록
         /// </summary>
@@ -118,7 +121,7 @@ namespace ManagerSystem
             _onSceneLoadingAll -= action;
             _onSceneLoadingAll += action;
         }
-        
+
         /// <summary>
         /// 특정 씬 전환 완료 후 실행될 이벤트 함수 등록
         /// </summary>
@@ -146,7 +149,7 @@ namespace ManagerSystem
             _onSceneChangedAll -= action;
             _onSceneChangedAll += action;
         }
-        
+
         /// <summary>
         /// 이름을 가지고 게임오브젝트를 씬에서 찾거나 새로 생성
         /// </summary>
@@ -158,12 +161,12 @@ namespace ManagerSystem
             obj ??= new GameObject(name);
             return obj;
         }
-        
+
         public SpawnLayer[] FindSpawnLayers()
         {
             return Managers.UI.GetComponentsFromPanel<SpawnLayer>();
         }
-        
+
         public FlowLayer[] FindFlowLayers()
         {
             return Managers.UI.GetComponentsFromPanel<FlowLayer>();

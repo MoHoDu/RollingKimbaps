@@ -1,5 +1,9 @@
 using System.Collections.Generic;
 using UnityEngine;
+using ManagerSystem.Base;
+using ManagerSystem.UIs;
+using ManagerSystem.SaveLoad;
+
 
 namespace ManagerSystem
 {
@@ -27,7 +31,7 @@ namespace ManagerSystem
             managers.Add(Effect);
             managers.Add(Save);
             managers.Add(InGame);
-            
+
             // 이벤트 연결
             LinkedEvents();
 
@@ -66,7 +70,11 @@ namespace ManagerSystem
 
         private static void LinkedEvents()
         {
-            Stage.AddEventOnSceneChanged(UI.FindCanvasAndGamePanel);
+            Stage.AddEventAfterSceneOpened("GameScene", (_) =>
+            {
+                UI.FindCanvasAndGamePanel();
+                InGame.InitManagers();
+            });
         }
     }
 }
