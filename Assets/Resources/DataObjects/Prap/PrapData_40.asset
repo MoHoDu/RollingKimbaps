@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2df1e369f0a643e1b068621eaeb69ac3, type: 3}
+  m_Name: PrapData_40
+  m_EditorClassIdentifier: 
+  id: 40
+  displayName: "\uC190\uB2D804"
+  icon: {fileID: 0}
+  rarity: 0
+  description: "\uD751\uC778 \uC5EC\uC131 \uC190\uB2D8"
+  Type: 10
+  Path: Prefabs/Persons/Person_04
+  AppearanceDistance: 0

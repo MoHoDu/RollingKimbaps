@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PrapData_19
   m_EditorClassIdentifier: 
   id: 19
-  displayName: "\uC0C1\uB2E8 \uB808\uC774\uC5B4 \uB098\uBB34"
+  displayName: "\uD230\uB4DC\uB77C \uBC30\uACBD \uADF8\uB77C\uC6B4\uB4DC"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uBC14\uB85C \uB4A4 \uB808\uC774\uC5B4\uC758 \uB098\uBB34"
-  Type: 6
-  Path: Prefabs/TreeObj_Front
-  AppearanceDistance: 0
+  description: "\uD230\uB4DC\uB77C \uAE30\uBCF8 \uADF8\uB77C\uC6B4\uB4DC"
+  Type: 9
+  Path: Prefabs/Back_terrain_tundra
+  AppearanceDistance: 500

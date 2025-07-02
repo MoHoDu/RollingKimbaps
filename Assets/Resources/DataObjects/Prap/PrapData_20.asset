@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PrapData_20
   m_EditorClassIdentifier: 
   id: 20
-  displayName: "\uC804\uACBD \uB098\uBB34"
+  displayName: "\uC124\uC6D0 \uBC30\uACBD \uADF8\uB77C\uC6B4\uB4DC"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uC804\uACBD\uC758 \uB098\uBB34"
-  Type: 5
-  Path: Prefabs/TreeObj_Fore
+  description: "\uB208 \uB36E\uC778 \uAE30\uBCF8 \uADF8\uB77C\uC6B4\uB4DC"
+  Type: 9
+  Path: Prefabs/Back_terrain_snow
   AppearanceDistance: 0

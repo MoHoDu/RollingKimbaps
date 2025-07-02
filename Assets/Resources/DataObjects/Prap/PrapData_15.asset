@@ -19,4 +19,4 @@ MonoBehaviour:
   description: "\uAE30\uBCF8 \uADF8\uB77C\uC6B4\uB4DC"
   Type: 1
   Path: Prefabs/Ground
-  AppearanceDistance: 0
+  AppearanceDistance: 1000
