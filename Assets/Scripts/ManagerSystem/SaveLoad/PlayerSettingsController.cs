@@ -21,8 +21,6 @@ namespace ManagerSystem.SaveLoad
             Data.SFXVolume = PlayerPrefs.GetFloat("SFXVolume", 1.0f);
             Data.ReverseTouch = PlayerPrefs.GetInt("ReverseTouch", 0) == 1;
             Data.ReverseUI = PlayerPrefs.GetInt("ReverseUI", 0) == 1;
-
-            SaveSettings();
         }
 
         public void SaveSettings()

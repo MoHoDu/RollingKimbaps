@@ -17,9 +17,9 @@ namespace ManagerSystem.SaveLoad
         private const string SaveFileExtension = ".json";
         private const string SaveFilePrefix = "SaveData";
 
-        public override void Initialize()
+        public override void Initialize(params object[] args)
         {
-            base.Initialize();
+            base.Initialize(args);
 
             PlayerSettings.LoadSettings();
         }
