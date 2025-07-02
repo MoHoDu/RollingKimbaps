@@ -73,14 +73,21 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
-# SHRIMP 폴더 및 하위 모든 파일 무시
+# GEMINI 관련 파일 무시
+# 1. SHRIMP 폴더 및 하위 모든 파일 무시
 /SHRIMP/
-
-# GEMINI.md 파일 무시
+# 2. GEMINI.md 파일 무시
 /GEMINI.md
-
-# shrimp-rules.md 파일 무시
+# 3. shrimp-rules.md 파일 무시
 /shrimp-rules.md
-
-# docs 폴더 및 하위 모든 파일 무시
+# 4. docs 폴더 및 하위 모든 파일 무시
 /docs/
+# 5. gemini 폴더 및 하위 모든 파일 무시
+/.gemini/
+# 6. mcp-auth-dev 폴더 및 하위 모든 파일 무시
+/.mcp-auth-dev/
+# 7. node_modules 폴더 및 하위 모든 파일 무시
+/node_modules/
+# 9. package.json 및 package-lock.json 파일 무시
+/package.json
+/package-lock.json
