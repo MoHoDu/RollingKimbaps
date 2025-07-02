@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: PrapData_21
   m_EditorClassIdentifier: 
   id: 21
-  displayName: "\uC190\uB2D801"
+  displayName: "\uD558\uB2E8 \uB808\uC774\uC5B4 \uB098\uBB34"
   icon: {fileID: 0}
   rarity: 0
-  description: "\uBC31\uC778 \uB0A8\uC131 \uC190\uB2D8"
-  Type: 10
-  Path: Prefabs/Persons/Person_01
-  AppearanceDistance: 0
+  description: "\uAC00\uC7A5 \uBA3C \uB808\uC774\uC5B4\uC758 \uB098\uBB34"
+  Type: 8
+  Path: Prefabs/TreeObj_Back
+  AppearanceDistance: 500

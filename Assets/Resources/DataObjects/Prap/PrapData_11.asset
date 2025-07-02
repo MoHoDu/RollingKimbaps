@@ -19,4 +19,4 @@ MonoBehaviour:
   description: "\uCEE4\uB2E4\uB780 \uBC14\uC704"
   Type: 2
   Path: Prefabs/Obstacles/rock_big
-  AppearanceDistance: 0
+  AppearanceDistance: 500
