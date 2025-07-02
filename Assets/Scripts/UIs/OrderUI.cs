@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Attributes;
 using DG.Tweening;
 using GameDatas;
@@ -37,6 +38,23 @@ namespace UIs
 
             bool isReversed = Managers.Save.PlayerSettings.Data.ReverseUI;
             ReplaceUIPosition(isReversed);
+
+            // 초기 위치를 화면 밖으로 설정
+            Vector2 startPivot = isReversed ? new Vector2(1f, 0.5f) : new Vector2(0f, 0.5f);
+            _ingredientsParent.pivot = startPivot;
+        }
+
+        public Tween PlayEnterAnimation(Action onComplete = null)
+        {
+            bool isReversed = Managers.Save.PlayerSettings.Data.ReverseUI;
+            Vector2 targetPivot = isReversed ? new Vector2(0f, 0.5f) : new Vector2(1f, 0.5f);
+
+            return _ingredientsParent.DOPivot(targetPivot, 0.5f) // 최종 위치로 이동
+                .SetEase(Ease.OutQuad)
+                .OnComplete(() =>
+                {
+                    onComplete?.Invoke();
+                });
         }
 
         public void ReplaceUIPosition(bool isReversed)
