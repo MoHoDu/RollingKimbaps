@@ -10,7 +10,7 @@ using ManagerSystem.InGame;
 using ManagerSystem.UIs;
 using UIs.Base;
 using UnityEngine;
-
+using UnityEngine.UI;
 
 
 namespace UIs
@@ -33,6 +33,7 @@ namespace UIs
         // 애니메이션
         Coroutine _animCoroutine;
         HashSet<Tween> activeTweens = new HashSet<Tween>();
+        HashSet<Tween> activeEnterTweens = new HashSet<Tween>();
 
         protected override void Initialize()
         {
@@ -55,6 +56,15 @@ namespace UIs
 
         public void OnChangedReverseUI(bool isReversed)
         {
+            // 등장 애니메이션이 있는 경우에는 정지
+            foreach (Tween tween in activeEnterTweens)
+            {
+                if (tween != null && tween.IsActive())
+                {
+                    tween.Kill();
+                }
+            }
+
             foreach (var orderUI in _orderUIs)
             {
                 orderUI.ReplaceUIPosition(isReversed);
@@ -164,6 +174,9 @@ namespace UIs
                     _orderUIList.Remove(order);
                 }
             };
+
+            // 화면 밖에서 안으로 들어오는 애니메이션 재생
+            activeEnterTweens.Add(newOrderUI.PlayEnterAnimation());
         }
 
         private IEnumerator PlayIngredientAnimations()

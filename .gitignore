@@ -91,3 +91,6 @@ crashlytics-build.properties
 # 9. package.json 및 package-lock.json 파일 무시
 /package.json
 /package-lock.json
+
+# 다이어그램 관련 파일 무시
+/diagram-output/
