@@ -9,6 +9,7 @@ namespace ManagerSystem.InGame
 
         // DI
         private InGameManager _inGameManager;
+        private StatusManager _statusManager;
 
         public override void Initialize(params object[] infos)
         {
@@ -18,6 +19,8 @@ namespace ManagerSystem.InGame
                 {
                     _inGameManager = inGameManager;
                     InGameUI = _inGameManager.UI.GetComponentFromCanvas<InGameUI>();
+
+                    _statusManager = inGameManager.Status;
                 }
             }
         }
@@ -27,6 +30,16 @@ namespace ManagerSystem.InGame
             base.OnStartGame();
 
             InGameUI?.SetInfoInUI(_inGameManager.Status);
+        }
+
+        public override void Tick()
+        {
+            base.Tick();
+
+            if (InGameUI != null)
+            {
+                InGameUI.OrdersUI?.SetCurrentPosX(_statusManager.RaceStatus.TravelDistance);
+            }
         }
     }
 }

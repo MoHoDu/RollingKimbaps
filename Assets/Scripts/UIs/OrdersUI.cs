@@ -29,6 +29,7 @@ namespace UIs
         // 정보 
         private uint _requiredIngredients = 0;
         private uint _collectionIdx = 0;
+        private float _currentPosX = 0f;    // 현재 플레이어의 X 좌표
 
         // 애니메이션
         Coroutine _animCoroutine;
@@ -68,6 +69,20 @@ namespace UIs
             foreach (var orderUI in _orderUIs)
             {
                 orderUI.ReplaceUIPosition(isReversed);
+            }
+        }
+
+        /// <summary>
+        /// 현재 플레이어의 X 좌표를 설정하고, 오더 UI의 생명주기를 업데이트합니다.
+        /// </summary>
+        public void SetCurrentPosX(float posX)
+        {
+            _currentPosX = posX;
+
+            // 오더 UI의 생명주기 업데이트
+            foreach (var orderUI in _orderUIs)
+            {
+                orderUI.UpdateOrderLifeTime(_currentPosX);
             }
         }
 

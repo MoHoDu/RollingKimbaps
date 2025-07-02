@@ -22,6 +22,7 @@ namespace UIs
 
         [Bind("KimbapUI")] private RectTransform _kimbapUI;
         [Bind("Ingredients")] private RectTransform _ingredientsParent;
+        [Bind("LifeTimeImage")] private Image _lifeTimeImage;
         [Bind("inners")] private IngredientsInKimbapUI _innerParent;
 
         private OrderData _data;
@@ -31,6 +32,8 @@ namespace UIs
         public Dictionary<uint, Tween> ingredientAnimations = new Dictionary<uint, Tween>();
 
         public Image GetIngredientImage(uint ingredientId) => _ingredients.GetValueOrDefault(ingredientId, null);
+
+        private float _startPosX = 0f; // 오더 시작 위치 X 좌표
 
         protected override void Initialize()
         {
@@ -42,6 +45,11 @@ namespace UIs
             // 초기 위치를 화면 밖으로 설정
             Vector2 startPivot = isReversed ? new Vector2(1f, 0.5f) : new Vector2(0f, 0.5f);
             _ingredientsParent.pivot = startPivot;
+        }
+
+        public void SetStartPosition(float startPosX)
+        {
+            _startPosX = startPosX;
         }
 
         public Tween PlayEnterAnimation(Action onComplete = null)
@@ -108,6 +116,22 @@ namespace UIs
             }
         }
 
+#region
+
+        /// <summary>
+        /// _data.endX와 travelDistance를 비교하여 lifeTimeImage의 fillamount를 업데이트합니다.
+        /// </summary>
+        /// <param name="travelDistance">현재까지 이동 거리</param>
+        public void UpdateOrderLifeTime(float travelDistance)
+        {
+            float distanceFromStart = travelDistance - _startPosX;
+            float distanceToEnd = _data.EndX - _startPosX;
+
+            _lifeTimeImage.fillAmount = distanceFromStart <= 0f ? 0f : Mathf.Clamp01(distanceFromStart / distanceToEnd);
+        }
+
+#endregion
+
 #region SetIngredients
         private List<IngredientData> GetRequiredIngredients(OrderData data)
         {
@@ -116,11 +140,11 @@ namespace UIs
             {
                 List<IngredientData> ingredientDatas = DataContainer.IngredientDatas.GetGroup(index);
                 if (ingredientDatas == null) continue;
-                
+
                 IngredientData ingredientData = ingredientDatas[0];
                 ingredients.Add(ingredientData);
             }
-            
+
             return ingredients;
         }
 
