@@ -16,6 +16,8 @@ namespace UIs
         [Bind("LifeUI")] private LifeUI _lifeUI;
         [Bind("OrdersUI")] private OrdersUI _ordersUI;
         [Bind("OrdersUI")] private VerticalLayoutGroup _ordersLayout;
+
+        public OrdersUI OrdersUI => _ordersUI;
         
         private RectTransform _leftSideRect;
         private RectTransform _rightSideRect;
