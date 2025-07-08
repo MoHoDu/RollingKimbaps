@@ -15,10 +15,10 @@ namespace InGame.Combination
     public class OrderSystem
     {
         public List<OrderData> Orders { get; private set; }
-        
+
         // DI
         private PrapManager _prapManager;
-        
+
         // 계산을 위한 정해진 값
         private readonly int _maxOrder = 4;
         private Dictionary<Rarity, float> _readyToOrderDistance;
@@ -53,7 +53,7 @@ namespace InGame.Combination
 
             return ui;
         }
-        
+
         public void AddEventListenerOnOrder(Action<List<OrderData>> listener)
         {
             onChangedOrders -= listener;
@@ -62,12 +62,12 @@ namespace InGame.Combination
 
         public void AddOrder(RecipeData newRecipe, float currentDistance)
         {
-            if (Orders.Count >= _maxOrder) return;
-            
+            if (!CanCreateOrder()) return;
+
             // 타겟의 위치 계산
             float posX = CalculateOrdererPositionX(newRecipe, currentDistance);
             Vector3 targetPos = new Vector3(posX, 0f, -0.5f);
-            
+
             // 손님 프랍 생성
             OrdererPrap newOrderer = CreateNewOrderer(targetPos);
             OrderData newOrder = new OrderData(newRecipe, newOrderer, targetPos.x);
@@ -75,7 +75,7 @@ namespace InGame.Combination
 
             // 데이터 추가
             Orders.Add(newOrder);
-            
+
             onChangedOrders?.Invoke(Orders);
         }
 
@@ -131,7 +131,7 @@ namespace InGame.Combination
                         );
                         return orderer;
                     }
-                    
+
                     _prapManager.DestroyPrap(prap);
                 }
             }

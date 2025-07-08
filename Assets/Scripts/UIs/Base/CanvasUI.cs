@@ -17,12 +17,15 @@ namespace UIs.Base
 
         public virtual void Close()
         {
-            // UI매니저로 하여금 이 UI를 끄도록 시킴
-            CanvasManager.Instance.ReleseUI(this);
-
             // Closed 시에 발생되는 이벤트 실행
             OnClosedEvent?.Invoke();
             OnClosedEvent = null;
+
+            // UI매니저로 하여금 이 UI를 끄도록 시킴
+            CanvasManager.Instance.ReleseUI(this);
+
+            // 이후에도 게임 오브젝트가 존재한다면 제거
+            if (this?.gameObject != null) Destroy(this.gameObject);
         }
 
         public virtual void SetInfoInUI(params object[] infos) { }
