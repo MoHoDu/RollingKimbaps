@@ -1528,7 +1528,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9b161cd2ed0b4dada0434d017a3579c, type: 2}
-  m_sharedMaterial: {fileID: 2042165785451525283, guid: e9b161cd2ed0b4dada0434d017a3579c, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 960f49e08bdf1489fa7cfb0c91b9347b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1833,7 +1833,7 @@ MonoBehaviour:
   m_text: "\uC6D0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9b161cd2ed0b4dada0434d017a3579c, type: 2}
-  m_sharedMaterial: {fileID: 2042165785451525283, guid: e9b161cd2ed0b4dada0434d017a3579c, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 960f49e08bdf1489fa7cfb0c91b9347b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
