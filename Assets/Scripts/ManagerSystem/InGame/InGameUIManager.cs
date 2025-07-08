@@ -29,7 +29,7 @@ namespace ManagerSystem.InGame
         {
             base.OnStartGame();
 
-            InGameUI?.SetInfoInUI(_inGameManager.Status);
+            InGameUI?.SetInfoInUI(_inGameManager.Status, _inGameManager.Combination);
         }
 
         public override void Tick()

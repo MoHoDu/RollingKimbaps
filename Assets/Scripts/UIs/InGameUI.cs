@@ -18,7 +18,7 @@ namespace UIs
         [Bind("OrdersUI")] private VerticalLayoutGroup _ordersLayout;
 
         public OrdersUI OrdersUI => _ordersUI;
-        
+
         private RectTransform _leftSideRect;
         private RectTransform _rightSideRect;
 
@@ -88,16 +88,23 @@ namespace UIs
             if (!IsBindingDone)
                 Awake();
 
+            StatusManager status = null;
+            CombinationManager combination = null;
+
             foreach (var info in infos)
             {
                 if (info is StatusManager statusManager)
                 {
-                    // scoreUI에 상태 매니저 전달
-                    _scoreUI.SetInfoInUI(statusManager);
-                    // LifeUI에 상태 매니저 전달
-                    _lifeUI.SetInfoInUI(statusManager);
+                    status = statusManager;
+                }
+                else if (info is CombinationManager combinationManager)
+                {
+                    combination = combinationManager;
                 }
             }
+
+            _lifeUI.SetInfoInUI(status);
+            _scoreUI.SetInfoInUI(status, combination);
         }
     }
 }
