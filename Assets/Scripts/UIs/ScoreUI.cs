@@ -12,6 +12,8 @@ namespace UIs
         [Bind("ScoreText")] private TextMeshProUGUI _scoreText; // 점수 텍스트
         [Bind("priceText")] private TextMeshProUGUI _priceText; // 추가 가격 텍스트
         [Bind("tipText")] private TextMeshProUGUI _tipText; // 추가 팁 텍스트
+        [Bind("priceTextBG")] private RectTransform _priceTextBG; // 가격 텍스트 배경
+        [Bind("tipTextBG")] private RectTransform _tipTextBG; // 팁
 
         private Tween _scoreTween;
         private Sequence _priceSequence;
@@ -44,6 +46,43 @@ namespace UIs
 
             _priceText.rectTransform.pivot = new Vector2(0f, 1f);
             _tipText.rectTransform.pivot = new Vector2(0f, 1f);
+        }
+
+        public void OnChangedReverseUI(bool isReversed)
+        {
+            // 애니메이션 Kill
+            _scoreTween?.Kill(false);
+            _priceSequence?.Kill(false);
+            _tipSequence?.Kill(false);
+
+            if (!isReversed)
+            {
+                _priceTextBG.anchorMin = new Vector2(1f, 0.5f);
+                _priceTextBG.anchorMax = new Vector2(1f, 0.5f);
+                _priceTextBG.pivot = new Vector2(0f, 0.5f);
+                _priceTextBG.anchoredPosition = new Vector2(25f, 25f);
+                _priceText.alignment = TextAlignmentOptions.Left;
+
+                _tipTextBG.anchorMin = new Vector2(1f, 0.5f);
+                _tipTextBG.anchorMax = new Vector2(1f, 0.5f);
+                _tipTextBG.pivot = new Vector2(0f, 0.5f);
+                _tipTextBG.anchoredPosition = new Vector2(25f, -25f);
+                _tipText.alignment = TextAlignmentOptions.Left;
+            }
+            else
+            {
+                _priceTextBG.anchorMin = new Vector2(0f, 0.5f);
+                _priceTextBG.anchorMax = new Vector2(0f, 0.5f);
+                _priceTextBG.pivot = new Vector2(1f, 0.5f);
+                _priceTextBG.anchoredPosition = new Vector2(-25f, 25f);
+                _priceText.alignment = TextAlignmentOptions.Right;
+
+                _tipTextBG.anchorMin = new Vector2(0f, 0.5f);
+                _tipTextBG.anchorMax = new Vector2(0f, 0.5f);
+                _tipTextBG.pivot = new Vector2(1f, 0.5f);
+                _tipTextBG.anchoredPosition = new Vector2(-25f, -25f);
+                _tipText.alignment = TextAlignmentOptions.Right;
+            }
         }
 
         private void UpdateScore(int newScore)

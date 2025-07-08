@@ -78,6 +78,7 @@ namespace UIs
 
             // OrderUI 위치 조정
             _ordersUI.OnChangedReverseUI(isReversed);
+            _scoreUI.OnChangedReverseUI(isReversed);
 
             // UI 위치 조정 후, 레이아웃 갱신
             Canvas.ForceUpdateCanvases();
