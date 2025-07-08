@@ -65,6 +65,19 @@ namespace UIs
                 });
         }
 
+        public Tween PlayExitAnimation(Action onComplete = null)
+        {
+            bool isReversed = Managers.Save.PlayerSettings.Data.ReverseUI;
+            Vector2 targetPivot = isReversed ? new Vector2(1f, 0.5f) : new Vector2(0f, 0.5f);
+
+            return _ingredientsParent.DOPivot(targetPivot, 0.5f) // 최종 위치로 이동
+                .SetEase(Ease.InQuad)
+                .OnComplete(() =>
+                {
+                    onComplete?.Invoke();
+                });
+        }
+
         public void ReplaceUIPosition(bool isReversed)
         {
             if (isReversed)
@@ -116,7 +129,7 @@ namespace UIs
             }
         }
 
-#region
+        #region
 
         /// <summary>
         /// _data.endX와 travelDistance를 비교하여 lifeTimeImage의 fillamount를 업데이트합니다.
@@ -130,9 +143,9 @@ namespace UIs
             _lifeTimeImage.fillAmount = distanceFromStart <= 0f ? 0f : Mathf.Clamp01(distanceFromStart / distanceToEnd);
         }
 
-#endregion
+        #endregion
 
-#region SetIngredients
+        #region SetIngredients
         private List<IngredientData> GetRequiredIngredients(OrderData data)
         {
             List<IngredientData> ingredients = new List<IngredientData>();
@@ -190,12 +203,12 @@ namespace UIs
                 ci.Data = data;
                 if (!_innerParent.AddIngredient(ci))
                 {
-                    Managers.Resource.Destroy(go);   
+                    Managers.Resource.Destroy(go);
                 }
             }
             else Managers.Resource.Destroy(go);
         }
-#endregion
+        #endregion
 
         public Tween GetIngredientAnimation(uint mask)
         {
@@ -239,6 +252,12 @@ namespace UIs
                 .Pause();
 
             return tw;
+        }
+
+        public override void Close()
+        {
+            // 먼저 사라지는 애니메이션 재생
+            PlayExitAnimation(base.Close);
         }
     }
 }
