@@ -88,26 +88,35 @@ namespace UIs
 
         public void CheckNewOrderList(List<OrderData> orderList)
         {
-            List<OrderData> prevOrders = _orderUIList.Keys.ToList();
+            List<OrderData> removedOrders = new();
             _requiredIngredients = 0;
+            // 제거된 목록 조회
+            foreach (var prevOrderData in _orderUIList.Keys)
+            {
+                // 현재 오더 목록에 없는 오더는 제거
+                if (!orderList.Contains(prevOrderData))
+                {
+                    removedOrders.Add(prevOrderData);
+                }
+            }
+
+            // 제거된 목록을 돌면서 UI 제거
+            foreach (var removedData in removedOrders)
+            {
+                var removeUI = _orderUIList[removedData];
+                removeUI?.Close();
+                _orderUIList.Remove(removedData);
+            }
+
+            // 새로운 오더 목록을 돌면서 UI 생성
             foreach (var orderData in orderList)
             {
-                if (prevOrders.Contains(orderData))
-                {
-                    prevOrders.Remove(orderData);
-                }
-                else
+                if (!_orderUIList.Keys.Contains(orderData))
                 {
                     GenerateOrderUI(orderData);
                 }
 
                 _requiredIngredients |= orderData.Mask;
-            }
-
-            foreach (var orderData in prevOrders)
-            {
-                _orderUIList[orderData]?.Close();
-                _orderUIList.Remove(orderData);
             }
 
             RefreshAnimations();
