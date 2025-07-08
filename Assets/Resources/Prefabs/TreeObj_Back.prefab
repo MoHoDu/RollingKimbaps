@@ -114,3 +114,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prapData: {fileID: 0}
+  PrevPosition: {x: 0, y: 100, z: 0}
