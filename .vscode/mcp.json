@@ -1,0 +1,48 @@
+{
+//   "inputs": [
+//     {
+//       "type": "promptString",
+//       "id": "api-key",
+//       "description": "API 키",
+//       "password": true
+//     }
+//   ],
+  "servers": {
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
+    },
+    "Context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"]
+    },
+    "notionMCP": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.notion.com/sse"]
+    },
+    "youtube": {
+      "command": "uvx",
+      "args": ["--from", "git+https://github.com/adhikasp/mcp-youtube", "mcp-youtube"]
+    }, 
+    "shrimp-task-manager": {
+      "command": "node",
+      "args": ["D:\\github\\mcp\\mcp-shrimp-task-manager\\dist\\index.js"],
+      "env": {
+        "DATA_DIR": "D:\\github\\TestGemini\\SHRIMP",
+        "TEMPLATES_USE": "templates_en",
+        "ENABLE_GUI": "true"
+      }
+    },
+    "mermaid-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@smithery/cli@latest",
+        "run",
+        "@peng-shawn/mermaid-mcp-server",
+        "--key",
+        "51787b70-10ca-40fc-b822-211ed850a0a0"
+      ]
+    }
+  }
+}
