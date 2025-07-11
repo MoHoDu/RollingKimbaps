@@ -352,22 +352,34 @@ namespace InGame.Combination
         }
         
         /// <summary>
-        /// 해당 X 좌표에서 장애물을 피해 생성 가능한 층 색인
+        /// 해당 X 좌표에서 장애물을 피해 생성 가능한 층 색인 (각 열별 최대 1개 재료 제한)
         /// </summary>
         /// <param name="posX">X 좌표</param>
-        /// <returns>생성 가능한 층</returns>
+        /// <returns>생성 가능한 층 중 1개만 선택하여 반환</returns>
         private List<int> GetAvailableYLayers(float posX)
         {
             Vector3 target = Vector3.right * posX;
             
-            List<int> targetFloors = new();
+            List<int> availableFloors = new();
             for (int floor = 0; floor < floorCount; floor++)
             {
                 Vector3 curPosition = target + Vector3.up * (floor * floorHeight);
-                if (_prapManager.CanCreateNewPrap(curPosition, EPrapType.INGREDIENT, true)) targetFloors.Add(floor);
+                if (_prapManager.CanCreateNewPrap(curPosition, EPrapType.INGREDIENT, true)) 
+                {
+                    availableFloors.Add(floor);
+                }
             }
 
-            return targetFloors;
+            // 각 열별 최대 1개 재료 생성 제한: 생성 가능한 층 중 1개만 선택
+            List<int> selectedFloors = new();
+            if (availableFloors.Count > 0)
+            {
+                // 랜덤하게 1개 층 선택
+                int randomIndex = UnityEngine.Random.Range(0, availableFloors.Count);
+                selectedFloors.Add(availableFloors[randomIndex]);
+            }
+
+            return selectedFloors;
         }
 
         private void RemoveIngredient(SpawnedIngredient ingredientData)
