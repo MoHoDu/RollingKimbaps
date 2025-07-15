@@ -76,31 +76,16 @@ namespace InGame.Combination
             // 데이터 추가
             Orders.Add(newOrder);
 
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] OrderSystem.AddOrder completed. New order added for recipe: {newRecipe.name}, Total orders: {Orders.Count}");
-#endif
             onChangedOrders?.Invoke(Orders);
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] OrderSystem.onChangedOrders event invoked with {Orders.Count} orders");
-#endif
         }
 
         public bool Serving(RecipeData recipe)
         {
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] OrderSystem.Serving called for recipe: {(recipe != null ? recipe.name : "null")}, Current orders count: {Orders.Count}");
-#endif
             OrderData target = null;
             foreach (OrderData order in Orders)
             {
-#if UNITY_EDITOR || DEBUG_SERVING
-                Debug.Log($"[SERVING] Checking order: {order.recipe.name}, CanServe: {order.CanServe(recipe)}");
-#endif
                 if (order.CanServe(recipe))
                 {
-#if UNITY_EDITOR || DEBUG_SERVING
-                    Debug.Log($"[SERVING] Order match found! Serving order for recipe: {order.recipe.name}");
-#endif
                     order.OnServed();
                     target = order;
                     break;
@@ -109,23 +94,11 @@ namespace InGame.Combination
 
             if (target != null)
             {
-#if UNITY_EDITOR || DEBUG_SERVING
-                Debug.Log($"[SERVING] Order successfully served and removed from list. Recipe: {target.recipe.name}");
-#endif
                 Orders.Remove(target);
-#if UNITY_EDITOR || DEBUG_SERVING
-                Debug.Log($"[SERVING] OrderSystem.Serving - Order removed, remaining orders: {Orders.Count}");
-#endif
                 onChangedOrders?.Invoke(Orders);
-#if UNITY_EDITOR || DEBUG_SERVING
-                Debug.Log($"[SERVING] OrderSystem.onChangedOrders event invoked after serving success");
-#endif
                 return true;
             }
 
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] No matching order found for recipe: {(recipe != null ? recipe.name : "null")}");
-#endif
             return false;
         }
 

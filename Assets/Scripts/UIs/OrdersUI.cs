@@ -88,9 +88,6 @@ namespace UIs
 
         public void CheckNewOrderList(List<OrderData> orderList)
         {
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] OrdersUI.CheckNewOrderList called with {orderList.Count} orders");
-#endif
             List<OrderData> removedOrders = new();
             _requiredIngredients = 0;
             // 제거된 목록 조회
@@ -106,9 +103,6 @@ namespace UIs
             // 제거된 목록을 돌면서 UI 제거
             foreach (var removedData in removedOrders)
             {
-#if UNITY_EDITOR || DEBUG_SERVING
-                Debug.Log($"[SERVING] OrdersUI removing order UI for recipe: {removedData.recipe.name}");
-#endif
                 var removeUI = _orderUIList[removedData];
                 removeUI?.Close();
                 _orderUIList.Remove(removedData);
@@ -119,18 +113,12 @@ namespace UIs
             {
                 if (!_orderUIList.Keys.Contains(orderData))
                 {
-#if UNITY_EDITOR || DEBUG_SERVING
-                    Debug.Log($"[SERVING] OrdersUI generating new order UI for recipe: {orderData.recipe.name}");
-#endif
                     GenerateOrderUI(orderData);
                 }
 
                 _requiredIngredients |= orderData.Mask;
             }
 
-#if UNITY_EDITOR || DEBUG_SERVING
-            Debug.Log($"[SERVING] OrdersUI finished processing order list. Current UI count: {_orderUIList.Count}");
-#endif
             RefreshAnimations();
         }
 
