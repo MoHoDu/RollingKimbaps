@@ -233,24 +233,45 @@ namespace ManagerSystem.InGame
 
         public void OnTryServing()
         {
+#if UNITY_EDITOR || DEBUG_SERVING
+            Debug.Log($"[SERVING] OnTryServing called at {Time.time}");
+#endif
             RecipeData recipe = GetCurrentRecipe();
+#if UNITY_EDITOR || DEBUG_SERVING
+            Debug.Log($"[SERVING] Current recipe: {(recipe != null ? recipe.name : "null")}");
+#endif
             if (recipe != null && Order.Serving(recipe))
             {
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] Serving SUCCESS for recipe: {recipe.name}");
+#endif
                 // 보상 제공
                 int rewards = GetRewards();
                 int tips = GetTips();
                 _statusManager.GetScore(rewards + tips);
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] Rewards: {rewards}, Tips: {tips}, Total Score: {rewards + tips}");
+#endif
                 // 서빙 성공 시 이벤트 호출: 보상을 UI로 송출 등
                 onSuccessedServing?.Invoke((rewards, tips));
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] onSuccessedServing event invoked");
+#endif
             }
             else
             {
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] Serving FAILED - Recipe: {(recipe != null ? recipe.name : "null")}, Order.Serving result: {(recipe != null ? Order.Serving(recipe) : false)}");
+#endif
                 // 복제 김밥 UI가 땅으로 떨어지는 애니메이션 
                 // 재료 삭제
                 ClearCollectedIngredients();
 
                 // 서빙 실패 시 이벤트 호출: Failed 효과 등
                 onFailedServing?.Invoke();
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] onFailedServing event invoked");
+#endif
             }
         }
 

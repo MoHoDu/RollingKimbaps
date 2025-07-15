@@ -87,13 +87,22 @@ namespace InGame
         
         public void InputSubmitKey()
         {
+#if UNITY_EDITOR || DEBUG_SERVING
+            Debug.Log($"[SERVING] InputSubmitKey called at {Time.time}, GameStatus: {_gameStatus}, CharacterState: {_characterState}");
+#endif
             if (_gameStatus is not EGameStatus.PLAY) return;
 
             if (_characterState == ECharacterState.NORMAL)
             {
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] Attempting serving with collected ingredients...");
+#endif
                 // 서빙 처리
                 _combinationManager.OnTryServing();
 
+#if UNITY_EDITOR || DEBUG_SERVING
+                Debug.Log($"[SERVING] Clearing ingredients after serving attempt");
+#endif
                 // 서빙 후 재료 제거
                 character.ClearIngredients();
             }
