@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5762735841798385137
+--- !u!1 &5378679922415718319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,24 +8,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5146172245639503646}
-  - component: {fileID: 5467584914573303146}
-  - component: {fileID: 8364495414497112112}
-  - component: {fileID: 9172382384618737120}
+  - component: {fileID: 2031357487967971957}
+  - component: {fileID: 551422796819159920}
+  - component: {fileID: 3421037164813617717}
+  - component: {fileID: 3735771355193889681}
   m_Layer: 5
-  m_Name: CheeseUI
+  m_Name: Crispy Cucumber Kimbap UI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!224 &5146172245639503646
+--- !u!224 &2031357487967971957
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5762735841798385137}
+  m_GameObject: {fileID: 5378679922415718319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -38,21 +38,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &5467584914573303146
+--- !u!222 &551422796819159920
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5762735841798385137}
+  m_GameObject: {fileID: 5378679922415718319}
   m_CullTransparentMesh: 1
---- !u!114 &8364495414497112112
+--- !u!114 &3421037164813617717
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5762735841798385137}
+  m_GameObject: {fileID: 5378679922415718319}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -8003764273241014219, guid: 7e8a05881b8a94800925acc1dc1e5b89, type: 3}
+  m_Sprite: {fileID: -366339801, guid: 16de08dc71e86436b87645ceffb6fe06, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -76,13 +76,13 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &9172382384618737120
+--- !u!114 &3735771355193889681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5762735841798385137}
+  m_GameObject: {fileID: 5378679922415718319}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4737779f6140490dad8067572717d8a1, type: 3}
