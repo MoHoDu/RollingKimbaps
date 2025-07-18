@@ -96,7 +96,7 @@ namespace InGame.Combination
             float spawnTime = spawnDistance / playerSpeed;
             int spawnSlotsThisSecond = (int)Mathf.Floor(1.0f / spawnTime);
             if (spawnSlotsThisSecond < 1) spawnSlotsThisSecond = 1;
-            
+
             spawnSlotsThisSecond = Mathf.Min(spawnSlotsThisSecond, 5); // 최대 5개 슬롯
 
             // ③ 각 슬롯 별로 배치
@@ -187,7 +187,7 @@ namespace InGame.Combination
             {
                 // 수집되면 사라지게 될 것이라 수집 여부 bool 값 제거
                 // if (!si.isCollected) {
-                spawnedMask |= (1u << (int)si.index);
+                spawnedMask |= 1u << (int)si.index;
                 // }
             }
 
