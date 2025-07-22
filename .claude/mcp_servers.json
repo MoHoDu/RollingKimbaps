@@ -1,7 +1,4 @@
 {
-  "theme": "Default",
-  "selectedAuthType": "oauth-personal",
-  "autoModelSwitch": false,
   "mcpServers": {
     "shrimp-task-manager": {
       "command": "node",
