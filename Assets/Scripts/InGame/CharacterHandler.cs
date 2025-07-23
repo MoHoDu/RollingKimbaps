@@ -248,6 +248,10 @@ namespace InGame
 
         private bool IsObstacleCollision(Collision2D collision)
         {
+            // 캐릭터가 무적 상태(invisible_character 레이어)일 때는 장애물과 충돌하지 않음
+            if (character.BodyCollider.gameObject.layer == LayerMask.NameToLayer("invisible_character"))
+                return false;
+
             return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 &&
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }

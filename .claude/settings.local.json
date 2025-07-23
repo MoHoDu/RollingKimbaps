@@ -1,19 +1,15 @@
 {
   "permissions": {
-    "allow": ["mcp__mcp-obsidian__obsidian_get_periodic_note"],
+    "allow": [
+      "mcp__mcp-obsidian__obsidian_get_periodic_note",
+      "mcp__mcp-obsidian__obsidian_list_files_in_dir",
+      "mcp__mcp-obsidian__obsidian_append_content",
+      "mcp__shrimp-task-manager__query_task"
+    ],
     "deny": []
   },
-  "mcpServers": {
-    "shrimp-task-manager": {
-      "command": "node",
-      "args": [
-        "/Users/mohoseong/Documents/github/MCP/mcp-shrimp-task-manager/dist/index.js"
-      ],
-      "env": {
-        "DATA_DIR": "/Users/mohoseong/Documents/github/RollingKimbaps/SHRIMP",
-        "TEMPLATES_USE": "templates_en",
-        "ENABLE_GUI": "true"
-      }
-    }
-  }
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "shrimp-task-manager"
+  ]
 }

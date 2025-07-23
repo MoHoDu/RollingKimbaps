@@ -14,7 +14,7 @@ namespace Obstacles
 
         [SerializeField] public float Width = 1;
         [SerializeField] public float Height = 1;
-        
+
         private SpriteRenderer _spriteRenderer;
         private Collider2D _collider;
         private LayerMask _characterLayer;
@@ -22,7 +22,7 @@ namespace Obstacles
         protected override void Initialize()
         {
             base.Initialize();
-            
+
             _collider = GetComponent<Collider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _characterLayer = LayerMask.GetMask("character");
@@ -30,7 +30,7 @@ namespace Obstacles
             // 파티클 종료 후에 콜백 설정 
             var particle_main = _broken_particle.main;
             particle_main.stopAction = ParticleSystemStopAction.Callback;
-            
+
             Width = _spriteRenderer.sprite.bounds.size.x;
             Height = _spriteRenderer.sprite.bounds.size.y;
         }
@@ -61,7 +61,17 @@ namespace Obstacles
 
         private bool IsCharacterCollision(Collision2D collision)
         {
-            return ((1 << collision.gameObject.layer) & _characterLayer) != 0 && 
+            // 캐릭터가 무적 상태(invisible_character 레이어)일 때는 충돌하지 않음
+            int characterLayer = LayerMask.NameToLayer("character");
+            int invisibleCharacterLayer = LayerMask.NameToLayer("invisible_character");
+
+            bool isCharacterLayer = collision.gameObject.layer == characterLayer;
+            bool isInvisibleCharacterLayer = collision.gameObject.layer == invisibleCharacterLayer;
+
+            // invisible_character 레이어면 충돌 무시
+            if (isInvisibleCharacterLayer) return false;
+
+            return isCharacterLayer &&
                    collision.contacts.Any(contact => contact.otherCollider == _collider);
         }
     }

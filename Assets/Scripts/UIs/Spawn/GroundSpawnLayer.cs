@@ -23,8 +23,14 @@ namespace UIs.Spawn
 
         public Prap GetRevivePrap()
         {
-            List<Prap> praps = _spawnedPraps.Values
-                .Where(prap => prap.transform.position.x >= 0)
+            if (_spawnedPraps == null || _spawnedPraps.Count == 0)
+            {
+                // 만약 프랍이 없다면 null 반환
+                return null;
+            }
+
+            List<Prap> praps = _spawnedPraps.Values?
+                .Where(prap => prap.transform != null && prap.transform.position.x >= 0)
                 .OrderBy(prap => prap.transform.position.x)
                 .ToList();
 

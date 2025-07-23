@@ -118,80 +118,75 @@
       "verificationCriteria": "새로운 폴더 구조가 적용되고, 기존 기록이 문제없이 마이그레이션되어야 합니다.",
       "summary": "프로젝트별 History 폴더 구조 최적화를 완료했습니다.",
       "completedAt": "2025-07-23T03:28:39.888Z"
-    ],
-    "newTasks": [
-      {
-        "id": "game-dev-001",
-        "name": "부활 시스템 개선 - 부활 포인트 및 애니메이션",
-        "description": "그라운드에 부활 포인트를 추가하고, 부활 시 화면 좌측에서 포물선을 그리며 이동하는 애니메이션과 3초간 무적 상태를 구현합니다.",
-        "notes": "데일리 스크럼에서 우선순위 높음으로 설정된 작업입니다.",
-        "status": "pending",
-        "dependencies": [],
-        "createdAt": "2025-07-23T04:00:00.000Z",
-        "updatedAt": "2025-07-23T04:00:00.000Z",
-        "relatedFiles": [
-          {
-            "path": "Assets/Scripts/GameManager.cs",
-            "type": "MODIFY",
-            "description": "부활 시스템 로직을 수정합니다."
-          },
-          {
-            "path": "Assets/Scripts/Player/PlayerController.cs",
-            "type": "MODIFY",
-            "description": "플레이어 부활 및 무적 상태 로직을 추가합니다."
-          }
-        ],
-        "implementationGuide": "1. 그라운드에 부활 포인트 위치 계산 로직 추가\n2. 부활 지점까지 레이어 플로우 후 정지하는 로직 구현\n3. 화면 좌측에서 부활 지점까지 포물선 이동 애니메이션 구현\n4. 부활 후 3초간 장애물 충돌 무시 로직 추가",
-        "verificationCriteria": "1. 부활 시 지정된 부활 포인트로 캐릭터가 이동해야 합니다.\n2. 포물선 애니메이션이 자연스럽게 동작해야 합니다.\n3. 부활 후 3초간 장애물과 충돌하지 않아야 합니다."
-      },
-      {
-        "id": "game-dev-002",
-        "name": "초기 그라운드 생성 시스템 최적화",
-        "description": "게임 시작 시 너비 20의 긴 그라운드를 미리 생성하고, 그라운드 생성기에서 관련 변수를 적절히 세팅합니다.",
-        "notes": "게임 시작 시의 안정성을 위한 작업입니다.",
-        "status": "pending",
-        "dependencies": [],
-        "createdAt": "2025-07-23T04:00:00.000Z",
-        "updatedAt": "2025-07-23T04:00:00.000Z",
-        "relatedFiles": [
-          {
-            "path": "Assets/Scripts/GroundGenerator.cs",
-            "type": "MODIFY",
-            "description": "그라운드 생성 로직을 수정합니다."
-          }
-        ],
-        "implementationGuide": "1. 게임 시작 시 너비 20의 초기 그라운드를 생성하는 로직 추가\n2. 그라운드 생성기에서 미리 생성된 그라운드를 확인하는 로직 구현\n3. 초기 그라운드에 맞게 관련 변수들(위치, 크기 등) 세팅",
-        "verificationCriteria": "1. 게임 시작 시 너비 20의 그라운드가 미리 생성되어야 합니다.\n2. 그라운드 생성기가 초기 그라운드를 인식하고 적절히 변수를 세팅해야 합니다."
-      },
-      {
-        "id": "game-dev-003",
-        "name": "로딩 씬 구현 및 페이드 효과",
-        "description": "로비 씬과 게임 씬 사이에 로딩 씬을 추가하고, 페이드 인/아웃 효과와 프로그레스 바를 구현합니다.",
-        "notes": "사용자 경험 개선을 위한 작업입니다.",
-        "status": "pending",
-        "dependencies": [],
-        "createdAt": "2025-07-23T04:00:00.000Z",
-        "updatedAt": "2025-07-23T04:00:00.000Z",
-        "relatedFiles": [
-          {
-            "path": "Assets/Scenes/LoadingScene.unity",
-            "type": "CREATE",
-            "description": "새로운 로딩 씬을 생성합니다."
-          },
-          {
-            "path": "Assets/Scripts/LoadingManager.cs",
-            "type": "CREATE",
-            "description": "로딩 씬 관리 스크립트를 생성합니다."
-          },
-          {
-            "path": "Assets/Scripts/SceneManager.cs",
-            "type": "MODIFY",
-            "description": "씬 전환 로직을 수정합니다."
-          }
-        ],
-        "implementationGuide": "1. 로딩 씬 생성 및 페이드 인 효과 구현\n2. additive 로딩 방식으로 게임 씬 로드 및 프로그레스 바 표시\n3. 게임 오브젝트 생성 완료 감지 로직 구현\n4. 로딩 완료 후 페이드 아웃으로 로딩 씬 제거\n5. 로딩 씬 제거 후 게임 시작 로직 실행",
-        "verificationCriteria": "1. 로비에서 게임으로 전환 시 로딩 씬이 나타나야 합니다.\n2. 프로그레스 바가 로딩 진행 상황을 표시해야 합니다.\n3. 모든 게임 오브젝트 생성 완료 후 로딩 씬이 사라져야 합니다.\n4. 로딩 씬 제거 후 게임이 정상적으로 시작되어야 합니다."
-      }
-    ]
+    },
+    {
+      "id": "5ab9c8c8-95f7-479f-8171-7baa6dceef1e",
+      "name": "부활 시스템 개선 작업 완료 기록",
+      "description": "커밋 f7b07aa에서 완료된 부활 시스템 개선 작업을 Shrimp Task Manager에 완료 상태로 등록하여 프로젝트 히스토리를 체계적으로 관리합니다.",
+      "notes": "이미 완료된 작업을 기록 목적으로 등록하는 것이므로 실제 개발 작업은 불필요. History 폴더에 작업 완료 문서가 이미 작성됨.",
+      "status": "pending",
+      "dependencies": [],
+      "createdAt": "2025-07-23T08:26:42.091Z",
+      "updatedAt": "2025-07-23T08:26:42.091Z",
+      "relatedFiles": [
+        {
+          "path": "Assets/Scripts/InGame/CharacterHandler.cs",
+          "type": "TO_MODIFY",
+          "description": "캐릭터 핸들링 로직 개선",
+          "lineStart": 1,
+          "lineEnd": 100
+        },
+        {
+          "path": "Assets/Scripts/ManagerSystem/InGame/StatusManager.cs",
+          "type": "TO_MODIFY",
+          "description": "무적 시간 및 깜빡임 효과 로직",
+          "lineStart": 1,
+          "lineEnd": 100
+        },
+        {
+          "path": "Assets/Scripts/UIs/Character.cs",
+          "type": "TO_MODIFY",
+          "description": "캐릭터 애니메이션 및 상태 관리",
+          "lineStart": 1,
+          "lineEnd": 100
+        },
+        {
+          "path": "Projects/Unity/RollingKimbaps/History/2025.07.23(수)_부활_시스템_개선_작업_완료.md",
+          "type": "REFERENCE",
+          "description": "작업 완료 기록 문서",
+          "lineStart": 1,
+          "lineEnd": 50
+        }
+      ],
+      "implementationGuide": "1. 완료된 작업 내용 정리\\n - 부활 로직 개선: 다음 그라운드 좌측 지점 이동\\n - 포물선 애니메이션: 화면 좌측에서 부활 지점까지 자연스러운 등장\\n - 플로우 재시작: 부활 지점 도착 즉시 게임 재개\\n - 무적 시간: 2초간 깜빡임 효과 및 충돌 무시\\n\\n2. 기술적 구현 사항\\n - 주요 변경 파일: 24개 (CharacterHandler.cs, StatusManager.cs, Character.cs 등)\\n - 코드 변경량: +307줄, -168줄\\n - Unity C# 스크립트 및 에셋 파일 수정",
+      "verificationCriteria": "1. Shrimp Task Manager에 작업이 완료 상태로 등록되었는지 확인\\n2. 작업 내용이 커밋 f7b07aa의 실제 변경 사항과 일치하는지 확인\\n3. History 문서와 연계되어 체계적인 기록 관리가 이루어지는지 확인",
+      "analysisResult": "RollingKimbaps 프로젝트의 부활 시스템 개선 작업 완료 기록 및 후속 작업 관리를 위한 Task Manager 등록"
+    },
+    {
+      "id": "515a298e-b123-4d02-9f1e-e51a13f9e85c",
+      "name": "무적 시간 버그 수정 계획 수립",
+      "description": "부활 시스템의 무적 시간 관련 버그를 수정하기 위한 후속 작업을 계획하고 등록합니다.",
+      "notes": "커밋 메시지에서 언급된 '해당 부분에 버그가 있음 -> 수정중' 상태를 체계적으로 관리하기 위함",
+      "status": "pending",
+      "dependencies": [
+        {
+          "taskId": "5ab9c8c8-95f7-479f-8171-7baa6dceef1e"
+        }
+      ],
+      "createdAt": "2025-07-23T08:26:42.091Z",
+      "updatedAt": "2025-07-23T08:26:42.091Z",
+      "relatedFiles": [
+        {
+          "path": "Assets/Scripts/ManagerSystem/InGame/StatusManager.cs",
+          "type": "TO_MODIFY",
+          "description": "무적 시간 버그 수정 대상",
+          "lineStart": 1,
+          "lineEnd": 100
+        }
+      ],
+      "implementationGuide": "1. 무적 시간 버그 분석\\n - 현재 깜빡임 효과와 무적 시간 2초 구현에서 발생하는 버그 파악\\n - StatusManager.cs의 무적 상태 처리 로직 검토\\n\\n2. 수정 계획 수립\\n - 버그 재현 조건 파악\\n - 수정 방법 설계\\n - 테스트 케이스 정의",
+      "verificationCriteria": "1. 무적 시간 버그가 명확히 정의되었는지 확인\\n2. 수정 계획이 기존 부활 시스템과 호환되는지 확인\\n3. 후속 작업이 Task Manager에 적절히 등록되었는지 확인",
+      "analysisResult": "RollingKimbaps 프로젝트의 부활 시스템 개선 작업 완료 기록 및 후속 작업 관리를 위한 Task Manager 등록"
     }
+  ]
 }

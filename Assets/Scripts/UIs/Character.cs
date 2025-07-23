@@ -69,7 +69,7 @@ namespace UIs
 
         public void OnStart(RaceStatus raceStatus, CharacterStatus characterStatus)
         {
-            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            ChangeLayer(false);
             _charInfo = characterStatus;
             _raceInfo = raceStatus;
             Rebirth(setRebirthValue: false).Forget();
@@ -87,7 +87,7 @@ namespace UIs
             _rigidbody2D.simulated = false;
 
             // 콜라이더 Off
-            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            ChangeLayer(false);
         }
 
         public async UniTask Rebirth(Vector3? targetPosition = null, bool setRebirthValue = true)
@@ -109,7 +109,7 @@ namespace UIs
             EnableRigidbody(false);
 
             // 콜라이더 Off
-            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            ChangeLayer(false);
 
             // 애니메이션 value 세팅 
             if (setRebirthValue) _animator.SetTrigger("rebirth");
@@ -151,9 +151,9 @@ namespace UIs
             }
         }
 
-        public async UniTask OnDamaged()
+        public async UniTask OnDamaged(bool restoreLayerAfterBlink = true)
         {
-            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            ChangeLayer(false);
             Color baseColor = bodyRenderer.color;
             baseColor.a = 1f;
 
@@ -162,7 +162,12 @@ namespace UIs
 
             await tween.AsyncWaitForCompletion();
             bodyRenderer.color = baseColor;
-            body.gameObject.layer = LayerMask.NameToLayer("character");
+
+            // 레이어 복구 여부를 매개변수로 결정
+            if (restoreLayerAfterBlink)
+            {
+                ChangeLayer(true);
+            }
         }
 
         public async UniTask OnDied()
@@ -199,12 +204,27 @@ namespace UIs
             EnableRigidbody(true);
 
             // 무적 시간동안만 깜빡임 유지 및 장애물 충돌 무시
-            body.gameObject.layer = LayerMask.NameToLayer("invisable_character");
+            ChangeLayer(false);
 
             _cancellationOnDamaged = new CancellationTokenSource();
-            OnDamaged().AttachExternalCancellation(_cancellationOnDamaged.Token).Forget();
+            OnDamaged(restoreLayerAfterBlink: true).AttachExternalCancellation(_cancellationOnDamaged.Token).Forget();
 
             OnRecorvered?.Invoke();
+        }
+
+        public void EndInvincibility()
+        {
+            // 무적 상태 해제 - 레이어를 다시 character로 변경
+            ChangeLayer(true);
+
+            // 깜빡임 효과 취소
+            _cancellationOnDamaged?.Cancel();
+            _cancellationOnDamaged = null;
+
+            // 투명도 정상화
+            Color finalColor = bodyRenderer.color;
+            finalColor.a = 1f;
+            bodyRenderer.color = finalColor;
         }
 
         public void OnJump()
@@ -274,6 +294,40 @@ namespace UIs
         public void ClearIngredients()
         {
             innerIngredients.ClearIngredients();
+        }
+
+        // 장애물 콜라이더 관리
+        private void SetObstacleCollisionIgnore(bool ignore)
+        {
+            // obstacle 레이어의 모든 콜라이더 찾기
+            Collider2D[] allColliders = FindObjectsByType<Collider2D>(FindObjectsSortMode.None);
+            int obstacleLayer = LayerMask.NameToLayer("obstacle");
+            
+            foreach (Collider2D collider in allColliders)
+            {
+                if (collider.gameObject.layer == obstacleLayer)
+                {
+                    Physics2D.IgnoreCollision(bodyCollider, collider, ignore);
+                }
+            }
+        }
+
+        private void ChangeLayer(bool visable = true)
+        {
+            if (visable)
+            {
+                gameObject.layer = LayerMask.NameToLayer("character");
+                body.gameObject.layer = LayerMask.NameToLayer("character");
+                // 장애물과의 물리적 충돌 활성화
+                SetObstacleCollisionIgnore(false);
+            }
+            else
+            {
+                gameObject.layer = LayerMask.NameToLayer("invisible_character");
+                body.gameObject.layer = LayerMask.NameToLayer("invisible_character");
+                // 장애물과의 물리적 충돌 비활성화 (완전히 통과)
+                SetObstacleCollisionIgnore(true);
+            }
         }
 
         protected override void FixedUpdate()
