@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": ["mcp__mcp-obsidian__obsidian_get_periodic_note"],
+    "deny": []
+  },
+  "mcpServers": {
+    "shrimp-task-manager": {
+      "command": "node",
+      "args": [
+        "/Users/mohoseong/Documents/github/MCP/mcp-shrimp-task-manager/dist/index.js"
+      ],
+      "env": {
+        "DATA_DIR": "/Users/mohoseong/Documents/github/RollingKimbaps/SHRIMP",
+        "TEMPLATES_USE": "templates_en",
+        "ENABLE_GUI": "true"
+      }
+    }
+  }
+}

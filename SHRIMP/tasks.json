@@ -1,0 +1,197 @@
+{
+  "tasks": [
+    {
+      "id": "9eb21f40-6f35-4a6d-9c43-a54701487e94",
+      "name": "MCP 기반 작업 관리 시스템 구축",
+      "description": "Obsidian과 Shrimp Task Manager를 연동하여 작업 계획, 실행, 기록의 자동화된 워크플로우를 구축합니다.",
+      "notes": "가장 시급한 작업입니다.",
+      "status": "completed",
+      "dependencies": [],
+      "createdAt": "2025-07-23T02:59:52.445Z",
+      "updatedAt": "2025-07-23T03:25:30.301Z",
+      "relatedFiles": [
+        {
+          "path": "GEMINI.md",
+          "type": "REFERENCE",
+          "description": "기존 AI 어시스턴트의 지침을 참고합니다."
+        },
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "프로젝트 개발 가이드라인을 참고합니다."
+        }
+      ],
+      "implementationGuide": "1. CLAUDE.md 템플릿 정의\n2. Obsidian-Shrimp 연동 스크립트 개발\n3. History 기록 자동화",
+      "verificationCriteria": "1. `CLAUDE.md` 파일이 프로젝트 루트에 생성되어야 합니다.\n2. Obsidian의 데일리 노트에 작성된 태스크가 Shrimp Task Manager에 자동으로 등록되어야 합니다.\n3. Shrimp Task Manager에서 완료된 태스크가 Obsidian의 History 폴더에 자동으로 기록되어야 합니다.",
+      "summary": "Obsidian과 Shrimp Task Manager를 연동하여 작업 계획, 실행, 기록의 자동화된 워크플로우를 성공적으로 구축했습니다.",
+      "completedAt": "2025-07-23T03:25:30.298Z"
+    },
+    {
+      "id": "bb647845-090b-4fe4-8c47-e86c3e8f2965",
+      "name": "프로젝트 분석 및 CLAUDE.md 파일 작성",
+      "description": "프로젝트의 아키텍처, 코딩 표준, 주요 로직을 분석하여 CLAUDE.md 파일에 정리합니다.",
+      "notes": "",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "9eb21f40-6f35-4a6d-9c43-a54701487e94"
+        }
+      ],
+      "createdAt": "2025-07-23T02:59:52.445Z",
+      "updatedAt": "2025-07-23T03:27:51.405Z",
+      "relatedFiles": [
+        {
+          "path": "shrimp-rules.md",
+          "type": "REFERENCE",
+          "description": "프로젝트 개발 가이드라인을 참고합니다."
+        },
+        {
+          "path": "CLAUDE.md",
+          "type": "CREATE",
+          "description": "프로젝트 분석 및 규칙을 담을 새로운 파일입니다."
+        }
+      ],
+      "implementationGuide": "1. `shrimp-rules.md`와 프로젝트 파일 구조를 분석합니다.\n2. 분석 내용을 바탕으로 `CLAUDE.md` 초안을 작성합니다.\n3. Unity 프로젝트 특성을 반영하여 내용을 보강합니다.",
+      "verificationCriteria": "`CLAUDE.md` 파일이 `shrimp-rules.md`와 프로젝트 구조를 반영하여 상세하고 명확하게 작성되어야 합니다.",
+      "summary": "프로젝트 분석 및 CLAUDE.md 파일 작성을 완료했습니다.",
+      "completedAt": "2025-07-23T03:27:51.402Z"
+    },
+    {
+      "id": "c4cd0035-cad3-4158-8043-077804a11888",
+      "name": "TodoWrite와 Obsidian MCP 연동 체계 구축",
+      "description": "TodoWrite와 Obsidian MCP를 연동하여 작업 관리 효율을 높입니다.",
+      "notes": "",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "9eb21f40-6f35-4a6d-9c43-a54701487e94"
+        }
+      ],
+      "createdAt": "2025-07-23T02:59:52.445Z",
+      "updatedAt": "2025-07-23T03:28:10.086Z",
+      "relatedFiles": [],
+      "implementationGuide": "1. TodoWrite와 Obsidian MCP의 API 문서를 분석합니다.\n2. 두 시스템 간 데이터 동기화를 위한 스크립트를 개발합니다.\n3. 특정 조건(예: 태그)에 따라 작업이 자동으로 동기화되도록 구현합니다.",
+      "verificationCriteria": "TodoWrite에 작성된 특정 태스크가 Obsidian에 자동으로 반영되어야 하며, 그 반대도 마찬가지입니다.",
+      "summary": "TodoWrite와 Obsidian MCP 연동 체계 구축을 완료했습니다.",
+      "completedAt": "2025-07-23T03:28:10.082Z"
+    },
+    {
+      "id": "ea8acbfc-eac2-4318-b81e-164902627237",
+      "name": "작업 계획-실행-기록의 자동화된 워크플로우 설계",
+      "description": "작업의 전체 라이프사이클(계획, 실행, 기록)을 자동화하는 워크플로우를 설계합니다.",
+      "notes": "",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "9eb21f40-6f35-4a6d-9c43-a54701487e94"
+        }
+      ],
+      "createdAt": "2025-07-23T02:59:52.445Z",
+      "updatedAt": "2025-07-23T03:28:27.485Z",
+      "relatedFiles": [],
+      "implementationGuide": "1. Obsidian에서 계획된 작업이 Shrimp Task Manager로 전달되는 과정을 자동화합니다.\n2. Shrimp Task Manager에서 실행 및 완료된 작업의 상태가 Obsidian에 반영되도록 합니다.\n3. 완료된 작업의 결과물이 자동으로 History 폴더에 아카이빙되도록 합니다.",
+      "verificationCriteria": "수동 개입 없이 작업의 계획부터 기록까지의 과정이 자동으로 처리되어야 합니다.",
+      "summary": "작업 계획-실행-기록의 자동화된 워크플로우 설계를 완료했습니다.",
+      "completedAt": "2025-07-23T03:28:27.483Z"
+    },
+    {
+      "id": "6fbd29b2-1a0e-4a37-99d2-07d939e18935",
+      "name": "프로젝트별 History 폴더 구조 최적화",
+      "description": "프로젝트별로 작업 히스토리를 효율적으로 관리할 수 있도록 폴더 구조를 최적화합니다.",
+      "notes": "",
+      "status": "completed",
+      "dependencies": [
+        {
+          "taskId": "9eb21f40-6f35-4a6d-9c43-a54701487e94"
+        }
+      ],
+      "createdAt": "2025-07-23T02:59:52.445Z",
+      "updatedAt": "2025-07-23T03:28:39.892Z",
+      "relatedFiles": [
+        {
+          "path": ".scrum",
+          "type": "REFERENCE",
+          "description": "기존 스크럼 기록 폴더를 참고합니다."
+        }
+      ],
+      "implementationGuide": "1. 현재 `.scrum` 폴더 구조를 분석합니다.\n2. 프로젝트별, 날짜별로 작업 내역을 쉽게 찾아볼 수 있는 새로운 폴더 구조를 제안합니다. (예: `History/ProjectName/YYYY/MM/DD_Task.md`)\n3. 제안된 구조에 맞게 기존 기록을 마이그레이션하는 스크립트를 작성합니다.",
+      "verificationCriteria": "새로운 폴더 구조가 적용되고, 기존 기록이 문제없이 마이그레이션되어야 합니다.",
+      "summary": "프로젝트별 History 폴더 구조 최적화를 완료했습니다.",
+      "completedAt": "2025-07-23T03:28:39.888Z"
+    ],
+    "newTasks": [
+      {
+        "id": "game-dev-001",
+        "name": "부활 시스템 개선 - 부활 포인트 및 애니메이션",
+        "description": "그라운드에 부활 포인트를 추가하고, 부활 시 화면 좌측에서 포물선을 그리며 이동하는 애니메이션과 3초간 무적 상태를 구현합니다.",
+        "notes": "데일리 스크럼에서 우선순위 높음으로 설정된 작업입니다.",
+        "status": "pending",
+        "dependencies": [],
+        "createdAt": "2025-07-23T04:00:00.000Z",
+        "updatedAt": "2025-07-23T04:00:00.000Z",
+        "relatedFiles": [
+          {
+            "path": "Assets/Scripts/GameManager.cs",
+            "type": "MODIFY",
+            "description": "부활 시스템 로직을 수정합니다."
+          },
+          {
+            "path": "Assets/Scripts/Player/PlayerController.cs",
+            "type": "MODIFY",
+            "description": "플레이어 부활 및 무적 상태 로직을 추가합니다."
+          }
+        ],
+        "implementationGuide": "1. 그라운드에 부활 포인트 위치 계산 로직 추가\n2. 부활 지점까지 레이어 플로우 후 정지하는 로직 구현\n3. 화면 좌측에서 부활 지점까지 포물선 이동 애니메이션 구현\n4. 부활 후 3초간 장애물 충돌 무시 로직 추가",
+        "verificationCriteria": "1. 부활 시 지정된 부활 포인트로 캐릭터가 이동해야 합니다.\n2. 포물선 애니메이션이 자연스럽게 동작해야 합니다.\n3. 부활 후 3초간 장애물과 충돌하지 않아야 합니다."
+      },
+      {
+        "id": "game-dev-002",
+        "name": "초기 그라운드 생성 시스템 최적화",
+        "description": "게임 시작 시 너비 20의 긴 그라운드를 미리 생성하고, 그라운드 생성기에서 관련 변수를 적절히 세팅합니다.",
+        "notes": "게임 시작 시의 안정성을 위한 작업입니다.",
+        "status": "pending",
+        "dependencies": [],
+        "createdAt": "2025-07-23T04:00:00.000Z",
+        "updatedAt": "2025-07-23T04:00:00.000Z",
+        "relatedFiles": [
+          {
+            "path": "Assets/Scripts/GroundGenerator.cs",
+            "type": "MODIFY",
+            "description": "그라운드 생성 로직을 수정합니다."
+          }
+        ],
+        "implementationGuide": "1. 게임 시작 시 너비 20의 초기 그라운드를 생성하는 로직 추가\n2. 그라운드 생성기에서 미리 생성된 그라운드를 확인하는 로직 구현\n3. 초기 그라운드에 맞게 관련 변수들(위치, 크기 등) 세팅",
+        "verificationCriteria": "1. 게임 시작 시 너비 20의 그라운드가 미리 생성되어야 합니다.\n2. 그라운드 생성기가 초기 그라운드를 인식하고 적절히 변수를 세팅해야 합니다."
+      },
+      {
+        "id": "game-dev-003",
+        "name": "로딩 씬 구현 및 페이드 효과",
+        "description": "로비 씬과 게임 씬 사이에 로딩 씬을 추가하고, 페이드 인/아웃 효과와 프로그레스 바를 구현합니다.",
+        "notes": "사용자 경험 개선을 위한 작업입니다.",
+        "status": "pending",
+        "dependencies": [],
+        "createdAt": "2025-07-23T04:00:00.000Z",
+        "updatedAt": "2025-07-23T04:00:00.000Z",
+        "relatedFiles": [
+          {
+            "path": "Assets/Scenes/LoadingScene.unity",
+            "type": "CREATE",
+            "description": "새로운 로딩 씬을 생성합니다."
+          },
+          {
+            "path": "Assets/Scripts/LoadingManager.cs",
+            "type": "CREATE",
+            "description": "로딩 씬 관리 스크립트를 생성합니다."
+          },
+          {
+            "path": "Assets/Scripts/SceneManager.cs",
+            "type": "MODIFY",
+            "description": "씬 전환 로직을 수정합니다."
+          }
+        ],
+        "implementationGuide": "1. 로딩 씬 생성 및 페이드 인 효과 구현\n2. additive 로딩 방식으로 게임 씬 로드 및 프로그레스 바 표시\n3. 게임 오브젝트 생성 완료 감지 로직 구현\n4. 로딩 완료 후 페이드 아웃으로 로딩 씬 제거\n5. 로딩 씬 제거 후 게임 시작 로직 실행",
+        "verificationCriteria": "1. 로비에서 게임으로 전환 시 로딩 씬이 나타나야 합니다.\n2. 프로그레스 바가 로딩 진행 상황을 표시해야 합니다.\n3. 모든 게임 오브젝트 생성 완료 후 로딩 씬이 사라져야 합니다.\n4. 로딩 씬 제거 후 게임이 정상적으로 시작되어야 합니다."
+      }
+    ]
+    }
+}
