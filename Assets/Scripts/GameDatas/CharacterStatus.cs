@@ -12,6 +12,7 @@ namespace GameDatas
 
         private event Action _onDamaged;
         private event Action _onDeath;
+        private event Action _onRevived;
 
         private event Action<int> _onLifeChanged;
         private event Action<float> _onHPChanged;
@@ -59,6 +60,7 @@ namespace GameDatas
             HP = 1f;
             State = ECharacterState.WAITFORREVIE;
             _onHPChanged?.Invoke(HP);
+            _onRevived?.Invoke();
         }
 
         public void OnPlay()

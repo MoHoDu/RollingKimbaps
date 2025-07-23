@@ -13,15 +13,17 @@ namespace GameDatas
     {
         public float Velocity { get; private set; }
         public float Time { get; private set; }
-        public float TravelDistance { get; private set;}    // 총 이동 거리 
+        public float TravelDistance { get; private set; }    // 총 이동 거리 
         public float TickDistance => Velocity * TickTime;  // 틱(1초)동안의 이동 거리
         public float MaxVelocity => _maxVelocity;
-        
+
+        public bool readyToRevive = true; // 부활 준비 상태
+
         // 계산을 위한 값들 
-        private readonly float _startVelocity = 13f; 
+        private readonly float _startVelocity = 13f;
         private readonly float _maxVelocity = 20f;
         private readonly float _addedVelocity = 0.1f;
-        
+
         // DI
         public float TickTime { get; private set; } = 1f;
 
@@ -29,26 +31,27 @@ namespace GameDatas
         {
             Initialize();
         }
-        
+
         public void Initialize(float tickTime = 1f)
         {
             InitVelocity();
             InitTime();
             InitDistance();
             TickTime = tickTime;
+            readyToRevive = true;
         }
-        
+
         public void InitVelocity()
         {
             Velocity = _startVelocity;
         }
-        
+
         public void AddVelocity()
         {
             Velocity += _addedVelocity;
             if (Velocity >= _maxVelocity) Velocity = _maxVelocity;
         }
-        
+
         public void StopVelocity()
         {
             Velocity = 0f;

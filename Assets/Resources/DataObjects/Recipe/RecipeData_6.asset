@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 6
   displayName: "\uC544\uC0AD \uC624\uC774 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 2
+  rarity: 800
   description: "\uC544\uC0AD\uD55C \uC624\uC774 \uAE40\uBC25. \uC5EC\uB984\uCCA0
     \uB354\uC704\uB97C \uB0A0\uB824\uC900\uB2E4."
   groupId: Crispy Cucumber Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 2000
   satisfy: 20
   requiredIngredients: 000000000100000004000000
-  appearanceMinDistance: 1000
+  appearanceMinDistance: 3000

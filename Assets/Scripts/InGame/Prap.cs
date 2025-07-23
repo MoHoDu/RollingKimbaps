@@ -11,7 +11,8 @@ namespace InGame
     {
         public PrapData prapData;
         public Vector3 PrevPosition = new Vector3(0, 100, 0);
-        
+        public Vector3 LeftPos = Vector3.zero;
+
         public virtual void OnSpawned(params object[] args)
         {
             OnChangedPosition();
@@ -26,9 +27,9 @@ namespace InGame
             }
             return 0f;
         }
-        
+
         public float GetLeftPosWorldX()
-        { 
+        {
             Bounds? allBounds = GetAllBounds();
             if (allBounds.HasValue && allBounds.Value != null)
             {
@@ -36,9 +37,9 @@ namespace InGame
             }
             return transform.position.x;
         }
-        
+
         public float GetRightPosWorldX()
-        { 
+        {
             Bounds? allBounds = GetAllBounds();
             if (allBounds.HasValue && allBounds.Value != null)
             {
@@ -55,10 +56,10 @@ namespace InGame
                 Vector3 localLeft = parent.InverseTransformPoint(allBounds.Value.min);
                 return localLeft.x;
             }
-            
+
             return transform.position.x;
         }
-        
+
         public float GetRightPosLocalX(Transform parent)
         {
             Bounds? allBounds = GetAllBounds();
@@ -67,10 +68,10 @@ namespace InGame
                 Vector3 locaRight = parent.InverseTransformPoint(allBounds.Value.max);
                 return locaRight.x;
             }
-            
+
             return transform.position.x;
         }
-        
+
         public float GetPivotToLeftEdgeOffsetLocalX()
         {
             Bounds? bounds = GetAllBounds();
@@ -85,7 +86,7 @@ namespace InGame
 
             return localPivot.x - localLeft.x;
         }
-        
+
         public float GetPivotToRightEdgeOffsetLocalX()
         {
             Bounds? bounds = GetAllBounds();
@@ -104,7 +105,7 @@ namespace InGame
         public void OnChangedPosition()
         {
             if (this is Character) return;
-            
+
             if (transform.position != PrevPosition)
             {
                 Managers.InGame?.Prap?.FixedPrapPosition(this, PrevPosition);
@@ -115,13 +116,13 @@ namespace InGame
         protected Bounds? GetAllBounds()
         {
             Renderer[] renderers = GetComponentsInChildren<Renderer>();
-            
+
             Bounds combinedBounds = renderers[0].bounds;
             for (int i = 0; i < renderers.Length; i++)
             {
                 combinedBounds.Encapsulate(renderers[i].bounds);
             }
-            
+
             return combinedBounds;
         }
 
@@ -131,7 +132,7 @@ namespace InGame
             {
                 OnChangedPosition();
             }
-            
+
             float destroyedLineX = ScreenScaler.ONDESTROYED_POSX;
             if (transform.position.x < destroyedLineX)
             {

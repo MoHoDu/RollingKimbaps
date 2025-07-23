@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   displayName: "\uCDA9\uBB34 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uBC25\uACFC \uB2E8\uBB34\uC9C0\uB9CC \uC788\uC9C0\uB9CC \uC624\uB7AB\uB3D9\uC548
     \uC0AC\uB791 \uBC1B\uC740 \uC804\uC124\uC801\uC778 \uAE40\uBC25"
   groupId: Chungmu Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 1000
   satisfy: 5
   requiredIngredients: 04000000
-  appearanceMinDistance: 0
+  appearanceMinDistance: 20

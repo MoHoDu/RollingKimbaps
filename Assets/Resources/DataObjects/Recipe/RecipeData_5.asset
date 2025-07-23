@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 5
   displayName: "\uC57C\uCC44 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 2
+  rarity: 800
   description: "\uAE30\uBCF8\uC801\uC778 \uC57C\uCC44 \uAE40\uBC25. \uB2E4\uC774\uC5B4\uD2B8\uC640
     \uAC74\uAC15\uC5D0 \uC88B\uB2E4."
   groupId: Vegetable Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 2000
   satisfy: 15
   requiredIngredients: 000000000500000004000000
-  appearanceMinDistance: 1000
+  appearanceMinDistance: 2000

@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 2
   displayName: "\uD584 \uCE58\uC988 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uD584\uACFC \uCE58\uC988\uAC00 \uB4E4\uC5B4\uAC04 \uAE40\uBC25.
     \uAC00\uC7A5 \uB9CE\uC774 \uD314\uB9AC\uB294 \uBA54\uB274 \uC911 \uD558\uB098."
   groupId: Ham Cheese Kimbap

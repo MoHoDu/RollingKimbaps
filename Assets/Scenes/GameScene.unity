@@ -2131,6 +2131,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameStatus: 0
   Score: 0
+  raceStatus:
+    readyToRevive: 0
 --- !u!1 &1362266024
 GameObject:
   m_ObjectHideFlags: 0

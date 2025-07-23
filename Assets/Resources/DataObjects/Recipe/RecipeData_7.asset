@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 7
   displayName: "\uC2A4\uD398\uC15C \uD584 \uCE58\uC988 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 3
+  rarity: 1000
   description: "\uD584 \uCE58\uC988 \uAE40\uBC25\uC758 \uC5C5\uADF8\uB808\uC774\uB4DC
     \uBC84\uC804. \uD584 \uB7EC\uBC84\uB4E4\uC5D0\uAC8C \uCD5C\uC0C1\uC758 \uBA54\uB274."
   groupId: Special Ham Cheese Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 3500
   satisfy: 30
   requiredIngredients: 02000000030000000500000004000000
-  appearanceMinDistance: 5000
+  appearanceMinDistance: 8000

@@ -277,6 +277,32 @@ namespace ManagerSystem.InGame
         }
 
         /// <summary>
+        /// 현재 위치에서 다음 리바이브 위치를 찾는다.
+        /// </summary>
+        /// <returns>다음 리바이브 그라운드</returns>
+        public Prap GetNextRebirthPosition()
+        {
+            // 활성화 된 프랍들 중 그라운드 프랍만 찾아 x좌표 기준 오름차순으로 새로운 리스트에 저장한다.
+            // 해당 리스트에서 currentDistance보다 큰 값 중 가장 작은 값을 찾아 반환한다.
+            if (_defaultLayers.TryGetValue(EPrapType.GROUND, out var layer))
+            {
+                if (layer is GroundSpawnLayer groundLayer)
+                {
+                    // 0 위치보다 크되 가장 가까운 프랍을 찾음
+                    Prap prap = groundLayer.GetRevivePrap();
+                    if (prap != null)
+                    {
+                        // 해당 프랍의 좌측 끝 위치를 반환
+                        return prap;
+                    }
+                }
+            }
+
+            // 없으면 원점 반환
+            return null;
+        }
+
+        /// <summary>
         /// Canvas 상에서 
         /// </summary>
         /// <param name="targetPos"></param>

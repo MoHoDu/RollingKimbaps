@@ -19,4 +19,4 @@ MonoBehaviour:
   description: "\uC791\uC740 \uB098\uBB34"
   Type: 2
   Path: Prefabs/Obstacles/tree_small
-  AppearanceDistance: 0
+  AppearanceDistance: 20

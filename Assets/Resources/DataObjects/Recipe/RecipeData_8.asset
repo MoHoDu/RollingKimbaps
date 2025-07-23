@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 8
   displayName: "\uBAA8\uB4EC \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 3
+  rarity: 1000
   description: "\uBAA8\uB4E0 \uC7AC\uB8CC\uAC00 \uB2E4 \uB4E4\uC5B4\uAC04 \uC644\uC804\uCCB4
     \uAE40\uBC25. \uADF9\uD55C\uC758 \uD589\uBCF5\uC744 \uB290\uB084 \uC218 \uC788\uB2E4."
   groupId: Combination Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 5000
   satisfy: 50
   requiredIngredients: 000000000300000002000000010000000500000004000000
-  appearanceMinDistance: 10000
+  appearanceMinDistance: 12000

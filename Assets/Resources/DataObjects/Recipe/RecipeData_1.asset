@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 1
   displayName: "\uCE58\uC988 \uAE40\uBC25"
   icon: {fileID: 0}
-  rarity: 0
+  rarity: 100
   description: "\uCE58\uC988\uAC00 \uB4E4\uC5B4\uAC04 \uAE40\uBC25. \uC5EC\uC131\uB4E4\uACFC
     \uC544\uC774\uB4E4\uC5D0\uAC8C \uC778\uAE30\uAC00 \uC88B\uB2E4."
   groupId: Cheese Kimbap
@@ -23,4 +23,4 @@ MonoBehaviour:
   price: 1000
   satisfy: 5
   requiredIngredients: 03000000
-  appearanceMinDistance: 0
+  appearanceMinDistance: 20

@@ -74,7 +74,7 @@ namespace ManagerSystem
         {
             Input = InputManager.Instance;
 
-            Status.Initialize();
+            Status.Initialize(this);
             GameUI.Initialize(this);
 
             FlowLayer[] flowLayers = Stage?.FindFlowLayers();
@@ -151,10 +151,10 @@ namespace ManagerSystem
             this.characterHandler?.OnStartGame();
 
             // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
-            _tickSequence = CoroutineHelper.StartNewCoroutine(Tick());
+            _tickSequence = CoroutineHelper.StartNewCoroutine(TickAsync());
         }
 
-        private IEnumerator Tick()
+        private IEnumerator TickAsync()
         {
             do
             {
@@ -187,7 +187,7 @@ namespace ManagerSystem
             Status.OnResumeGame();
 
             // 틱 타임 간격으로 계속 실행되는 시퀀스 생성 
-            _tickSequence = CoroutineHelper.StartNewCoroutine(Tick());
+            _tickSequence = CoroutineHelper.StartNewCoroutine(TickAsync());
 
             characterHandler?.OnResumed();
         }

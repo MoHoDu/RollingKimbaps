@@ -15,7 +15,7 @@ namespace InGame
     {
         // 컴포넌트 
         public Character character { get; private set; }
-        
+
         // DI
         InGameManager _inGameManager;
         StatusManager _statusManager;
@@ -23,7 +23,7 @@ namespace InGame
         private EGameStatus _gameStatus => _statusManager.GameStatus;
         private ECharacterState _characterState => _statusManager.CharacterStatus.State;
         private bool _isGrounded => character.IsGrounded;
-        
+
         // 계산용 값들
         private LayerMask _groundLayer;
         private LayerMask _obstacleLayer;
@@ -31,7 +31,7 @@ namespace InGame
         private LayerMask _ingredientLayer;
         private int _inputJumped = 0;
         private readonly int _maxJumped = 2;
-        
+
         // 이벤트 
         public event Action OnDeath;
         public event Action OnRevive;
@@ -39,7 +39,8 @@ namespace InGame
         private void Awake()
         {
             character = GetComponent<Character>();
-            
+            if (character) character.OnRecorvered += OnRecorvered;
+
             _groundLayer = LayerMask.GetMask("ground");
             _obstacleLayer = LayerMask.GetMask("obstacle");
             _deadzoneLayer = LayerMask.GetMask("deadzone");
@@ -54,7 +55,7 @@ namespace InGame
                 {
                     _inGameManager = inGameManager;
                     _statusManager = _inGameManager.Status;
-                    _combinationManager = _inGameManager.Combination;   
+                    _combinationManager = _inGameManager.Combination;
                 }
             }
         }
@@ -65,26 +66,20 @@ namespace InGame
             {
                 _statusManager?.CharacterStatus?.AddEventOnHPChanged(character.HPbarUI.SetHP);
             }
-            
+
             character.OnStart(_statusManager.RaceStatus, _statusManager.CharacterStatus);
         }
-        
+
         public void InputJumpKey()
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
 
-            if (_characterState == ECharacterState.WAITFORREVIE)
-            {
-                _inputJumped = 2;
-                character.Recover();
-                _statusManager.CharacterStatus.OnPlay();
-            }
-            else if (_characterState == ECharacterState.NORMAL)
+            if (_characterState == ECharacterState.NORMAL)
             {
                 GetJump();
             }
         }
-        
+
         public void InputSubmitKey()
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
@@ -114,37 +109,43 @@ namespace InGame
             character.OnJump();
         }
 
+        private void OnRecorvered()
+        {
+            _inputJumped = 2;
+            _statusManager.CharacterStatus.OnPlay();
+        }
+
         private async UniTaskVoid OnDied()
         {
             if (_characterState is not ECharacterState.NORMAL) return;
-            
+
             // 이벤트 실행 
             OnDeath?.Invoke();
-            
+
             // 캐릭터 애니메이션
             await character.OnDied();
-            
+
             if (_statusManager.CharacterStatus.Life > 0)
             {
                 OnRevive?.Invoke();
-                character.Rebirth();
+                character.Rebirth().Forget();
             }
         }
-        
+
         private async UniTaskVoid OnDamaged(float inDamage)
         {
             if (_characterState is not ECharacterState.NORMAL) return;
-            
+
             _statusManager.CharacterStatus.OnDamaged(inDamage);
             if (_statusManager.CharacterStatus.State == ECharacterState.DIED)
             {
                 // 캐릭터 애니메이션
                 await character.OnDied();
-            
+
                 if (_statusManager.CharacterStatus.Life > 0)
                 {
                     OnRevive?.Invoke();
-                    character.Rebirth();
+                    character.Rebirth().Forget();
                 }
             }
             else
@@ -178,11 +179,11 @@ namespace InGame
             }
             else Managers.Resource.Destroy(go);
         }
-        
+
         private void OnCollisionEnter2D(Collision2D collision)
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
-            
+
             // 장애물 및 지형 충돌 여부 확인
             if (InDeadZone(collision))
             {
@@ -201,7 +202,7 @@ namespace InGame
                     {
                         // Debug.Log("🟢 바닥에 닿았어요!");
                         character.SetGrounded(true);
-                
+
                         // 땅에 닿으면 점프 상태 취소 
                         if (_inputJumped > 0) _inputJumped = 0;
                     }
@@ -232,7 +233,7 @@ namespace InGame
         private void OnCollisionExit2D(Collision2D collision)
         {
             if (_gameStatus is not EGameStatus.PLAY) return;
-            
+
             if (IsGroundCollision(collision))
             {
                 character.SetGrounded(false);
@@ -241,22 +242,22 @@ namespace InGame
 
         private bool IsGroundCollision(Collision2D collision)
         {
-            return ((1 << collision.gameObject.layer) & _groundLayer) != 0 && 
+            return ((1 << collision.gameObject.layer) & _groundLayer) != 0 &&
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }
 
         private bool IsObstacleCollision(Collision2D collision)
         {
-            return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 && 
+            return ((1 << collision.gameObject.layer) & _obstacleLayer) != 0 &&
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }
 
         private bool InDeadZone(Collision2D collision)
         {
-            return ((1 << collision.gameObject.layer) & _deadzoneLayer) != 0 && 
+            return ((1 << collision.gameObject.layer) & _deadzoneLayer) != 0 &&
                    collision.contacts.Any(contact => contact.otherCollider == character.BodyCollider);
         }
-        
+
         public override void FixedUpdate()
         {
             if (_gameStatus is not EGameStatus.PLAY) return;

@@ -10,6 +10,7 @@ namespace ManagerSystem.InGame
     public class FlowManager : BaseManager
     {
         // DI
+        private PrapManager _prapManager;
         private RaceStatus _raceStatus;
         private List<FlowLayer> _flowLayers;
 
@@ -21,6 +22,7 @@ namespace ManagerSystem.InGame
             {
                 if (data is InGameManager inGameManager)
                 {
+                    _prapManager = inGameManager.Prap;
                     _raceStatus = inGameManager.Status.RaceStatus;
                     _tickDuration = _raceStatus.TickTime;
                 }
