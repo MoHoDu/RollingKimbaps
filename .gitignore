@@ -83,7 +83,7 @@ crashlytics-build.properties
 # 4. docs 폴더 및 하위 모든 파일 무시
 # /docs/
 # 5. gemini 폴더 및 하위 모든 파일 무시
-# /.gemini/
+/.gemini/
 # 6. mcp-auth-dev 폴더 및 하위 모든 파일 무시
 # /.mcp-auth-dev/
 # 7. node_modules 폴더 및 하위 모든 파일 무시
