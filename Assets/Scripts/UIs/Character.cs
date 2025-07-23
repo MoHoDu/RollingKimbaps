@@ -302,7 +302,7 @@ namespace UIs
             // obstacle 레이어의 모든 콜라이더 찾기
             Collider2D[] allColliders = FindObjectsByType<Collider2D>(FindObjectsSortMode.None);
             int obstacleLayer = LayerMask.NameToLayer("obstacle");
-            
+
             foreach (Collider2D collider in allColliders)
             {
                 if (collider.gameObject.layer == obstacleLayer)
