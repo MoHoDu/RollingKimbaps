@@ -7,6 +7,7 @@ using ManagerSystem.InGame;
 using UIs;
 using UnityEngine;
 using ManagerSystem.Base;
+using UIs.Base;
 
 namespace InGame
 {
@@ -92,6 +93,52 @@ namespace InGame
                 // 서빙 후 재료 제거
                 character.ClearIngredients();
             }
+        }
+
+        public async UniTask PlayServingAnimation(bool isSuccessed)
+        {
+            // 연출을 위한 복제 캐릭터 생성
+            Character cloneCharacter = GameObject.Instantiate(character);
+            cloneCharacter.transform.SetParent(character.transform.parent);
+            cloneCharacter.transform.position = character.transform.position;
+
+            // 서빙 애니메이션 실행
+            Vector3 targetPos = new Vector3(0f, 0f, -8.5f); // 기본 위치
+            if (isSuccessed)
+            {
+                CanvasUI scoreUI = Managers.UI.GetUI<ScoreUI>();
+                if (scoreUI != null)
+                {
+                    targetPos = Camera.main.ScreenToWorldPoint(scoreUI.transform.position);
+                    targetPos += new Vector3(3f, -0.5f, 0f); // 좌상단 기준이므로 살짝 조정
+                }
+                else
+                {
+                    float speed = _statusManager.RaceStatus.Velocity == 0 ? 0f : _statusManager.RaceStatus.Velocity / _statusManager.RaceStatus.MaxVelocity;
+                    float speedPercent = Mathf.Clamp(speed, 0f, 1f);
+                    float targetX = Mathf.Lerp(5f, 15f, speedPercent);
+                    targetPos = new Vector3(targetX, 30f, -8.5f);
+                }
+            }
+            else
+            {
+                CanvasUI trashUI = Managers.UI.GetUI<TrashPointUI>();
+                if (trashUI != null)
+                {
+                    targetPos = Camera.main.ScreenToWorldPoint(trashUI.transform.position);
+                    targetPos = new Vector3(targetPos.x, targetPos.y, -8.5f);
+                }
+                else
+                {
+                    float speed = _statusManager.RaceStatus.Velocity == 0 ? 0f : _statusManager.RaceStatus.Velocity / _statusManager.RaceStatus.MaxVelocity;
+                    float speedPercent = Mathf.Clamp(speed, 0f, 1f);
+                    float targetX = Mathf.Lerp(-6f, -2f, speedPercent);
+                    targetPos = new Vector3(targetX, -30f, -8.5f);
+                }
+            }
+
+            // 애니메이션 실행
+            await cloneCharacter.PlayServingAnimation(isSuccessed, 1f, targetPos);
         }
 
         private void GetJump()
@@ -264,6 +311,7 @@ namespace InGame
 
         public override void FixedUpdate()
         {
+            if (_statusManager == null) return;
             if (_gameStatus is not EGameStatus.PLAY) return;
             character?.Rolling();
             character?.SetGravity(_inputJumped);

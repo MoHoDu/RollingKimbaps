@@ -89,23 +89,23 @@ namespace UIs
             if (!IsBindingDone)
                 Awake();
 
+            InGameManager inGame = null;
             StatusManager status = null;
-            CombinationManager combination = null;
 
             foreach (var info in infos)
             {
-                if (info is StatusManager statusManager)
+                if (info is InGameManager inGameManager)
+                {
+                    inGame = inGameManager;
+                }
+                else if (info is StatusManager statusManager)
                 {
                     status = statusManager;
-                }
-                else if (info is CombinationManager combinationManager)
-                {
-                    combination = combinationManager;
                 }
             }
 
             _lifeUI.SetInfoInUI(status);
-            _scoreUI.SetInfoInUI(status, combination);
+            _scoreUI.SetInfoInUI(inGame, status);
         }
     }
 }

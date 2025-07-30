@@ -245,10 +245,7 @@ namespace ManagerSystem.InGame
             }
             else
             {
-                // 복제 김밥 UI가 땅으로 떨어지는 애니메이션 
-
-                // 서빙 실패 시 이벤트 호출: Failed 효과 등
-                onFailedServing?.Invoke();
+                if (_collectedIngredientType.Count > 0) onFailedServing?.Invoke();
             }
 
             // 재료 삭제

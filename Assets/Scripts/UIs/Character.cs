@@ -19,6 +19,7 @@ namespace UIs
         [Bind("Body")] Collider2D bodyCollider;
         [Bind("HPbarUI")] HPbarUI hpbarUI;
         [Bind("Ingredients")] IngredientsInKimbapUI innerIngredients;
+        [Bind("coinParticle")] ParticleSystem coinParticle;
 
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
@@ -334,5 +335,48 @@ namespace UIs
         {
 
         }
+
+        #region Copied Kimbap Animations
+        public async UniTask PlayServingAnimation(bool isSuccessed, float duration, Vector3 targetPos)
+        {
+            // 타겟 위치로 이동
+            Vector3 startPos = transform.position;
+            startPos = new Vector3(startPos.x, startPos.y, -8.5f); // z 값을 -9로 설정 (카메라가 -10f에 위치하므로)
+            targetPos = new Vector3(targetPos.x, targetPos.y, -8.5f); // z 값을 -9로 설정 (재료가 -0.5f ~ -1f 이므로 카메라에 보이도록 함)
+
+            // 포물선 높이 계산 (타겟이 시작점보다 높으면 위로, 낮으면 아래로)
+            float heightDifference = targetPos.y - startPos.y;
+            float arcHeight = Mathf.Abs(heightDifference) * 0.5f + 2f; // 기본 아크 높이 추가
+            if (heightDifference < 0) arcHeight = -arcHeight; // 아래로 가는 경우 음수로
+
+            // DOTween을 사용한 포물선 이동
+            await DOTween.To(() => 0f, x =>
+            {
+                // 포물선 계산 (y = 4 * height * x * (1 - x))
+                float yOffset = arcHeight * 4 * x * (1 - x);
+                Vector3 currentPos = Vector3.Lerp(startPos, targetPos, x);
+                currentPos.y += yOffset;
+                transform.position = currentPos;
+            }, 1f, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
+
+            // 성공인 경우 서빙 성공 애니메이션 재생
+            if (isSuccessed)
+            {
+                await PlayOnSuccessedServingAnimation();
+            }
+
+            // 애니메이션 이후 제거
+            this.OnDestroy();
+        }
+
+        private async UniTask PlayOnSuccessedServingAnimation()
+        {
+            // 애니메이션 재생
+            coinParticle?.Play();
+
+            // 애니메이션이 완료될 때까지 대기
+            await UniTask.WaitWhile(() => coinParticle == null || coinParticle.isPlaying);
+        }
+        #endregion
     }
 }

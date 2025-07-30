@@ -13,9 +13,13 @@ namespace InGame
         public Vector3 PrevPosition = new Vector3(0, 100, 0);
         public Vector3 LeftPos = Vector3.zero;
 
+        public event Action<Prap> OnSpawnedEvent;
+        public event Action<Prap> OnDestroyedEvent;
+
         public virtual void OnSpawned(params object[] args)
         {
             OnChangedPosition();
+            OnSpawnedEvent?.Invoke(this);
         }
 
         public float GetWidth()
@@ -142,6 +146,7 @@ namespace InGame
 
         public virtual void OnDestroy()
         {
+            OnDestroyedEvent?.Invoke(this);
             Managers.InGame?.Prap?.DestroyPrap(this);
         }
     }

@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 using EnumFiles;
 using GameDatas;
@@ -11,6 +10,8 @@ using Utils;
 using ManagerSystem.Base;
 using ManagerSystem.UIs;
 using UIs.Spawn;
+using Cysharp.Threading.Tasks;
+using System;
 
 
 namespace ManagerSystem
@@ -40,6 +41,9 @@ namespace ManagerSystem
         // 정해진 시간마다 반복적으로 실행할 로직 
         private Coroutine _tickSequence;
         private readonly float _tickTime = 1f;
+
+        // evnet
+        public event Action<(int score, int tip)> onSuccessUIEvent;
 
         public override void Initialize(params object[] datas)
         {
@@ -121,6 +125,14 @@ namespace ManagerSystem
                 characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
                 characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
 
+                // 서빙 성공 시
+                Combination.onSuccessedServing -= async (reward) => await OnSuccessedServing(reward.rewards, reward.tips);
+                Combination.onSuccessedServing += async (reward) => await OnSuccessedServing(reward.rewards, reward.tips);
+
+                // 서빙 실패 시
+                Combination.onFailedServing -= OnFailedServing;
+                Combination.onFailedServing += OnFailedServing;
+
                 // 다른 컴포넌트에 DI
                 Combination.SetHandler(characterHandler);
 
@@ -128,6 +140,20 @@ namespace ManagerSystem
             }
 
             return false;
+        }
+
+        private async UniTask OnSuccessedServing(int price, int tip)
+        {
+            // 캐릭터 애니메이션 재생
+            if (characterHandler) await characterHandler.PlayServingAnimation(true);
+            // 점수 애니메이션 후 UI에 점수 추가 
+            onSuccessUIEvent?.Invoke((price, tip));
+        }
+
+        private async void OnFailedServing()
+        {
+            // 캐릭터 애니메이션 재생
+            if (characterHandler) await characterHandler.PlayServingAnimation(false);
         }
 
         public override void OnStartGame()

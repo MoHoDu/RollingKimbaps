@@ -4,6 +4,7 @@ using TMPro;
 using ManagerSystem.InGame;
 using DG.Tweening;
 using UnityEngine;
+using ManagerSystem;
 
 namespace UIs
 {
@@ -27,16 +28,15 @@ namespace UIs
 
             foreach (var info in infos)
             {
-                if (info is StatusManager statusManager)
+                if (info is InGameManager inGameManager)
+                {
+                    inGameManager.onSuccessUIEvent += (reward) => ViewAddPriceAnim(reward.score, reward.tip);
+                }
+                else if (info is StatusManager statusManager)
                 {
                     // 상태 매니저의 캐릭터 상태를 통해 점수 업데이트
                     statusManager.OnScoreChanged += UpdateScore;
                     UpdateScore(statusManager.Score);
-                }
-                else if (info is CombinationManager combinationManager)
-                {
-                    // 이벤트 연결
-                    combinationManager.onSuccessedServing += (score) => ViewAddPriceAnim(score.rewards, score.tips);
                 }
             }
 
