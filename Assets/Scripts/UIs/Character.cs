@@ -349,33 +349,32 @@ namespace UIs
             float arcHeight = Mathf.Abs(heightDifference) * 0.5f + 2f; // 기본 아크 높이 추가
             if (heightDifference < 0) arcHeight = -arcHeight; // 아래로 가는 경우 음수로
 
+            // 시퀀스 생성
+            Sequence sequence = DOTween.Sequence();
+
             // DOTween을 사용한 포물선 이동
-            await DOTween.To(() => 0f, x =>
+            Tween anim = DOTween.To(() => 0f, x =>
             {
                 // 포물선 계산 (y = 4 * height * x * (1 - x))
                 float yOffset = arcHeight * 4 * x * (1 - x);
                 Vector3 currentPos = Vector3.Lerp(startPos, targetPos, x);
                 currentPos.y += yOffset;
                 transform.position = currentPos;
-            }, 1f, duration).SetEase(Ease.Linear).AsyncWaitForCompletion();
+            }, 1f, duration).SetEase(Ease.Linear);
 
-            // 성공인 경우 서빙 성공 애니메이션 재생
-            if (isSuccessed)
+            sequence.Append(anim);
+
+            // 실패 시에는 점차 사라지는 효과 추가
+            if (!isSuccessed)
             {
-                await PlayOnSuccessedServingAnimation();
+                sequence.Join(bodyRenderer.DOFade(0f, duration * 0.9f).SetEase(Ease.InQuad));
             }
+
+            // 애니메이션 대기 
+            await sequence.AsyncWaitForCompletion();
 
             // 애니메이션 이후 제거
             this.OnDestroy();
-        }
-
-        private async UniTask PlayOnSuccessedServingAnimation()
-        {
-            // 애니메이션 재생
-            coinParticle?.Play();
-
-            // 애니메이션이 완료될 때까지 대기
-            await UniTask.WaitWhile(() => coinParticle == null || coinParticle.isPlaying);
         }
         #endregion
     }

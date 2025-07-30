@@ -5,6 +5,7 @@ using ManagerSystem.InGame;
 using DG.Tweening;
 using UnityEngine;
 using ManagerSystem;
+using Coffee.UIExtensions;
 
 namespace UIs
 {
@@ -15,6 +16,7 @@ namespace UIs
         [Bind("tipText")] private TextMeshProUGUI _tipText; // 추가 팁 텍스트
         [Bind("priceTextBG")] private RectTransform _priceTextBG; // 가격 텍스트 배경
         [Bind("tipTextBG")] private RectTransform _tipTextBG; // 팁
+        [Bind("UIParticle")] private UIParticle _particle; // 점수 증가 시 파티클 효과
 
         private Tween _scoreTween;
         private Sequence _priceSequence;
@@ -102,6 +104,10 @@ namespace UIs
         {
             _priceText.text = FormatScore(price);
             _tipText.text = FormatScore(tip);
+
+            // 파티클 효과 재생
+            _particle?.Stop();
+            _particle?.Play();
 
             // 가격과 팁 텍스트 애니메이션 Kill
             _priceSequence?.Kill(false);

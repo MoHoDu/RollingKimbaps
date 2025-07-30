@@ -117,7 +117,7 @@ namespace InGame
                     float speed = _statusManager.RaceStatus.Velocity == 0 ? 0f : _statusManager.RaceStatus.Velocity / _statusManager.RaceStatus.MaxVelocity;
                     float speedPercent = Mathf.Clamp(speed, 0f, 1f);
                     float targetX = Mathf.Lerp(5f, 15f, speedPercent);
-                    targetPos = new Vector3(targetX, 30f, -8.5f);
+                    targetPos = new Vector3(targetX, 15f, -8.5f);
                 }
             }
             else
@@ -133,7 +133,7 @@ namespace InGame
                     float speed = _statusManager.RaceStatus.Velocity == 0 ? 0f : _statusManager.RaceStatus.Velocity / _statusManager.RaceStatus.MaxVelocity;
                     float speedPercent = Mathf.Clamp(speed, 0f, 1f);
                     float targetX = Mathf.Lerp(-6f, -2f, speedPercent);
-                    targetPos = new Vector3(targetX, -30f, -8.5f);
+                    targetPos = new Vector3(targetX, -15f, -8.5f);
                 }
             }
 
