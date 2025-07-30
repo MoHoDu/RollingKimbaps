@@ -30,7 +30,8 @@ namespace UIs.Spawn
             }
 
             List<Prap> praps = _spawnedPraps.Values?
-                .Where(prap => prap.transform != null && prap.transform.position.x >= 0)
+                .Where(prap => prap != null && prap.transform != null && prap.transform.position.x >= 0)
+                .Where(prap => prap.gameObject != null)
                 .OrderBy(prap => prap.transform.position.x)
                 .ToList();
 
