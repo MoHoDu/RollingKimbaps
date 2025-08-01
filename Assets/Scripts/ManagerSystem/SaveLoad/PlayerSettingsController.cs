@@ -35,13 +35,35 @@ namespace ManagerSystem.SaveLoad
 
         public void ChangesBGMVolume(float volume)
         {
-            Data.BGMVolume = Mathf.Clamp(volume, 0f, 1f);
+            float previousVolume = Data.BGMVolume;
+            Data.BGMVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+
+            // Mute 상태를 확인하여 뮤트 on/off 처리
+            if (Data.BGMVolume <= 0.0001f || previousVolume <= 0.0001f)
+            {
+                // BGM 음소거 요청
+                Managers.Audio.MuteAudio(EAudioType.BGM);
+            }
+
+            // BGM 볼륨 설정 요청
+            Managers.Audio.SetAudioVolume(EAudioType.BGM, Data.BGMVolume);
             SaveSettings();
         }
 
         public void ChangesSFXVolume(float volume)
         {
-            Data.SFXVolume = Mathf.Clamp(volume, 0f, 1f);
+            float previousVolume = Data.SFXVolume;
+            Data.SFXVolume = Mathf.Clamp(volume, 0.0001f, 1f);
+
+            // Mute 상태를 확인하여 뮤트 on/off 처리
+            if (Data.SFXVolume <= 0.0001f || previousVolume <= 0.0001f)
+            {
+                // BGM 음소거 요청
+                Managers.Audio.MuteAudio(EAudioType.SFX);
+            }
+
+            // SFX 볼륨 설정 요청
+            Managers.Audio.SetAudioVolume(EAudioType.SFX, Data.SFXVolume);
             SaveSettings();
         }
 
