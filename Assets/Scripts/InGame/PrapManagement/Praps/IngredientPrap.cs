@@ -1,4 +1,5 @@
 using System;
+using Audio;
 using DG.Tweening;
 using InGame.Combination;
 using ManagerSystem;
@@ -6,35 +7,41 @@ using UnityEngine;
 
 namespace InGame.PrapManagement.Praps
 {
+    [RequireComponent(typeof(AudioEmitter))]
     public class IngredientPrap : Prap
     {
         // Components
-        
+
         private SpriteRenderer _spriteRenderer;
         private Collider2D _collider;
-        
+        private AudioEmitter _audioEmitter;
+
         // DI
         private IngredientData data;
         private SpawnedIngredient spawnedInfo;
-        
+
         // values
         private LayerMask _characterLayer;
         private LayerMask _characterInvisableLayer;
         private bool isTriggered = false;
-        
+
         public event Action<IngredientData> OnTriggerd;
-        public event Action<SpawnedIngredient> OnDestroyed; 
+        public event Action<SpawnedIngredient> OnDestroyed;
 
         protected override void Initialize()
         {
             base.Initialize();
-            
+
             _collider = GetComponent<Collider2D>();
             _spriteRenderer = GetComponent<SpriteRenderer>();
             _characterLayer = LayerMask.GetMask("character");
             _characterInvisableLayer = LayerMask.GetMask("invisable_character");
+
+            // 오디오 세팅
+            _audioEmitter = GetComponent<AudioEmitter>();
+            _audioEmitter.SetAudioType(EAudioType.SFX);
         }
-        
+
         public override void OnSpawned(params object[] args)
         {
             foreach (var arg in args)
@@ -48,14 +55,14 @@ namespace InGame.PrapManagement.Praps
                     spawnedInfo = info;
                 }
             }
-            
+
             base.OnSpawned(args);
         }
 
         private void DestroyEffect()
         {
             _collider.enabled = false;
-            
+
             // 페이드 애니메이션 대기
             // 시퀀스 생성
             var seq = DOTween.Sequence();
@@ -85,7 +92,7 @@ namespace InGame.PrapManagement.Praps
                 && (_characterInvisableLayer.value & (1 << collision.gameObject.layer)) == 0)
                 return;
             isTriggered = true;
-            
+
             OnTriggerd?.Invoke(data);
             DestroyEffect();
         }
@@ -93,7 +100,7 @@ namespace InGame.PrapManagement.Praps
         public override void OnDestroy()
         {
             base.OnDestroy();
-            
+
             OnDestroyed?.Invoke(spawnedInfo);
         }
     }

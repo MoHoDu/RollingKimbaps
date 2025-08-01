@@ -1,4 +1,5 @@
 ﻿using System;
+using Audio;
 using ManagerSystem.Base;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -33,8 +34,13 @@ namespace ManagerSystem
     {
         private AudioMixer audioMixer;
 
+        private AudioEmitter systemEmitter;
+        private AudioEmitter bgmEmitter;
+
         private bool[] isMute = new bool[3];
         private float[] audioVolumes = new float[3];
+
+        public bool IsInitialized { get; private set; } = false;
 
         public override void Initialize(params object[] args)
         {
@@ -50,6 +56,24 @@ namespace ManagerSystem
 
             isMute = new bool[Enum.GetValues(typeof(EAudioType)).Length];
             audioVolumes = new float[Enum.GetValues(typeof(EAudioType)).Length];
+
+            IsInitialized = true;
+        }
+
+        public void SetEmitterInScene(AudioEmitter bgmEmitter, AudioEmitter systemSFXEmitter)
+        {
+            if (bgmEmitter == null || systemSFXEmitter == null)
+            {
+                Debug.LogError("AudioEmitter is not initialized");
+                return;
+            }
+
+            this.bgmEmitter = bgmEmitter;
+            this.systemEmitter = systemSFXEmitter;
+
+            // AudioEmitter의 오디오 타입 설정
+            this.bgmEmitter.SetAudioType(EAudioType.BGM);
+            this.systemEmitter.SetAudioType(EAudioType.SFX);
         }
 
         public void SetAudioVolume(EAudioType audioType, float volume)
@@ -98,14 +122,55 @@ namespace ManagerSystem
             }
         }
 
-        public void PlayAudioFromSystem(EAudioType audioType, EAudioSituation audioSituation)
+        public void SetOutputMixer(ref AudioSource source, EAudioType audioType)
         {
+            if (audioMixer == null || source == null) return;
 
+            // AudioSource의 outputAudioMixerGroup을 AudioMixer에 설정
+            source.outputAudioMixerGroup = audioMixer.FindMatchingGroups(audioType.ToString())[0];
         }
 
-        public void PlayAudioFromEmitter()
+        /// <summary>
+        /// 시스템 오디오로 BGM 또는 SFX를 재생합니다.
+        /// </summary>
+        /// <param name="audioType">BGM or SFX</param>
+        /// <param name="audioSituation">오디오 소스 종류</param>
+        /// <param name="clipVolume">오디오 클립 볼륨</param>
+        public void PlayAudioFromSystem(EAudioType audioType, EAudioSituation audioSituation, float clipVolume = 1f)
         {
+            AudioEmitter targetEmitter = audioType switch
+            {
+                EAudioType.BGM => bgmEmitter,
+                EAudioType.SFX => systemEmitter,
+                _ => null
+            };
 
+            if (targetEmitter == null)
+            {
+                Debug.LogError($"AudioEmitter for {audioType} is not initialized");
+                return;
+            }
+
+            PlayAudioFromEmitter(ref targetEmitter, audioSituation, clipVolume);
+        }
+
+        /// <summary>
+        /// 지정된 AudioEmitter에서 오디오를 재생합니다.
+        /// </summary>
+        /// <param name="emitter">재생할 AudioEmitter</param>
+        /// <param name="audioSituation">오디오 소스 종류</param>
+        /// <param name="clipVolume">오디오 클립 볼륨</param>
+        public void PlayAudioFromEmitter(ref AudioEmitter emitter, EAudioSituation audioSituation, float clipVolume = 1f)
+        {
+            if (emitter == null) return;
+
+            // AudioEmitter의 오디오 타입 가져오기
+            EAudioType audioType = emitter.CurrentAudioType;
+            bool loop = audioType == EAudioType.BGM; // BGM 타입은 루프 재생
+            // AudioData에서 오디오 타입에 맞는 오디오 리소스 가져오기
+            AudioClip clip = null;
+            // AudioEmitter에서 오디오 리소스 재생
+            emitter.PlayAudio(clip, clipVolume, loop);
         }
     }
 }

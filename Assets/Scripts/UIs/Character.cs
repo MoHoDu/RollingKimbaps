@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using Attributes;
+using Audio;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using EnumFiles;
@@ -10,7 +11,7 @@ using UnityEngine;
 
 namespace UIs
 {
-    [RequireComponent(typeof(Rigidbody2D), typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody2D), typeof(Animator), typeof(AudioEmitter))]
     public class Character : Prap
     {
         // 컴포넌트
@@ -23,6 +24,7 @@ namespace UIs
 
         private Rigidbody2D _rigidbody2D;
         private Animator _animator;
+        private AudioEmitter _audioEmitter;
 
         // 개방 데이터
         public Collider2D BodyCollider => bodyCollider;
@@ -61,6 +63,10 @@ namespace UIs
 
             _rigidbody2D = GetComponent<Rigidbody2D>();
             _animator = GetComponent<Animator>();
+
+            // 오디오 세팅
+            _audioEmitter = GetComponent<AudioEmitter>();
+            _audioEmitter.SetAudioType(EAudioType.SFX);
 
             normalGravity = _rigidbody2D.gravityScale;
             addedGravity = _rigidbody2D.gravityScale + _addedGravityForce;

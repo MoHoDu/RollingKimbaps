@@ -5,9 +5,11 @@ using Cysharp.Threading.Tasks;
 using ManagerSystem;
 using UIs.Base;
 using UnityEngine;
+using Audio;
 
 namespace Obstacles
 {
+    [RequireComponent(typeof(AudioEmitter))]
     public class Obstacle : BindUI
     {
         [Bind("broken_particle")] ParticleSystem _broken_particle;
@@ -18,6 +20,7 @@ namespace Obstacles
         private SpriteRenderer _spriteRenderer;
         private Collider2D _collider;
         private LayerMask _characterLayer;
+        private AudioEmitter _audioEmitter;
 
         protected override void Initialize()
         {
@@ -33,6 +36,10 @@ namespace Obstacles
 
             Width = _spriteRenderer.sprite.bounds.size.x;
             Height = _spriteRenderer.sprite.bounds.size.y;
+
+            // 오디오 세팅  
+            _audioEmitter = GetComponent<AudioEmitter>();
+            _audioEmitter.SetAudioType(EAudioType.SFX);
         }
 
         private void OnCollisionEnter2D(Collision2D collision)
