@@ -15,6 +15,7 @@ namespace ManagerSystem
         public static IngredientDatas IngredientDatas { get; private set; } = new();
         public static RecipeDatas RecipeDatas { get; private set; } = new();
         public static SkillDatas SkillDatas { get; private set; } = new();
+        public static SoundDatas SoundDatas { get; private set; } = new();
 
         public static bool IsLoadedComplete { get; private set; } = false;
         private static readonly string METHOD_NAME = "Load";
@@ -63,7 +64,7 @@ namespace ManagerSystem
                 {
                     string methodName = GetMethodName(type);
                     if (property.PropertyType.GetMethod(methodName) is null) continue;
-                    
+
                     if (Enum.TryParse(name, out EDataType dataType))
                     {
                         var obj = property.GetValue(typeof(DataContainer), null);
@@ -86,7 +87,7 @@ namespace ManagerSystem
                 await UniTask.Delay(100);
             }
         }
-        
+
         /// <summary>
         /// DataContainer의 프로퍼티를 읽어와서 각 데이터 저장 클래스의 알맞은 데이터 타입을 추출
         /// </summary>

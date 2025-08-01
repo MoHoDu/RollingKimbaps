@@ -7,14 +7,15 @@ namespace EnumFiles
         Json,
         PlayerPref,
     }
-    
+
     public enum EDataType
     {
         SaveFile,
         Ingredient,
         Recipe,
         Skill,
-        Prap
+        Prap,
+        Sound,
     }
 
     public enum IngredientType
