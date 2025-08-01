@@ -13,7 +13,6 @@ namespace ManagerSystem
         public static ResourceManager Resource { get; private set; }
         public static AudioManager Audio { get; private set; } = new();
         public static UIManager UI { get; private set; } = new();
-        public static EffectManager Effect { get; private set; } = new();
         public static SaveManager Save { get; private set; } = new();
         public static InGameManager InGame { get; private set; } = new();
 
@@ -28,7 +27,6 @@ namespace ManagerSystem
             managers.Add(Resource);
             managers.Add(Audio);
             managers.Add(UI);
-            managers.Add(Effect);
             managers.Add(Save);
             managers.Add(InGame);
 
