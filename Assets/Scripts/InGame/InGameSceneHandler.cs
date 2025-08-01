@@ -30,6 +30,9 @@ namespace InGame
 
             // Set the audio emitters in the AudioManager
             Managers.Audio.SetEmitterInScene(bgmAudioEmitter, systemSfxAudioEmitter);
+
+            // 브금 재생 요청
+            Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Ingame);
         }
     }
 }

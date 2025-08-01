@@ -26,6 +26,9 @@ public enum EAudioSituation
     System_Error,
     System_Notice,
     System_Alert,
+    BGM_Ingame = 100,
+    BGM_Lobby,
+    BGM_Result,
 }
 
 namespace ManagerSystem
@@ -171,6 +174,8 @@ namespace ManagerSystem
             AudioClip clip = null;
             // AudioEmitter에서 오디오 리소스 재생
             emitter.PlayAudio(clip, clipVolume, loop);
+
+            Debug.Log($"[AudioManager] Playing audio from `{emitter.name}` with `{audioSituation}` clip at volume `{clipVolume}`", emitter);
         }
     }
 }
