@@ -41,7 +41,36 @@ namespace Audio
 
         public void PlayAudio(AudioClip clip, float clipVolume, bool loop = false)
         {
+            if (audioSource == null)
+            {
+                Debug.LogError("AudioSource is not initialized in AudioEmitter.");
+                return;
+            }
 
+            if (audioSource.isPlaying)
+            {
+                StopAudio();
+            }
+
+            audioSource.clip = clip;
+            audioSource.volume = clipVolume;
+            audioSource.loop = loop;
+
+            audioSource.Play();
+        }
+
+        public void StopAudio()
+        {
+            if (audioSource == null)
+            {
+                Debug.LogError("AudioSource is not initialized in AudioEmitter.");
+                return;
+            }
+
+            if (audioSource.isPlaying)
+            {
+                audioSource.Stop();
+            }
         }
     }
 }

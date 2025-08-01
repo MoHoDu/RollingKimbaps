@@ -177,5 +177,21 @@ namespace ManagerSystem
 
             Debug.Log($"[AudioManager] Playing audio from `{emitter.name}` with `{audioSituation}` clip at volume `{clipVolume}`", emitter);
         }
+
+        /// <summary>
+        /// 지정된 AudioEmitter에서 오디오를 정지합니다.
+        /// </summary>
+        /// <param name="emitter">정지할 AudioEmitter</param>
+        public void StopAudioFromEmitter(ref AudioEmitter emitter)
+        {
+            if (emitter == null) return;
+
+            // AudioEmitter의 오디오 타입 가져오기
+            EAudioType audioType = emitter.CurrentAudioType;
+            // AudioEmitter에서 오디오 리소스 정지
+            emitter.StopAudio();
+
+            Debug.Log($"[AudioManager] Stopped audio from `{emitter.name}` with type `{audioType}`", emitter);
+        }
     }
 }
