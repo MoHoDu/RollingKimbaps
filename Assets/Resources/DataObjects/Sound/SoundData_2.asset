@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad5859e5d0554fa9962badc3332359c, type: 3}
+  m_Name: SoundData_2
+  m_EditorClassIdentifier: 
+  id: 2
+  displayName: "\uD53C\uACA9 \uC0AC\uC6B4\uB4DC 01"
+  icon: {fileID: 0}
+  rarity: 0
+  description: "\uD53C\uACA9 \uC2DC\uC5D0 \uB098\uB294 \uC0AC\uC6B4\uB4DC 01"
+  situation: 2
+  path: Audio/SFX/Character/DamagedSFX01
+  clip: {fileID: 8300000, guid: 8dce43d27911b4125b9a8348ace81ddb, type: 3}

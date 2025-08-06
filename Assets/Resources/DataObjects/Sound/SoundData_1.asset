@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ad5859e5d0554fa9962badc3332359c, type: 3}
+  m_Name: SoundData_1
+  m_EditorClassIdentifier: 
+  id: 1
+  displayName: "\uB79C\uB529 \uC0AC\uC6B4\uB4DC 01"
+  icon: {fileID: 0}
+  rarity: 0
+  description: "\uB79C\uB529 \uC2DC\uC5D0 \uB098\uB294 \uC0AC\uC6B4\uB4DC 01"
+  situation: 1
+  path: Audio/SFX/Character/LandSFX01
+  clip: {fileID: 8300000, guid: ddcb79e0d7bfb493686837a50a0e7b89, type: 3}

@@ -1,4 +1,6 @@
 using UnityEngine;
+using ManagerSystem;
+
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -20,6 +22,7 @@ public enum SheetType
     Recipe,
     Skill,
     Prap,
+    Sound,
 }
 
 #if UNITY_EDITOR
@@ -35,7 +38,8 @@ public class SheetToSODataImporter : EditorWindow
         { SheetType.Ingredient, "0" },
         { SheetType.Recipe, "141497470" },
         { SheetType.Skill, "1804540317" },
-        { SheetType.Prap, "1960134854" }
+        { SheetType.Prap, "1960134854" },
+        { SheetType.Sound, "16760178" },
     };
 
     // Constructs the full CSV URL for the selected sheet
@@ -59,6 +63,8 @@ public class SheetToSODataImporter : EditorWindow
                 return ScriptableObject.CreateInstance<SkillData>();
             case SheetType.Prap:
                 return ScriptableObject.CreateInstance<PrapData>();
+            case SheetType.Sound:
+                return ScriptableObject.CreateInstance<SoundData>();
             default:
                 return null;
         }
@@ -212,11 +218,11 @@ public class SheetToSODataImporter : EditorWindow
                 case "displayName": so.displayName = value; break;
                 case "rarity": so.rarity = (Rarity)Enum.Parse(typeof(Rarity), value); break;
                 case "path":
-                {
-                    string assetPath = Path.Combine("Assets/Resources", value) + ".png";
-                    var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
-                    so.icon = sprite;
-                }
+                    {
+                        string assetPath = Path.Combine("Assets/Resources", value) + ".png";
+                        var sprite = AssetDatabase.LoadAssetAtPath<Sprite>(assetPath);
+                        so.icon = sprite;
+                    }
                     break;
                 case "description": so.description = value; break;
             }
@@ -279,6 +285,19 @@ public class SheetToSODataImporter : EditorWindow
                         prap.AppearanceDistance = int.Parse(value); break;
                     case "path":
                         prap.Path = value; break;
+                }
+            }
+            else if (so is SoundData sound)
+            {
+                switch (header)
+                {
+                    case "path":
+                        sound.path = value;
+                        sound.clip = Managers.Resource.GetResource<AudioClip>(value);
+                        break;
+                    case "situation":
+                        sound.situation = (EAudioSituation)Enum.Parse(typeof(EAudioSituation), value);
+                        break;
                 }
             }
         }
