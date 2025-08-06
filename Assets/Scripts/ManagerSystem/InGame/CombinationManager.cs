@@ -102,6 +102,7 @@ namespace ManagerSystem.InGame
         private CollectedRecipeInfo _collectedRecipes = new();
         private HashSet<IngredientData> _collectedIngredients = new();
         private Dictionary<EIngredientIndex, IngredientData> _collectedIngredientType = new();
+        public List<RecipeData> ServedList { get; private set; } = new();
 
         // DI
         private PrapManager _prapManager;
@@ -242,6 +243,9 @@ namespace ManagerSystem.InGame
                 _statusManager.GetScore(rewards + tips);
                 // 서빙 성공 시 이벤트 호출: 보상을 UI로 송출 등
                 onSuccessedServing?.Invoke((rewards, tips));
+
+                // 서빙한 레시피를 ServedList에 추가
+                ServedList.Add(recipe);
             }
             else
             {

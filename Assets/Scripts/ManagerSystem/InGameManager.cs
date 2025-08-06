@@ -12,6 +12,9 @@ using ManagerSystem.UIs;
 using UIs.Spawn;
 using Cysharp.Threading.Tasks;
 using System;
+using UIs.Panels.Infos;
+using UIs;
+using UIs.Panels.Popups;
 
 
 namespace ManagerSystem
@@ -231,7 +234,24 @@ namespace ManagerSystem
             Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Result, 0, 0.3f);
 
             // 게임 결과 창 열기
+            UIInfo uiInfo = new UIInfo(EButtonType.ONE_BUTTON, false, false);
+            int score = Status.Score;
+            ResultUI ui = Managers.UI?.AddPanel<ResultUI>(uiInfo, "ResultUI");
+            ui.AddButtonAction(() =>
+            {
+                // 팝업 창 띄우고, 확인 시 메인 메뉴로 이동
+                PopupInfo popupInfo = new PopupInfo(() =>
+                {
+                    Time.timeScale = 1f; // 게임 시간 재개
+                    Managers.InGame?.ReturnToMainMenu();
+                }, null, "메인 메뉴로 이동", "정말로 메인 메뉴로 이동하시겠습니까?", "네", "아니요");
 
+                Managers.UI?.AddPopup<PopupUI>(popupInfo);
+
+                // SFX 재생
+                Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Alert, 0, 1f);
+            });
+            ui?.SetScoreText(score);
         }
 
         public void ReturnToMainMenu()
