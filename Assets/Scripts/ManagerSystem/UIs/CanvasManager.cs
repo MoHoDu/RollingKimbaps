@@ -38,28 +38,15 @@ namespace ManagerSystem.UIs
         public RectTransform MainRect { get; private set; }
         public int UICount => uiDict.Count;
 
-        protected virtual void Awake()
+        protected virtual void Start()
         {
             // 존재하는 캔버스와 RectTransform 가져오기
             MainRect = GetComponent<RectTransform>();
             canvas = GetComponent<Canvas>();
-            
-            // SafeArea 가져오기
-            safeArea = transform.GetComponentInChildren<SafeArea>();
-            if (safeArea == null)
-            {
-                GameObject go = new GameObject("SafeArea", typeof(SafeArea), typeof(RectTransform));
-                RectTransform rt = go.GetComponent<RectTransform>();
-                safeArea = go.GetComponent<SafeArea>();
 
-                go.transform.SetParent(transform);
-                rt.pivot = new Vector2(0.5f, 0.5f);
-                rt.anchorMin = new Vector2(0f, 0f);
-                rt.anchorMax = new Vector2(1f, 1f);
+            // SafeArea 설정
+            RefreshSafeArea();
 
-                safeArea.SetSafeArea();
-            }
-            
             // 디폴트 부모 설정
             _defaultParent = safeArea.transform;
 
@@ -97,6 +84,32 @@ namespace ManagerSystem.UIs
             }
 
             instance = this;
+        }
+
+        [ContextMenu("RefreshSafeArea")]
+        public void RefreshSafeArea()
+        {
+            // SafeArea 가져오기
+            if (safeArea == null)
+            {
+                safeArea = transform.GetComponentInChildren<SafeArea>();
+
+                if (safeArea == null)
+                {
+                    GameObject go = new GameObject("SafeArea", typeof(SafeArea), typeof(RectTransform));
+                    RectTransform rt = go.GetComponent<RectTransform>();
+                    safeArea = go.GetComponent<SafeArea>();
+
+                    go.transform.SetParent(transform);
+                    rt.pivot = new Vector2(0.5f, 0.5f);
+                    rt.anchorMin = new Vector2(0f, 0f);
+                    rt.anchorMax = new Vector2(1f, 1f);
+
+                    MainRect = rt;
+                }
+            }
+
+            safeArea.SetSafeArea();
         }
 
         /// <summary>

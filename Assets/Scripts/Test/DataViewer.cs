@@ -10,7 +10,7 @@ namespace Test
     public class DataViewer : MonoBehaviour
     {
         public SerializedDictionary<string, SoundData> soundDataDict = new();
-        public SerializedDictionary<EAudioSituation, List<(int, SoundData)>> soundGroupDict = new();
+        public SerializedDictionary<EAudioSituation, List<SoundData>> soundGroupDict = new();
 
         [ContextMenu("Load Data")]
         public void LoadData()
@@ -27,10 +27,10 @@ namespace Test
             var groupData = DataContainer.SoundDatas.GroupData;
             foreach (var group in groupData)
             {
-                List<(int, SoundData)> soundList = new();
+                List<SoundData> soundList = new();
                 foreach (var sound in group.Value)
                 {
-                    soundList.Add((sound.Key, sound.Value));
+                    soundList.Add(sound);
                 }
                 soundGroupDict.Add(group.Key, soundList);
             }

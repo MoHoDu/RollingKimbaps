@@ -139,7 +139,7 @@ namespace ManagerSystem
         /// <param name="audioType">BGM or SFX</param>
         /// <param name="audioSituation">오디오 소스 종류</param>
         /// <param name="clipVolume">오디오 클립 볼륨</param>
-        public void PlayAudioFromSystem(EAudioType audioType, EAudioSituation audioSituation, float clipVolume = 1f)
+        public void PlayAudioFromSystem(EAudioType audioType, EAudioSituation audioSituation, int clipIndex = 0, float clipVolume = 1f)
         {
             AudioEmitter targetEmitter = audioType switch
             {
@@ -154,7 +154,7 @@ namespace ManagerSystem
                 return;
             }
 
-            PlayAudioFromEmitter(ref targetEmitter, audioSituation, clipVolume);
+            PlayAudioFromEmitter(ref targetEmitter, audioSituation, clipIndex, clipVolume);
         }
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace ManagerSystem
         /// <param name="emitter">재생할 AudioEmitter</param>
         /// <param name="audioSituation">오디오 소스 종류</param>
         /// <param name="clipVolume">오디오 클립 볼륨</param>
-        public void PlayAudioFromEmitter(ref AudioEmitter emitter, EAudioSituation audioSituation, float clipVolume = 1f)
+        public void PlayAudioFromEmitter(ref AudioEmitter emitter, EAudioSituation audioSituation, int clipIndex = 0, float clipVolume = 1f)
         {
             if (emitter == null) return;
 
@@ -171,7 +171,7 @@ namespace ManagerSystem
             EAudioType audioType = emitter.CurrentAudioType;
             bool loop = audioType == EAudioType.BGM; // BGM 타입은 루프 재생
             // AudioData에서 오디오 타입에 맞는 오디오 리소스 가져오기
-            AudioClip clip = null;
+            AudioClip clip = DataContainer.SoundDatas.GetClip(audioSituation, clipIndex);
             // AudioEmitter에서 오디오 리소스 재생
             emitter.PlayAudio(clip, clipVolume, loop);
 

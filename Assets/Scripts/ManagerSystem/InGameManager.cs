@@ -124,6 +124,7 @@ namespace ManagerSystem
                 characterHandler.OnDeath += Combination.ClearCollectedIngredients;
                 characterHandler.OnRevive -= Status.CharacterStatus.OnRevived;
                 characterHandler.OnRevive += Status.CharacterStatus.OnRevived;
+                Status.CharacterStatus.AddEventOnDeath(OnGameOver);
 
                 // 서빙 성공 시
                 Combination.onSuccessedServing -= async (reward) => await OnSuccessedServing(reward.rewards, reward.tips);
@@ -216,6 +217,21 @@ namespace ManagerSystem
             _tickSequence = CoroutineHelper.StartNewCoroutine(TickAsync());
 
             characterHandler?.OnResumed();
+        }
+
+        public void OnGameOver()
+        {
+            // 게임 상태 변경
+            Status.OnFinishedGame();
+
+            // SFX 재생
+            Managers.Audio.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.Game_Over, 0, 1f);
+
+            // 브금 재생 요청
+            Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Result, 0, 0.3f);
+
+            // 게임 결과 창 열기
+
         }
 
         public void ReturnToMainMenu()

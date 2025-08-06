@@ -6,6 +6,8 @@ using JsonData;
 using ManagerSystem;
 using UnityEngine;
 using ManagerSystem.UIs;
+using Audio;
+using Cysharp.Threading.Tasks;
 
 
 namespace UIs
@@ -17,10 +19,39 @@ namespace UIs
         [Bind("SettingButton")] private Button settingBtn;
         [Bind("QuitButton")] private Button quitBtn;
 
+        // Audio Emitters
+        [SerializeField] private AudioEmitter bgmAudioEmitter;
+        [SerializeField] private AudioEmitter systemSfxAudioEmitter;
+
         protected override void Initialize()
         {
-            startBtn.onClick.AddListener(() => LoadSaveFiles(GameType.Story));
-            infiniteBtn.onClick.AddListener(() => LoadSaveFiles(GameType.Infinite));
+            // startBtn?.onClick.AddListener(() => LoadSaveFiles(GameType.Story));
+            // infiniteBtn?.onClick.AddListener(() => LoadSaveFiles(GameType.Infinite));
+            infiniteBtn?.onClick.AddListener(() =>
+            {
+                infiniteBtn.interactable = false; // Prevent multiple clicks
+                Managers.Stage.LoadSceneAsync("GameScene", null);
+            });
+
+            SetEmitter();
+        }
+
+        private async void SetEmitter()
+        {
+            if (bgmAudioEmitter == null || systemSfxAudioEmitter == null)
+            {
+                Debug.LogError("AudioEmitter is not assigned in InGame Scene.");
+                return;
+            }
+
+            // Wait for AudioManager to be initialized
+            await UniTask.WaitUntil(() => Managers.Audio != null && Managers.Audio.IsInitialized);
+
+            // Set the audio emitters in the AudioManager
+            Managers.Audio.SetEmitterInScene(bgmAudioEmitter, systemSfxAudioEmitter);
+
+            // 브금 재생 요청
+            Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Lobby, 0, 0.3f);
         }
 
         private void LoadSaveFiles(GameType gameType)

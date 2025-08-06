@@ -109,6 +109,9 @@ namespace UIs
             _particle?.Stop();
             _particle?.Play();
 
+            // SFX 재생
+            Managers.Audio.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.Success_Submit, 0, 1f);
+
             // 가격과 팁 텍스트 애니메이션 Kill
             _priceSequence?.Kill(false);
             _tipSequence?.Kill(false);

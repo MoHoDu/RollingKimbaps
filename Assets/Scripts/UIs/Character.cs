@@ -7,6 +7,7 @@ using DG.Tweening;
 using EnumFiles;
 using GameDatas;
 using InGame;
+using ManagerSystem;
 using UnityEngine;
 
 namespace UIs
@@ -28,6 +29,7 @@ namespace UIs
 
         // 개방 데이터
         public Collider2D BodyCollider => bodyCollider;
+        public AudioEmitter AudioEmitter => _audioEmitter;
         public bool IsGrounded = false;
 
         // UI 가져오기
@@ -164,6 +166,9 @@ namespace UIs
             Color baseColor = bodyRenderer.color;
             baseColor.a = 1f;
 
+            // SFX 재생
+            Managers.Audio.PlayAudioFromEmitter(ref _audioEmitter, EAudioSituation.Character_Damaged);
+
             // 2초간 무적 상태 유지 
             Tween tween = bodyRenderer.DOFade(0.2f, 0.2f).SetLoops(_blinkLoopTime, LoopType.Yoyo);
 
@@ -190,6 +195,9 @@ namespace UIs
 
             // 애니메이션 재생 
             _animator.SetTrigger("onDied");
+
+            // SFX 재생
+            Managers.Audio.PlayAudioFromEmitter(ref _audioEmitter, EAudioSituation.Character_Died);
 
             // 리지드바디 비활성화 
             EnableRigidbody(false);
@@ -252,10 +260,19 @@ namespace UIs
 
             // 애니메이션 재생
             _animator.SetTrigger("onJump");
+
+            // SFX 재생
+            Managers.Audio.PlayAudioFromEmitter(ref _audioEmitter, EAudioSituation.Character_Jump, 0, 1.2f);
         }
 
         public void SetGrounded(bool isGrounded)
         {
+            if (!IsGrounded && isGrounded)
+            {
+                // 땅에 닿았을 때 SFX 재생
+                Managers.Audio.PlayAudioFromEmitter(ref _audioEmitter, EAudioSituation.Character_Land, 0, 1.2f);
+            }
+
             IsGrounded = isGrounded;
             // 땅에 붙어있는지 애니메이터 변수로 적용 
             _animator.SetBool("isGround", IsGrounded);
@@ -374,6 +391,9 @@ namespace UIs
             if (!isSuccessed)
             {
                 sequence.Join(bodyRenderer.DOFade(0f, duration * 0.9f).SetEase(Ease.InQuad));
+
+                // SFX 재생
+                Managers.Audio.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.Fail_Submit, 0, 1f);
             }
 
             // 애니메이션 대기 

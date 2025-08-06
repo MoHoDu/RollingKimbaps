@@ -32,7 +32,7 @@ namespace InGame
             Managers.Audio.SetEmitterInScene(bgmAudioEmitter, systemSfxAudioEmitter);
 
             // 브금 재생 요청
-            Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Ingame);
+            Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Ingame, 0, 0.3f);
         }
     }
 }

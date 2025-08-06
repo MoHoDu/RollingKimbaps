@@ -54,6 +54,9 @@ namespace ManagerSystem.UIs
             // SettingUI 생성
             SettingUI settingUI = AddPanel<SettingUI>(uIInfo, "SettingUI", settingsController);
 
+            // SFX 재생
+            Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Notice, 0, 1f);
+
             // 메인 메뉴 버튼 클릭 이벤트 설정
             settingUI.AddButtonAction(null, () =>
             {
@@ -65,6 +68,9 @@ namespace ManagerSystem.UIs
                 }, null, "메인 메뉴로 이동", "정말로 메인 메뉴로 이동하시겠습니까?", "네", "아니요");
 
                 AddPopup<PopupUI>(popupInfo);
+
+                // SFX 재생
+                Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Alert, 0, 1f);
             });
 
             return settingUI;

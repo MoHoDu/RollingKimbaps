@@ -93,6 +93,9 @@ namespace InGame.PrapManagement.Praps
                 return;
             isTriggered = true;
 
+            // SFX 재생
+            Managers.Audio.PlayAudioFromEmitter(ref _audioEmitter, EAudioSituation.Collect_Ingredient);
+
             OnTriggerd?.Invoke(data);
             DestroyEffect();
         }
