@@ -8,6 +8,10 @@ using UnityEngine;
 using ManagerSystem.UIs;
 using Audio;
 using Cysharp.Threading.Tasks;
+using UIs.Panels.Infos;
+using ManagerSystem.SaveLoad;
+using UIs.Panels.Settings;
+using UIs.Panels.Popups;
 
 
 namespace UIs
@@ -32,8 +36,31 @@ namespace UIs
                 infiniteBtn.interactable = false; // Prevent multiple clicks
                 Managers.Stage.LoadSceneAsync("GameScene", null);
             });
+            settingBtn?.onClick.AddListener(OnClickSettingBtn);
+            quitBtn?.onClick.AddListener(OnClickQuitBtn);
 
             SetEmitter();
+            SetCanvas();
+        }
+
+        private async void SetCanvas()
+        {
+            if (infiniteBtn != null && settingBtn != null && quitBtn != null)
+            {
+                infiniteBtn.interactable = false;
+                settingBtn.interactable = false;
+                quitBtn.interactable = false;
+            }
+
+            await UniTask.WaitUntil(() => CanvasManager.Instance != null);
+            Managers.UI?.FindCanvasAndGamePanel();
+
+            if (infiniteBtn != null && settingBtn != null && quitBtn != null)
+            {
+                infiniteBtn.interactable = true;
+                settingBtn.interactable = true;
+                quitBtn.interactable = true;
+            }
         }
 
         private async void SetEmitter()
@@ -52,6 +79,33 @@ namespace UIs
 
             // 브금 재생 요청
             Managers.Audio.PlayAudioFromSystem(EAudioType.BGM, EAudioSituation.BGM_Lobby, 0, 0.3f);
+        }
+
+        private void OnClickSettingBtn()
+        {
+            // UIInfo 생성
+            UIInfo uIInfo = new UIInfo(EButtonType.ONE_BUTTON, true, false);
+            PlayerSettingsController settingsController = Managers.Save.PlayerSettings;
+
+            // SettingUI 생성
+            Managers.UI?.AddPanel<SettingUI>(uIInfo, "SettingUI", settingsController);
+
+            // SFX 재생
+            Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Notice, 0, 1f);
+        }
+
+        private void OnClickQuitBtn()
+        {
+            // 팝업 창 띄우고, 확인 시 메인 메뉴로 이동
+            PopupInfo popupInfo = new PopupInfo(() =>
+            {
+                Application.Quit(); // 애플리케이션 종료
+            }, null, "게임 종료", "정말로 게임을 종료하시겠습니까?", "네", "아니요");
+
+            Managers.UI?.AddPopup<PopupUI>(popupInfo);
+
+            // SFX 재생
+            Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Alert, 0, 1f);
         }
 
         private void LoadSaveFiles(GameType gameType)

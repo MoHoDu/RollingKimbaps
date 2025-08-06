@@ -25,7 +25,7 @@ namespace ManagerSystem.UIs
             {
                 if (instance == null)
                 {
-                    Debug.LogError("[Manager Error] CanvasManager is null. Please check the inspector.");
+                    Debug.LogWarning("[Manager Error] CanvasManager is null. Please check the inspector.");
                 }
 
                 return instance;
