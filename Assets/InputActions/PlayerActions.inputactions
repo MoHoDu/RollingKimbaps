@@ -1,4 +1,5 @@
 {
+    "version": 1,
     "name": "PlayerActions",
     "maps": [
         {
@@ -45,6 +46,15 @@
                     "name": "Submit",
                     "type": "Button",
                     "id": "2c739437-d46e-465c-b290-a96f9a1c6750",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Capture",
+                    "type": "Button",
+                    "id": "04978e57-d82d-48cc-8a43-96e8b66c5a41",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -104,6 +114,17 @@
                     "processors": "",
                     "groups": ";PC",
                     "action": "Submit",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "916739c7-176f-4026-a8db-7b8d727dbb69",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";PC",
+                    "action": "Capture",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

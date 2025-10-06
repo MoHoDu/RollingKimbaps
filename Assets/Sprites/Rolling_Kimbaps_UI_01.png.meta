@@ -154,6 +154,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -501,7 +514,21 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      Rolling_Kimbaps_UI_01_0: 4717524127711024333
+      Rolling_Kimbaps_UI_01_11: -7808060897553291547
+      Rolling_Kimbaps_UI_01_12: -6905681490529019689
+      Rolling_Kimbaps_UI_01_13: -6230594904232909041
+      Rolling_Kimbaps_UI_01_14: 7591455061402076512
+      Rolling_Kimbaps_UI_01_15: -6220127835040834699
       Rolling_Kimbaps_UI_01_16: -1523942170
+      Rolling_Kimbaps_UI_01_2: 5855392898846933118
+      Rolling_Kimbaps_UI_01_3: 395102543912685042
+      Rolling_Kimbaps_UI_01_4: 4672738748918667180
+      Rolling_Kimbaps_UI_01_5: 4493808849823728133
+      Rolling_Kimbaps_UI_01_6: 8726883033940687788
+      Rolling_Kimbaps_UI_01_7: 3289317735696492474
+      Rolling_Kimbaps_UI_01_8: -4868735543910484501
+      Rolling_Kimbaps_UI_01_9: 7476382473828470791
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
