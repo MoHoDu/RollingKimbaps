@@ -17,7 +17,7 @@ namespace UIs
         public InnerPlacePositionSO Settings;
 
         private List<CollectedIngredient> _ingredients = new();
-        private int _ingredientsMaxCount;
+        // private int _ingredientsMaxCount;
 
         private RectTransform _rect = null;
 
@@ -35,7 +35,7 @@ namespace UIs
         protected override void Initialize()
         {
             base.Initialize();
-            _ingredientsMaxCount = BaseValues.MAX_COLLECTED_INGREDIENTS;
+            // _ingredientsMaxCount = BaseValues.MAX_COLLECTED_INGREDIENTS;
             TryGetComponent<RectTransform>(out _rect);
         }
 

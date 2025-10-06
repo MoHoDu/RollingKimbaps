@@ -107,28 +107,5 @@ namespace UIs
             // SFX 재생
             Managers.Audio?.PlayAudioFromSystem(EAudioType.SFX, EAudioSituation.System_Alert, 0, 1f);
         }
-
-        private void LoadSaveFiles(GameType gameType)
-        {
-            SaveData defaultData = DataContainer.SaveFiles.GetDefaultData(gameType);
-            SaveData[] saveDatas = DataContainer.SaveFiles.Get(gameType);
-
-            SavePanel panel = CanvasManager.Instance.GetUI<SavePanel>();
-            if (panel != null)
-            {
-                panel.SetInfoInUI(gameType, defaultData, saveDatas);
-            }
-            else
-            {
-                panel = CanvasManager.Instance.AddCanvasUI<SavePanel>("SavePanel", null, gameType, defaultData, saveDatas);
-                panel.AddEventOnDeleteData((data) =>
-                {
-                    bool result = Managers.Save.RemoveData(data);
-                    string resultText = result ? "성공!!" : "실패...";
-                    Debug.Log($"세이브 데이터 제거 {resultText}");
-                });
-                panel.OnRefreshData = DataContainer.SaveFiles.Get;
-            }
-        }
     }
 }
